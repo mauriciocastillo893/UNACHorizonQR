@@ -4,15 +4,15 @@
     box-sizing: border-box;
 }
 
-.header{
+.footer{
     background-color: #A0D0FB;
     width: 100%;
     height: 100px;
     position: fixed;
-    margin-top: 0;
+    bottom: 0;
 }
 
-.first-partH{
+.first-partF{
     /* background-color: blue; */
     display: flex;
     /* flex-wrap: wrap; */
@@ -22,15 +22,14 @@
     /* max-width: 1600px; */
 }
 
-.itemH{
+.itemF{
     /* flex: 1 0 400px; */
     margin: 0;
     background-color: #00294F;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    text-align: center;
     justify-content: center;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px 50px;
     font-weight: 700;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: xx-large;
@@ -38,9 +37,29 @@
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     width: 30%;
     height: 80px;
+    display: flex;
 }
 
-.item2H{
+.lyricsF{
+    width: 60%;
+    text-align: left;
+}
+
+.logoDivF{
+    width: 40%;
+    height: 75px;
+    justify-content: center;
+    padding: 2px;
+}
+
+
+.logoF{
+    width: 75px;
+    height: 75px;
+}
+
+
+.item2F{
     /* flex: 1 0 0px; */
     margin: 0;
     background-color: #033A6C;
@@ -51,7 +70,7 @@
     /* padding: 34px 0; */
 }
 
-.item3H{
+.item3F{
     /* flex: 1 0 0px; */
     margin: 0;
     background-color: #024B8E;
@@ -62,7 +81,7 @@
     /* padding: 34px 0; */
 }
 
-.item4H{
+.item4F{
     /* flex: 1 0 0px; */
     margin: 0;
     background-color: #025AAB;
@@ -73,7 +92,7 @@
     /* padding: 34px 0; */
 }
 
-.item5H{
+.item5F{
     /* flex: 1 0 350px; */
     margin: 0;
     background-color: #875F08;
@@ -84,7 +103,7 @@
     /* padding: 34px 0; */
 }
 
-.second-partH{
+.second-partF{
     /* background-color: linear-gradient(180deg, #D19106 0%, rgba(209, 145, 6, 0.75) 100%); */
     background-color: #D19106;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -92,8 +111,35 @@
     /* top: 140px; */
 }
 
+@media (max-width: 1500px) {
+    .itemF {
+      /* font-size: large; */
+      padding: 0 0 0 20px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .itemF {
+      font-size: large;
+      padding: 0 0 0 10px;
+    }
+}
+
 @media (max-width: 1000px) {
-    .itemH {
-      font-size: x-large;
+    .itemF {
+      font-size: small;
+      padding: 0 0 0 20px;
+    }
+}
+
+@media (max-width: 800px) {
+    .itemF {
+      font-size: x-small;
+      padding: 0 0 0 10px;
+    }
+
+    .lyricsF{
+        width: 90%;
+        padding: 0 0 0 20%;
     }
 }

@@ -1,0 +1,214 @@
+
+.main{
+    background:linear-gradient(180deg, #A0D0FB 0%, rgba(28, 95, 156, 0.33) 100%);
+    background-color: transparent;
+    width: 100%;
+    height: 72vh;
+    margin-top: 0;
+    display: flex;
+}
+
+/* PRIMERA PARTE DONDE ESTA LA DIVISION IZQUIERDA */
+.leftDiv{
+    /* background-color: tomato; */
+    width: 35%;
+    padding: 10vh 5vh 10vh 20vh;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: x-large;
+}
+
+.type-student{
+    /* background-color: aquamarine; */
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.image-qr{
+    /* background-color: bisque; */
+    width: 100%;
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    /* margin: 0 22%; */
+}
+
+.student-id{
+    /* background-color:burlywood; */
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.status-student{
+    /* background-color: cornflowerblue; */
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.color-status{
+    background-color: #7BA056;
+    width: 50%;
+    height: 75%;
+    min-height: 30%;
+    min-width: 50%;
+    display: block;
+    margin: auto;
+    padding: 2%;
+}
+
+/* SEGUNDA PARTE DONDE ESTA LA DIVISION DERECHA */
+.rightDiv{
+    /* background-color: aqua; */
+    width: 65%;
+    padding: 10vh 20vh 10vh 10vh;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: x-large;
+}
+
+.student{
+    /* background-color: blueviolet; */
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: center;
+}
+
+.language{
+    /* background-color: brown; */
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+.level{
+    /* background-color: coral; */
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+.period{
+    /* background-color: cornflowerblue; */
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.spaceqr{
+    /* background-color: darkolivegreen; */
+    width: 100%;
+    height: 5%;
+}
+
+.spaceqr2{
+    /* background-color: darkslateblue; */
+    width: 50%;
+    height: 25%;
+    float: left;
+}
+
+.status-qr{
+    background-color: #75540D;
+    color: #FCD9D9;
+    width: 50%;
+    height: 12.5%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    float: right;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 90%;
+}
+
+.status-msg{
+    background-color: #4E3500;
+    color: #FCD9D9;
+    width: 50%;
+    height: 12.5%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    float: right;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+}
+
+/* IMAGEN */
+.qr{
+    height: 100%;
+    width: 60%;
+    display: block;
+    margin: auto;
+}
+
+/* PARTE RESPONSIVE */
+@media (max-width: 1300px) {
+    .itemF{
+      /* font-size: large; */
+      padding: 0 0 0 20px;
+    }
+}
+
+@media (max-width: 1000px){
+    .image-qr{
+        width: 100%;
+        height: 20%;
+    }
+
+    .leftDiv{
+        font-size: large;
+    }
+
+    .rightDiv{
+        font-size: large;
+    }
+
+    .status-qr{
+        font-size: small;
+    }
+
+    .status-msg{
+        font-size: xx-small;
+        padding: 0 2%;
+    }
+
+    .color-status{
+        font-size: medium;
+
+    }
+}
