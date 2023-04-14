@@ -3,27 +3,22 @@
     margin: 0;
     box-sizing: border-box;
 }
-
+/* PROBANDO */
 .footer{
     background-color: #A0D0FB;
     width: 100%;
     height: 100px;
-    position: fixed;
+    position: relative;
     bottom: 0;
 }
 
 .first-partF{
-    /* background-color: blue; */
     display: flex;
-    /* flex-wrap: wrap; */
     justify-content: center;
     align-items: center;
-    /* width: 100%; */
-    /* max-width: 1600px; */
 }
 
 .itemF{
-    /* flex: 1 0 400px; */
     margin: 0;
     background-color: #00294F;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -43,6 +38,7 @@
 .lyricsF{
     width: 60%;
     text-align: left;
+    padding: 0 5% 0 5%;
 }
 
 .logoDivF{
@@ -60,86 +56,107 @@
 
 
 .item2F{
-    /* flex: 1 0 0px; */
     margin: 0;
     background-color: #033A6C;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     text-align: center;
     width: 4%;
     height: 80px;
-    /* padding: 34px 0; */
 }
 
 .item3F{
-    /* flex: 1 0 0px; */
     margin: 0;
     background-color: #024B8E;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     text-align: center;
     width: 4%;
     height: 80px;
-    /* padding: 34px 0; */
 }
 
 .item4F{
-    /* flex: 1 0 0px; */
     margin: 0;
     background-color: #025AAB;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     text-align: center;
     width: 4%;
     height: 80px;
-    /* padding: 34px 0; */
 }
 
 .item5F{
-    /* flex: 1 0 350px; */
     margin: 0;
+    background-color: #074277;
+    /* Color dorado */
     background-color: #875F08;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     text-align: center;
     width: 58%;
     height: 80px;
-    /* padding: 34px 0; */
 }
 
 .second-partF{
-    /* background-color: linear-gradient(180deg, #D19106 0%, rgba(209, 145, 6, 0.75) 100%); */
     background-color: #D19106;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     height: 20px;
-    /* top: 140px; */
+    width: 100%;
 }
 
-@media (max-width: 1500px) {
-    .itemF {
-      /* font-size: large; */
-      padding: 0 0 0 20px;
+/* PARTE RESPONSIVA */
+
+@media (min-width: 1400px) {
+    .lyricsF{
+        font-size: large;
     }
 }
 
 @media (max-width: 1400px) {
     .itemF {
-      font-size: large;
-      padding: 0 0 0 10px;
+        font-size: large;
+        padding: 0 0 0 4%;
     }
 }
 
 @media (max-width: 1000px) {
     .itemF {
-      font-size: small;
-      padding: 0 0 0 20px;
+        font-size: small;
+        padding: 0 0 0 3%;
+    }
+    .lyricsF{
+        padding: 0 0 0 5%;
     }
 }
 
 @media (max-width: 800px) {
     .itemF {
-      font-size: x-small;
-      padding: 0 0 0 10px;
+        font-size: x-small;
+        padding: 0 0 0 10px;
     }
 
     .lyricsF{
         width: 90%;
-        padding: 0 0 0 20%;
+        padding: 0 5% 0 15%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .first-partF{
+        min-width: 500px;
+        font-size: x-small;
+    }
+}
+
+@media only screen and (max-width:520px) {
+    .second-partF{
+        width: 525px
+    }
+
+    .logoF{
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media only screen and (max-width:517px) {
+    .second-partF{
+        width: 500px
     }
 }
