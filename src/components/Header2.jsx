@@ -33,7 +33,12 @@ function Header2() {
                     </div>
                 </div>
                 <div className="second-partH-2">
+                    <div className="itemsp-regresarmenu">
+                        <button className="botton-rm hoverable">REGRESAR AL MENÚ</button>
+                    </div>
+                    <div className="barra">
 
+                    </div>
                 </div>
             </div>
         </header>

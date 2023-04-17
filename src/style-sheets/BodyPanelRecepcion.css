@@ -9,7 +9,7 @@
     padding: 10vh 18vh;
     margin-top: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
 }
 
@@ -17,6 +17,7 @@
     width: 100%;
     min-width: 60vh;
     display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
     height: 100px;
 }
@@ -28,18 +29,17 @@
     padding: 0;
     font-weight: 700;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: xx-large;
+    font-size: 2em;
 }
 
 .date{
     background-color: #FAA300;
-    width: 38.7%;
-    /* width: 40%; */
+    width: 40%;
     height: 50px;
-    padding: 1% 2%;
+    padding: .75em;
     font-weight: 700;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: large;
+    font-size: 1.13em;
     text-align: right;
     border-radius: 8px;
 }
@@ -61,10 +61,10 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    height: 150px;
-    min-height: 150px;
+    height: 100%;
+    /* min-height: 100%; */
     /* flex-direction: column; */
-    justify-content: space-around;
+    justify-content:space-between;
 }
 
 .container-card{
@@ -80,6 +80,7 @@
     width: 100%;
     min-width: 40vh;
     height: 50px;
+    min-height: 50px;
     font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: larger;
@@ -97,15 +98,19 @@
     color: #FCFAF9;
     width: 100%;
     min-width: 40vh;
-    padding: 3vh 1vh;
+    padding: 3vh 6vh;
     height: 12vh;
+    min-height: 12vh;
     font-weight: 600;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: medium;
-    text-align: left;
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.subtitlePR-exit{
+    color: #FF9191;
 }
 
 .botton-subtitle{
@@ -114,6 +119,7 @@
     width: 100%;
     min-width: 40vh;
     height: 8vh;
+    min-height: 8vh;
     padding: 1vh;
     font-weight: 700;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -149,6 +155,7 @@
     background-color: #318aac;
     color: rgb(255, 255, 255);  
     transition: all .4s ease;
+    font-weight: 900;
 }
 
 .bse-hover:hover {
@@ -159,6 +166,32 @@
 }
 
 /* SECCION RESPONSIVA */
+
+@media only screen and (max-width: 1200px) {
+    .subtitlePR {
+        padding: 3vh 3vh;
+        }
+}
+
+/* 768px */
+@media only screen and (max-width: 1120px) {
+    .container-card {
+        width: 90%; 
+        margin: 10px 0;
+    }
+
+    .main{
+        /* max-width: 100%; */
+        background-color: #f4d289;
+        transition: all 1s ease;
+        height: 100%;
+    }
+
+    .second-part{
+        justify-content: center;
+    }
+}
+
 
 @media (max-width: 900px) {
     .titleS1, .date, .subtitleS1{
@@ -175,7 +208,7 @@
     
 
     .main{
-        max-width: 600px;
+        /* max-width: 600px; */
         background-color: #E4C685;
         transition: all 1s ease;
     }
@@ -185,37 +218,9 @@
     }
 }
 
-/* 768px */
-@media only screen and (max-width: 1120px) {
-    .second-part {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        }
-    
-        .container-card {
-        width: 90%; 
-        margin: 10px 0;
-        }
-
-    .main{
-        max-width: 100%;
-        background-color: #f4d289;
-        transition: all 1s ease;
-        height: 200vh;
-    }
-}
-
-@media only screen and (max-width: 450px) {
-    .main{
-        max-width: 500px;
-        
-    }
-}
-
 @media only screen and (max-width: 550px) {
     .date {
-       width: 30%;
-       font-size: x-small;
+        width: 30%;
+        font-size: x-small;
     }
 }

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Entrada from './pages/entrada';
 import Salida from './pages/Salida';
 import PanelRecepcion from "./pages/PanelRecepcion";
+import PRSeccion1 from './pages/PRSeccion1';
 import './style-sheets/App.css'
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
                 <Route path="/entrada" element={<Entrada />}/>
                 <Route path="/salida" element={<Salida />}/>
                 <Route path="/panelrecepcion" element={<PanelRecepcion />}/>
-                
+                <Route path='/seccion1' element={<PRSeccion1 />}/>
             </Routes>
 
         </BrowserRouter>  

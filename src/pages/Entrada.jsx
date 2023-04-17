@@ -6,7 +6,7 @@ function Entrada() {
     return (  
         <>
             <Header />
-            <BodyQR />
+                <BodyQR />
             <Footer />
         </>
     );

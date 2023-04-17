@@ -4,7 +4,7 @@ import qr from '../images/CAA.png'
 
 function BodyQR() {
     return (  
-        <main className="main">
+        <div className="main">
             <div className='leftDiv'>
                 <div className="type-student">
                     <p>PARTICULAR</p>
@@ -47,7 +47,7 @@ function BodyQR() {
                     <p>LA ENTRADA A SIDO REGISTRADA CORRECTAMENTE</p>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }
 
