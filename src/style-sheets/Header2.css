@@ -138,14 +138,34 @@
     min-height: 100%;
 }
 
+.botton-rm{
+    padding: 12px 22px; 
+    background-color: #262626;
+    color: #FAA300;
+    border: none; 
+    cursor: pointer; 
+    font-weight: 700;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: small;
+    width: 11.6%;
+    min-width: 58px;
+    min-height: 40px;
+}
 
-.botton-cs:hover {
+/* PARTE DE HOVER */
+
+.botton-cs:hover, .botton-rm:hover {
     background-color: #FAA300;
     color: #262626;  
     transition: all .4s ease;
 }
 
 /* PARTE RESPONSIVA */
+@media (max-width: 1530px) {
+    .botton-rm {
+        padding: 0 0; 
+    }
+}
 
 @media (max-width: 1000px) {
     .itemH-2 {
@@ -154,7 +174,7 @@
 }
 
 @media (max-width: 1280px) {
-    .botton-cs {
+    .botton-cs, .botton-rm {
         font-size: x-small;
     }
 }
@@ -165,8 +185,16 @@
         font-size: x-small;
     }
 
-    .item5H-221, .botton-cs{
+    .item5H-221, .botton-cs, .botton-rm{
         font-size: xx-small;
+    }
+
+    .botton-rm{
+        padding: 7px 0; 
+    }
+
+    .item5H-221{
+        padding: 13.5px;
     }
 
 }
@@ -176,9 +204,8 @@
         width: 500px
     }
     
-    .botton-cs{
+    .botton-cs, .botton-rm{
         padding: 5px 10px; 
         font-size: 8px;
     }
-
 }

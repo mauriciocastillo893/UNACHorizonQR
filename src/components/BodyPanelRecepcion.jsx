@@ -10,7 +10,7 @@ function BodyPanelRecepcion() {
         { titulo: "BUSCAR USUARIOS", subtitulo: "BUSCAR USUARIOS DENTRO DEL CENTRO DE AUTOACCESO", boton: "BUSCAR USUARIO CAA" },
         { titulo: "CORREGIR USUARIOS", subtitulo: "UNIR A USUARIOS IGUALES PERO MAL ESCRITOS", boton: "IR AL ACOPLADOR" },
         { titulo: "ASISTENCIA A USUARIOS", subtitulo: "DAR ASISTENCIA A USUARIOS DE AUTOACCESO", boton: "DAR ASISTENCIA" },
-        { titulo: "SALIDA DE EMERGENCIA", subtitulo: "DAR SALIDA DE EMERGENCIA A TODOS", boton: "SALIDA DE EMERGENCIA" }
+        { titulo: "SALIDA DE EMERGENCIA", subtitulo: "DAR SALIDA DE EMERGENCIA A TODOS", boton: "SALIDA DE EMERGENCIA" },
         ];
     
     return (
@@ -32,7 +32,7 @@ function BodyPanelRecepcion() {
                 <div className="item-title">
                     <p>{seccion.titulo}</p>
                 </div>
-                <div className="subtitlePR">
+                <div className={`subtitlePR ${index === 4 ? "subtitlePR-exit" : ""}`}>
                     <p>{seccion.subtitulo}</p>
                 </div>
                 <div className="botton-subtitle">
