@@ -4,6 +4,8 @@ import Entrada from './pages/entrada';
 import Salida from './pages/Salida';
 import PanelRecepcion from "./pages/PanelRecepcion";
 import PRSeccion1 from './pages/PRSeccion1';
+import PRSeccion2 from './pages/PRseccion2';
+import PRSeccion3 from './pages/PRSeccion3';
 import './style-sheets/App.css'
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
                 <Route path="/salida" element={<Salida />}/>
                 <Route path="/panelrecepcion" element={<PanelRecepcion />}/>
                 <Route path='/seccion1' element={<PRSeccion1 />}/>
+                <Route path='/seccion2' element={<PRSeccion2 />}/>
+                <Route path='/seccion3' element={<PRSeccion3 />}/>
             </Routes>
 
         </BrowserRouter>  

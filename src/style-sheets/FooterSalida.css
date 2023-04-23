@@ -1,0 +1,162 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+/* PROBANDO */
+.footer-fs{
+    background-color: #A0D0FB;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    bottom: 0;
+}
+
+.first-partF-fs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.itemF-fs{
+    margin: 0;
+    background-color: #00294F;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    align-items: center;
+    padding: 20px 50px;
+    font-weight: 700;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: xx-large;
+    color: #9ACEFE;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 30%;
+    height: 80px;
+    display: flex;
+}
+
+.lyricsF-fs{
+    width: 60%;
+    text-align: left;
+    padding: 0 5% 0 5%;
+}
+
+.logoDivF-fs{
+    width: 40%;
+    justify-content: center;
+}
+
+
+.logoF-fs{
+    /* background-color: red; */
+    width: 75px;
+    height: 75px;
+    margin-bottom: -13px;
+}
+
+
+.item2F-fs{
+    margin: 0;
+    background-color: #033A6C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    width: 4%;
+    height: 80px;
+}
+
+.item3F-fs{
+    margin: 0;
+    background-color: #024B8E;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    width: 4%;
+    height: 80px;
+}
+
+.item4F-fs{
+    margin: 0;
+    background-color: #025AAB;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    width: 4%;
+    height: 80px;
+}
+
+.item5F-fs{
+    margin: 0;
+    /* background-color: #074277; */
+    /* Color dorado */
+    background-color: #0E6065;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    width: 58%;
+    height: 80px;
+}
+
+.second-partF-fs{
+    background-color: #D19106;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 20px;
+    width: 100%;
+}
+
+/* PARTE RESPONSIVA */
+
+@media (min-width: 1400px) {
+    .lyricsF-fs{
+        font-size: large;
+    }
+}
+
+@media (max-width: 1400px) {
+    .itemF-fs {
+        font-size: large;
+        padding: 0 0 0 4%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .itemF-fs{
+        font-size: small;
+        padding: 0 0 0 3%;
+    }
+    .lyricsF-fs{
+        padding: 0 0 0 5%;
+    }
+}
+
+@media (max-width: 800px) {
+    .itemF-fs {
+        font-size: x-small;
+        padding: 0 0 0 10px;
+    }
+
+    .lyricsF-fs{
+        width: 90%;
+        padding: 0 5% 0 15%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .first-partF-fs{
+        min-width: 500px;
+        font-size: x-small;
+    }
+}
+
+@media only screen and (max-width:520px) {
+    .second-partF-fs{
+        width: 525px
+    }
+
+    .logoF-fs{
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media only screen and (max-width:517px) {
+    .second-partF-fs{
+        width: 500px
+    }
+}
