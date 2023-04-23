@@ -6,7 +6,7 @@ table {
         border-right: 1px solid #262626;
 }
 
-.prs1-main{
+.prs2-main{
     font-size: 16px;
     background:linear-gradient(180deg, #A0D0FB 0%, rgba(28, 95, 156, 0.33) 100%);
     background-color: transparent;
@@ -19,7 +19,7 @@ table {
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.prs1-first-part{
+.prs2-first-part{
     /* background-color: #e900fa; */
     width: 100%;
     min-width: 60vh;
@@ -29,7 +29,7 @@ table {
     height: 100px;
 }
 
-.prs1-titleS1{
+.prs2-titleS1{
     /* background-color: red; */
     width: 60%;
     height: 50px;
@@ -40,7 +40,7 @@ table {
     text-transform: uppercase;
 }
 
-.prs1-date{
+.prs2-date{
     background-color: #FAA300;
     width: 40%;
     height: 3em;
@@ -52,7 +52,7 @@ table {
     border-radius: 8px;
 }
 
-.prs1-subtitle{
+.prs2-subtitle{
     /* background-color: green; */
     width: 50%;
     min-width: 235px;
@@ -63,7 +63,7 @@ table {
     text-align: left;
 }
 
-.prs1-searcher{
+.prs2-searcher{
     /* background-color: rgb(163, 71, 255); */
     background-color: transparent;
     width: 100%;
@@ -75,20 +75,20 @@ table {
     justify-content: space-between;
 }
 
-.prs1-first-s{
+.prs2-first-s{
     /* background-color: tomato; */
     width: 65%;
     min-width: 65%;
     text-align: center;
 }
 
-.prs1-second-s{
+.prs2-second-s{
     /* background-color: darkseagreen; */
     width: 30%;
     min-width: 30%;
 }
 
-.prs1-title-first{
+.prs2-title-first{
     background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     font-weight: 700;
@@ -97,7 +97,7 @@ table {
     text-transform: uppercase;
 }
 
-.prs1-title-second{
+.prs2-title-second{
     background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     font-weight: 700;
@@ -107,7 +107,7 @@ table {
     text-transform: uppercase;
 }
 
-.prs1-searcher-input{
+.prs2-searcher-input{
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #FCFAF9;
@@ -122,11 +122,11 @@ table {
     font-size: 1em;
 }
 
-.prs1-searcher-input:focus{
+.prs2-searcher-input:focus{
     outline: none;
 }
 
-.prs1-subtitle-second{
+.prs2-subtitle-second{
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #FCFAF9;
@@ -138,7 +138,7 @@ table {
     font-size: 1em;
 }
 
-.prs1-bottons{
+.prs2-bottons{
     /* background-color: gray; */
     text-align: right;
     text-transform: lowercase;
@@ -146,7 +146,7 @@ table {
     min-width: 400px;
 }
 
-.prs1-botton{
+.prs2-botton{
     margin-left: 2em;
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -162,7 +162,11 @@ table {
     text-transform: uppercase;
 }
 
-.prs1-b-ma{
+.prs2-cb{
+    transform: scale(1.5);
+}
+
+.prs2-b-ma{
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #BAC2C9;
@@ -178,7 +182,7 @@ table {
 }
 
 /* SECCION DE LA TABLA */
-#prs1-tabla-all{
+#prs2-tabla-all{
     width: 100%;
     margin-bottom: 1.5%;
     border-collapse: collapse;
@@ -188,7 +192,7 @@ table {
 
 }
 
-#prs1-table-headboard{
+#prs2-table-headboard{
     /* background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%); */
     background-color: #FAA300;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -205,96 +209,102 @@ table {
 
 #prs2-tr{
     text-transform: uppercase;
-}
+}   
 
-#prs1-th, #prs1-table-headboard {
+#prs2-th, #prs2-table-headboard {
     position: sticky;
 }
   
-    #prs1-table-headboard {
+    #prs2-table-headboard {
         top: 0;
         z-index: 2;
     }
     
-    #prs1-th {
+    #prs2-th {
         top: 2.3em;
         z-index: 1;
     }
 
-    .prs1-th-1{
+    .prs2-th-1{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
         width: 5%;
     }
 
-    .prs1-th-2{
+    .prs2-th-2{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
         width: 35%;
     }
-    .prs1-th-3{
+    .prs2-th-3{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 10%;
+        width: 5%;
     }
-    .prs1-th-4{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 10%;
-    }
-    .prs1-th-5{
+    .prs2-th-4{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
         width: 25%;
     }
-    .prs1-th-6{
+    .prs2-th-5{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 15%;
+        width: 10%;
+    }
+    .prs2-th-6{
+        background-color: #262626;
+        color: #FCFAF9;
+        padding: .5em;
+        width: 10%;
+    }
+    .prs2-th-7{
+        background-color: #262626;
+        color: #FCFAF9;
+        padding: .5em;
+        width: 10%;
     }
 
-.prs1-tr-body:nth-child(even){
+.prs2-tr-body:nth-child(even){
     background-color: #074073;
     color: #FCFAF9;
     text-align: center;
 
 }
 
-.prs1-tr-body:nth-child(odd){
+.prs2-tr-body:nth-child(odd){
     background-color: #1C5F9C;
     color: #FCFAF9;
     text-align: center;
 
 }
 
-.prs1-td{
+.prs2-td{
     font-weight: 600;
     font-size: .9em;
     padding: .5em;
 }
 
 /* SECCION HOVER */
-.prs1-botton:hover {
+.prs2-botton:hover {
     background-color: #FAA300;
     color: #262626;  
     transition: all .4s ease;
     font-weight: 1000;
 }
 
-.prs1-subtitle-second:hover {
+.prs2-subtitle-second:hover {
     /* background-color: #FAA300; */
     color: #FAA300;  
     transition: all .4s ease;
     font-weight: 800;
 }
 
-.prs1-b-ma:hover {
+.prs2-b-ma:hover {
     background-color: #BAC2C9;
     color: #262626;  
     transition: all .4s ease;
@@ -303,29 +313,32 @@ table {
 
 /* SECCION RESPONSIVA */
 @media only screen and (max-width: 1120px) {
-    .prs1-main{
+    .prs2-main{
         max-width: 100%;
         background-color: #f4d289;
         transition: all 1s ease;
         font-size: .8em;
     }
-    #prs1-tabla-all{
+    #prs2-tabla-all{
         margin-bottom: 3%;
     }
 
-    .prs1-botton{
+    .prs2-botton{
         text-align: right;
     }
 }
 
 @media (max-width: 900px) {
-    .prs1-main{
+    .prs2-main{
         font-size: 0.6em;
+    }
+    .prs2-cb{
+        transform: scale(1.2);
     }
 }
 
 @media (max-width: 600px) {
-    .prs1-main{
+    .prs2-main{
         max-width: 600px;
         background-color: #875F08;
         transition: all 1s ease;
@@ -333,45 +346,56 @@ table {
         font-size: .5em;
     }
 
-    .prs1-date{
+    .prs2-date{
         height: 25px;
+    }
+    .prs2-cb{
+        transform: scale(1);
     }
 }
 
+@media (max-width: 500px) {
+    .prs2-main{
+        font-size: .4em;
+    }
+}
+
+
 @media (min-width: 600px){
-    .prs1-main{
+    .prs2-main{
         background-color: #1C5F9C;;
         transition: all 1s ease;
     }
 }
     
 @media only screen and (max-height: 600px) {
-    .prs1-main {
+    .prs2-main {
         padding: 10vh 9vh;
+        font-size: .45em;
     }
 }
 
 @media only screen and (max-height: 340px) {
-    .prs1-main {
+    .prs2-main {
         padding: 15vh 9vh;
     }
 }
 
 @media only screen and (max-height: 200px) {
-    .prs1-main {
+    .prs2-main {
         padding: 20vh 9vh;
     }
 }
 
 
 @media only screen and (max-height: 150px) {
-    .prs1-main {
+    .prs2-main {
         padding: 30vh 9vh;
     }
 }
 
 @media only screen and (max-height: 100px) {
-    .prs1-main {
+    .prs2-main {
         padding: 40vh 9vh;
     }
 }

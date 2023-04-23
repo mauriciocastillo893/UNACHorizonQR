@@ -12,14 +12,14 @@
     margin-top: 0;
 }
 
-.first-partH-2{
+.first-partH-hs{
     /* background-color: blue; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.itemH-2{
+.itemH-hs{
     /* flex: 1 0 400px; */
     margin: 0;
     background-color: #00294F;
@@ -37,7 +37,7 @@
     height: 80px;
 }
 
-.item2H-2{
+.item2H-hs{
     margin: 0;
     background-color: #033A6C;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -46,7 +46,7 @@
     height: 80px;
 }
 
-.item3H-2{
+.item3H-hs{
 
     margin: 0;
     background-color: #024B8E;
@@ -57,7 +57,7 @@
 
 }
 
-.item4H-2{
+.item4H-hs{
     margin: 0;
     background-color: #025AAB;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -66,11 +66,11 @@
     height: 80px;
 }
 
-.item5H-2{
+.item5H-hs{
     margin: 0;
     /* background-color: #1C5F9C; */
     /* COLOR DORADO */
-    background-color: #875F08;
+    background: #197D84;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     justify-content: center;
     align-items: center;
@@ -79,13 +79,13 @@
     height: 80px;
 }
 
-.item5H-21{
+.item5H-21-hs{
     background-color: transparent;
     width: 100%;
     height: 50%;
 }
 
-.item5H-22{
+.item5H-22-hs{
     background-color: #06d161;
     height: 50%;
     width: 100%;
@@ -95,7 +95,7 @@
     text-transform: uppercase;
 }
 
-.item5H-221{
+.item5H-221-hs{
     background-color: #BAC2C9;
     width: 80%;
     height: 100%;
@@ -110,12 +110,12 @@
     text-overflow: ellipsis;
 }
 
-.item5H-cerrarsesion{
+.item5H-cerrarsesion-hs{
     width: 20%;
     height: 100%;
 }
 
-.second-partH-2{
+.second-partH-hs{
     /* background-color: linear-gradient(180deg, #D19106 0%, rgba(209, 145, 6, 0.75) 100%); */
     background-color: #D19106;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -124,7 +124,7 @@
     /* top: 140px; */
 }
 
-.botton-cs{
+.botton-cs-hs{
     padding: 10px 20px; 
     background-color: #262626;
     color: #FAA300;
@@ -138,7 +138,7 @@
     min-height: 100%;
 }
 
-.botton-rm{
+.botton-rm-hs{
     padding: 12px 22px; 
     background-color: #262626;
     color: #FAA300;
@@ -153,13 +153,13 @@
 }
 
 /* PARTE DE HOVER */
-.botton-cs:hover, .botton-rm:hover {
+.botton-cs-hs:hover, .botton-rm-hs:hover {
     background-color: #FAA300;
     color: #262626;  
     transition: all .6s ease;
 }
 
-.item5H-221:hover{
+.item5H-221-hs:hover{
     background-color: #262626;
     color: #BAC2C9;  
     transform: all 2s ease;
@@ -167,49 +167,49 @@
 
 /* PARTE RESPONSIVA */
 @media (max-width: 1530px) {
-    .botton-rm {
+    .botton-rm-hs {
         padding: 0 0; 
     }
 }
 
 @media (max-width: 1000px) {
-    .itemH-2 {
+    .itemH-hs {
         font-size: x-large;
     }
 }
 
 @media (max-width: 1280px) {
-    .botton-cs, .botton-rm {
+    .botton-cs-hs, .botton-rm-hs {
         font-size: x-small;
     }
 }
 
 @media only screen and (max-width: 800px) {
-    .first-partH-2{
+    .first-partH-hs{
         min-width: 500px;
         font-size: x-small;
     }
 
-    .item5H-221, .botton-cs, .botton-rm{
+    .item5H-221-hs, .botton-cs-hs, .botton-rm-hs{
         font-size: xx-small;
     }
 
-    .botton-rm{
+    .botton-rm-hs{
         padding: 7px 0; 
     }
 
-    .item5H-221{
+    .item5H-221-hs{
         padding: 13.5px;
     }
 
 }
 
 @media only screen and (max-width:520px) {
-    .second-partH-2{
+    .second-partH-hs{
         width: 500px
     }
     
-    .botton-cs, .botton-rm{
+    .botton-cs-hs, .botton-rm-hs{
         padding: 5px 10px; 
         font-size: 8px;
     }
