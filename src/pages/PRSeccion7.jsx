@@ -1,16 +1,16 @@
 import React from "react";
 import Header2 from "../components/Header/Header2";
-import BodyPRSeccion2 from '../components/BodyPRSeccion2';
+import BodyPRSeccion7 from '../components/BodyPRSeccion7';
 import Footer from "../components/Footer/Footer";
 
-function PRseccion2() {
+function PRseccion7() {
     return (  
         <>
             <Header2 />
-                <BodyPRSeccion2 />
+                <BodyPRSeccion7 />
             <Footer />
         </>
     );
 }
 
-export default PRseccion2;
+export default PRseccion7;

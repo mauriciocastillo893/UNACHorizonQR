@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import '../style-sheets/BodyPRSeccion2.css';
+import Swal from 'sweetalert2'
+import BodyPRSeccion2_1 from "./BodyPRSeccion2_1";
+import { useNavigate } from "react-router-dom";
 
-function BodyPRSeccion1() {
+function BodyPRSeccion2() {
     // Fecha
     const fecha = new Date();
     // Objeto de usuarios
@@ -14,12 +17,13 @@ function BodyPRSeccion1() {
     // Estatus de si se encontro o no el usuario
     const[status, setStatus] = useState("online");
 
+    const[totalPersonas, setTotalPersonas] = useState("");
+
     const peticionGet=async()=>{
-        await axios.get("https://jsonplaceholder.typicode.com/users")
+        await axios.get("http://localhost:5000/users")
             .then(response => {
-                setUsuarios(response.data);
-                setTablaUsuarios(response.data);
-                // console.log(response.data);
+                setUsuarios(response.data.users);
+                setTablaUsuarios(response.data.users);
             }).catch(error => {
                 console.log(error);
             })
@@ -34,21 +38,61 @@ function BodyPRSeccion1() {
         setBusqueda("");
     }
     
-    const filtrar=(terminoBusqueda)=>{
-        var resultadoBusqueda=tablaUsuarios.filter((elemento)=>{
-            if(elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())){
-                return elemento;
+    const filtrar = (terminoBusqueda) => {
+        var resultadoBusqueda = tablaUsuarios.filter((elemento) => {
+            if (
+                elemento.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.apellido_materno.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.apellido_paterno.toLowerCase().includes(terminoBusqueda.toLowerCase())
+            ) {
+                return true; // Devuelve true si el elemento coincide con la búsqueda
             }
+            return false; // Si no coincide, devuelve false
         });
+        
         setUsuarios(resultadoBusqueda);
-
+    
         if (resultadoBusqueda.length) {
-            setStatus(`${resultadoBusqueda.length} encontrados`)
-            if(resultadoBusqueda.length===1)
+            setStatus(`${resultadoBusqueda.length} encontrados`);
+            if (resultadoBusqueda.length === 1) {
                 setStatus(`${resultadoBusqueda.length} encontrado`);
+            }
         } else {
             setStatus("no encontrado");
         }
+    }
+    
+    const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
+
+
+    const handleCheckboxChange = (matricula) => {
+        if (usuariosSeleccionados.has(matricula)) {
+            const nuevosSeleccionados = new Set(usuariosSeleccionados);
+            nuevosSeleccionados.delete(matricula);
+            setUsuariosSeleccionados(nuevosSeleccionados);
+            console.log('Usuario retirado');
+        } else {
+            setUsuariosSeleccionados(new Set(usuariosSeleccionados).add(matricula));
+            console.log(matricula);
+        }
+    };
+    
+
+    const enviarPersonas=()=>{
+        console.log("Usuarios Seleccionados:");
+        [...usuariosSeleccionados].map(usuario => {
+            console.log(usuario)
+            console.log("---------------");
+        });
+        
+    }
+
+    const navigate = useNavigate();
+
+    const addUser=(matricula)=>{
+        const state = { matricula };
+        navigate("/seccion21",  { state });
+        // return <BodyPRSeccion2_1 matricula={matricula}/>;
     }
 
     useEffect(() => {
@@ -61,6 +105,23 @@ function BodyPRSeccion1() {
         }
     }, [busqueda])
     
+    const mostrarAlerta = () => {
+        if(usuariosSeleccionados.size<1){
+            Swal.fire({
+                title: "HA OCURRIDO UN PROBLEMA",
+                // text: "FALTA UN CAMPO POR LLENAR",
+                html: "<div class='bold-text'>DEBE SELECCIONAR AL MENOS UNA PERSONA PARA CONTINUAR</div>",
+                icon: "info",
+                confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
+                confirmButtonColor: '#262626',
+                // footer: "<b>CENTRO DE AUTOACCESO<b>"
+                // timer: 1000,
+            })
+        }else{
+            return
+        }
+    }
+
     return (
     <div className="prs2-main">
         <div className="prs2-first-part">
@@ -101,24 +162,33 @@ function BodyPRSeccion1() {
                             <th className='prs2-th-4'>IDIOMA Y NIVEL</th>
                             <th className='prs2-th-5'>SALIDA DE EMERGENCIA</th>
                             <th className='prs2-th-7'>AÑADIR ASISTENCIAs</th>
-                            <th className='prs2-th-6'>REGISTRAR ASISTENCIA</th>
+                            <th className='prs2-th-6'>REGISTRAR ENTRADA</th>
+                            <th className='prs2-th-6'>REGISTRAR SALIDA</th>
                         </tr>
                     </thead>
                     <tbody>
                         {usuarios && usuarios.map((usuario)=>(
                             <tr key={usuario.id} className="prs2-tr-body">
-                                <td className='prs2-td'>{usuario.id}</td>
-                                <td className='prs2-td'>{usuario.name}</td>
-                                <td className='prs2-td'>{usuario.phone}</td>
-                                <td className='prs2-td'>{usuario.username}</td>
+                                <td className='prs2-td'>{usuario.matricula}</td>
+                                <td className='prs2-td'>{usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno}</td>
+                                <td className='prs2-td'>{usuario.genero}</td>
+                                <td className='prs2-td'>{usuario.idiomas}</td>
                                 <td className='prs2-td'>{
-                                    <input type="checkbox" className="prs2-cb"></input>
+                                    <input 
+                                    type="checkbox" 
+                                    className="prs2-cb"
+                                    checked={usuariosSeleccionados.has(usuario.matricula)}
+                                    onChange={() => handleCheckboxChange(usuario.matricula)}
+                                    ></input>
                                 }</td>
                                 <td className='prs2-td'>{
-                                    <button className="prs2-b-ma">Añadir</button>
+                                    <button className="prs2-b-ma" onClick={() => addUser(usuario.matricula)}>Añadir</button>
                                 }</td>
                                 <td className='prs2-td'>{
-                                    <button className="prs2-b-ma">Registrar</button>
+                                    <button className="prs2-b-ma">Entrada</button>
+                                }</td>
+                                <td className='prs2-td'>{
+                                    <button className="prs2-b-ma">Salida</button>
                                 }</td>
                             </tr>
                         ))}
@@ -127,12 +197,13 @@ function BodyPRSeccion1() {
                 </table>
             </div>
         <div className="prs2-bottons">
-                <button className="prs2-botton hoverable">Salida para: {status} personas</button>  
-                <button className="prs2-botton hoverable">Salida a todas las personas</button>
-                <button className="prs2-botton hoverable" onClick={() => {peticionGet(); handleClearClick();}}>LIMPIAR</button>
+                <button className="prs2-botton hoverable" onClick={() => {mostrarAlerta();}}>Salida para: {usuariosSeleccionados.size} personas</button>  
+                <button className="prs2-botton hoverable" onClick={() => {enviarPersonas();}}>Salida a todas las personas</button>
+                <button className="prs2-botton hoverable" onClick={() => {peticionGet(); handleClearClick();}}>LIMPIAR BUSCADOR</button>
+                <button className="prs2-botton hoverable bs-exit" onClick={() => {setUsuariosSeleccionados(new Set());}}>ELIMINAR OPCIONES</button>
         </div>
     </div>
     );
 }
 
-export default BodyPRSeccion1;
+export default BodyPRSeccion2;
