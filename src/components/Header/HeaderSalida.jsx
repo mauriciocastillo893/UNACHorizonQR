@@ -1,5 +1,5 @@
 import React from "react";
-import '../style-sheets/HeaderSalida.css'
+import '../../style-sheets/Header/HeaderSalida.css'
 
 function Header2() {
     return (  

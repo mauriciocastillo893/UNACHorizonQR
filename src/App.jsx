@@ -6,6 +6,9 @@ import PanelRecepcion from "./pages/PanelRecepcion";
 import PRSeccion1 from './pages/PRSeccion1';
 import PRSeccion2 from './pages/PRseccion2';
 import PRSeccion3 from './pages/PRSeccion3';
+import PRSeccion7 from './pages/PRSeccion7';
+import PRSeccion1_1 from './pages/PRSeccion1_1';
+import PRSeccion2_1 from './pages/PRSeccion2_1';
 import './style-sheets/App.css'
 
 function App() {
@@ -13,12 +16,17 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<h1>Home</h1>}/>
+                {/* MANTENIMIENTO */}
                 <Route path="/entrada" element={<Entrada />}/>
                 <Route path="/salida" element={<Salida />}/>
+                {/* MANTENIMIENTO */}
                 <Route path="/panelrecepcion" element={<PanelRecepcion />}/>
                 <Route path='/seccion1' element={<PRSeccion1 />}/>
+                <Route path='/seccion11' element={<PRSeccion1_1 />}/>
                 <Route path='/seccion2' element={<PRSeccion2 />}/>
+                <Route path='/seccion21' element={<PRSeccion2_1 />}/>
                 <Route path='/seccion3' element={<PRSeccion3 />}/>
+                <Route path='/seccion7' element={<PRSeccion7 />}/>
             </Routes>
 
         </BrowserRouter>  

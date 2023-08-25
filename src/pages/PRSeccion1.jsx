@@ -1,7 +1,7 @@
 import React from "react";
-import Header2 from "../components/Header2";
+import Header2 from "../components/Header/Header2";
 import BodyPRSeccion1 from '../components/BodyPRSeccion1';
-import Footer from "../components/Footer";
+import Footer from "../components/Footer/Footer";
 
 function PRseccion1() {
     return (  

@@ -7,59 +7,20 @@ function BodyPRSeccion3() {
     const fecha = new Date();
     // Objeto de usuarios
     const [usuarios, setUsuarios] = useState([]);
-    // Tabla de objeto de usuarios
-    const [tablaUsuarios, setTablaUsuarios] = useState([]);
-    // Busqueda de nombre de usuarios
-    const [busqueda, setBusqueda] = useState("");
-    // Estatus de si se encontro o no el usuario
-    const[status, setStatus] = useState("online");
 
     const peticionGet=async()=>{
         await axios.get("https://jsonplaceholder.typicode.com/users")
             .then(response => {
                 setUsuarios(response.data);
-                setTablaUsuarios(response.data);
                 // console.log(response.data);
             }).catch(error => {
                 console.log(error);
             })
     }
 
-    const handleChange=e=>{
-        setBusqueda(e.target.value);
-        filtrar(e.target.value);
-    }
-
-    const handleClearClick=e=>{
-        setBusqueda("");
-    }
-    
-    const filtrar=(terminoBusqueda)=>{
-        var resultadoBusqueda=tablaUsuarios.filter((elemento)=>{
-            if(elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())){
-                return elemento;
-            }
-        });
-        setUsuarios(resultadoBusqueda);
-
-        if (resultadoBusqueda.length) {
-            setStatus(`${resultadoBusqueda.length} encontrados`)
-            if(resultadoBusqueda.length===1)
-                setStatus(`${resultadoBusqueda.length} encontrado`);
-        } else {
-            setStatus("no encontrado");
-        }
-    }
-
     useEffect(() => {
         peticionGet();   
     },[]);
-
-    useEffect(() => {
-        if(busqueda === ""){
-            setStatus("online");
-        }
-    }, [busqueda])
 
     return (
     <div className="prs3-main">
@@ -106,10 +67,10 @@ function BodyPRSeccion3() {
                     <p>Razón</p>
                 </div>
                 <div className="prs3-subtitle4">
-                <button className="prs3-botton hoverable" value="TEMBLOR/TERREMOTO" onClick={() => {peticionGet(); handleClearClick();}}>TEMBLOR/TERREMOTO</button>
-                <button className="prs3-botton hoverable" value="EMERGENCIA MEDICA" onClick={() => {peticionGet(); handleClearClick();}}>EMERGENCIA MEDICA</button>
-                <button className="prs3-botton hoverable" value="SIMULACROS" onClick={() => {peticionGet(); handleClearClick();}}>SIMULACROS</button>
-                <button className="prs3-botton hoverable" value="OTRA RAZON" onClick={() => {peticionGet(); handleClearClick();}}>OTRA RAZÓN</button>
+                    <button value="TEMBLOR/TERREMOTO">TEMBLOR/TERREMOTO</button>
+                    <button value="EMERGENCIA MEDICA">EMERGENCIA MEDICA</button>
+                    <button value="SIMULACROS">SIMULACROS</button>
+                    <button value="OTRA RAZON">OTRA RAZÓN</button>
                 </div>
                 <div className="prs3-title2">
                     <p>Comentarios adicionales</p>
@@ -122,7 +83,7 @@ function BodyPRSeccion3() {
                         // onChange="reemplazar datos aqui"
                         ></input>
                 <div className="prs3-bottons">
-                    <button className="prs3-botton hoverable" onClick={() => {peticionGet(); handleClearClick();}}>LIMPIAR</button>
+                    <button className="prs3-botton2 hoverable">SALIDA A TODOS</button>
                 </div>      
             </div>
         </div>

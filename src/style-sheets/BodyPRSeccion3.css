@@ -1,11 +1,3 @@
-table {
-    border-collapse: collapse;
-}
-    td {
-        border-left: 1px solid #262626;
-        border-right: 1px solid #262626;
-}
-
 .prs3-main{
     font-size: 16px;
     background: linear-gradient(180deg, #A7EEF3 0%, rgba(167, 238, 243, 0.33) 100%);
@@ -34,16 +26,13 @@ table {
     width: 100%;
     min-width: 60vh;
     display: flex;
-    /* flex-direction: column; */
-    /* justify-content: space-between; */
     flex-wrap: wrap;
     justify-content: space-between;
     height: 32em;
-    /* height: 100px; */
 }
 
 .prs3-right{
-    background-color:yellowgreen;
+    /* background-color:yellowgreen; */
     display: flex;
     flex-direction: column;
     width: 45%;
@@ -52,7 +41,7 @@ table {
 }
 
 .prs3-left{
-    background-color: #f4d289;
+    /* background-color: #f4d289; */
     display: flex;
     flex-direction: column;
     width: 45%;
@@ -143,21 +132,41 @@ table {
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1em;
     text-align: left;
-    overflow-y: auto;
-    padding: 6% 8%;
+    overflow-y: none;
     text-align:justify;
 }
 
-.prs3-searcher{
-    /* background-color: rgb(163, 71, 255); */
-    background-color: transparent;
-    width: 100%;
-    min-width: 385px;
-    display: flex;
-    flex-wrap: wrap;
+.prs3-subtitle4 > button{
+    background-color: #262626;
+    color: #FAA300;
+    cursor: pointer; 
+    font-weight: 1000;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin-bottom: 50px;
-    justify-content: space-between;
+    font-size: .8em;
+    padding: 0.8em 1.6em; 
+    border: none;
+    text-transform: uppercase;
+    height: 50%;
+    width: 50%;
+}
+
+.prs3-comment-input{
+    background-color: #262626;
+    color: #FCFAF9;
+    cursor: pointer; 
+    font-weight: 700;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: .9em;
+    text-align: center;
+    padding: 0.8em 1.6em; 
+    border: none;
+    text-transform: uppercase;
+    height: 15%;
+    width: 100%;
+}
+
+.prs3-comment-input:focus{
+    outline: none;
 }
 
 .prs3-ul {
@@ -171,20 +180,6 @@ table {
         content: counter(counter1) ".- ";
         margin-right: 5px;
     }
-
-
-.prs3-first-s{
-    /* background-color: tomato; */
-    width: 65%;
-    min-width: 65%;
-    text-align: center;
-}
-
-.prs3-second-s{
-    /* background-color: darkseagreen; */
-    width: 30%;
-    min-width: 30%;
-}
 
 .prs3-title-first{
     background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%);
@@ -205,25 +200,6 @@ table {
     text-transform: uppercase;
 }
 
-.prs3-searcher-input{
-    background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #FCFAF9;
-    width: 100%;
-    border: none;
-    height: 4em;
-    padding: 0 2em;
-    border: none;
-    text-transform: uppercase;
-    font-weight: 700;
-    text-align: center;
-    font-size: 1em;
-}
-
-.prs3-searcher-input:focus{
-    outline: none;
-}
-
 .prs3-subtitle-second{
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -241,157 +217,61 @@ table {
     text-align: right;
     text-transform: lowercase;
     text-overflow: clip;
-    min-width: 400px;
+    height: 35%;
+    width: 100%;
+    position: relative;
 }
 
 .prs3-botton{
-    margin-left: 2em;
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #FAA300;
     cursor: pointer; 
-    font-weight: 600;
+    font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: .81em;
+    font-size: 1.2em;
     border-radius: 5px; 
-    padding: 0.8em 1.6em; 
     border: none;
-    margin-bottom: 10px;
     text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 30%;
 }
 
-.prs3-cb{
-    transform: scale(1.5);
-}
-
-.prs3-b-ma{
-    background-color: #262626;
+.prs3-botton2{
+    background-color: #197D84;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #BAC2C9;
+    color: #FCD9D9;
     cursor: pointer; 
-    font-weight: 600;
+    font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: .9em;
+    font-size: 1.2em;
     border-radius: 5px; 
-    padding: 0.6em 1.4em; 
     border: none;
-    margin: .2em;
     text-transform: uppercase;
-}
-
-/* SECCION DE LA TABLA */
-#prs3-tabla-all{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
-    margin-bottom: 1.5%;
-    border-collapse: collapse;
-    max-height: 25em;
-    min-height: 25em;
-    overflow-y: scroll;
-
-}
-
-#prs3-table-headboard{
-    /* background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%); */
-    background-color: #FAA300;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 1px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.1em;
-    padding: .5em;
-    width: 100%;
-    text-transform: uppercase;
-    /* max-width: 1200px; */
-    /* min-width: 90vh; */
-}
-
-#prs3-tr{
-    text-transform: uppercase;
-}   
-
-#prs3-th, #prs3-table-headboard {
-    position: sticky;
-}
-  
-    #prs3-table-headboard {
-        top: 0;
-        z-index: 2;
-    }
-    
-    #prs3-th {
-        top: 2.3em;
-        z-index: 1;
-    }
-
-    .prs3-th-1{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 5%;
-    }
-
-    .prs3-th-2{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 35%;
-    }
-    .prs3-th-3{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 5%;
-    }
-    .prs3-th-4{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 25%;
-    }
-    .prs3-th-5{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 10%;
-    }
-    .prs3-th-6{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 10%;
-    }
-    .prs3-th-7{
-        background-color: #262626;
-        color: #FCFAF9;
-        padding: .5em;
-        width: 10%;
-    }
-
-.prs3-tr-body:nth-child(even){
-    background-color: #074073;
-    color: #FCFAF9;
-    text-align: center;
-
-}
-
-.prs3-tr-body:nth-child(odd){
-    background-color: #1C5F9C;
-    color: #FCFAF9;
-    text-align: center;
-
-}
-
-.prs3-td{
-    font-weight: 600;
-    font-size: .9em;
-    padding: .5em;
+    height: 30%;
 }
 
 /* SECCION HOVER */
-.prs3-botton:hover {
+.prs3-botton:hover, .prs3-subtitle4 > button:hover{
     background-color: #FAA300;
     color: #262626;  
     transition: all .4s ease;
+    font-weight: 1000;
+}
+
+.prs3-botton2:hover{
+    background-color: #FCD9D9;
+    color: #197D84;  
+    transition: all 1s ease;
     font-weight: 1000;
 }
 
@@ -402,23 +282,13 @@ table {
     font-weight: 800;
 }
 
-.prs3-b-ma:hover {
-    background-color: #BAC2C9;
-    color: #262626;  
-    transition: all .4s ease;
-    font-weight: 1000;
-}
-
 /* SECCION RESPONSIVA */
-@media only screen and (max-width: 1120px) {
+@media only screen and (max-width: 1180px) {
     .prs3-main{
         max-width: 100%;
         background-color: #f4d289;
         transition: all 1s ease;
-        font-size: .8em;
-    }
-    #prs3-tabla-all{
-        margin-bottom: 3%;
+        font-size: .7em;
     }
 
     .prs3-botton{
@@ -428,10 +298,7 @@ table {
 
 @media (max-width: 900px) {
     .prs3-main{
-        font-size: 0.6em;
-    }
-    .prs3-cb{
-        transform: scale(1.2);
+        font-size: 0.5em;
     }
 }
 
@@ -441,14 +308,11 @@ table {
         background-color: #875F08;
         transition: all 1s ease;
         padding: 7vh 9vh;
-        font-size: .5em;
+        font-size: .4em;
     }
 
     .prs3-date{
         height: 25px;
-    }
-    .prs3-cb{
-        transform: scale(1);
     }
 }
 
@@ -469,9 +333,10 @@ table {
 @media only screen and (max-height: 600px) {
     .prs3-main {
         padding: 10vh 9vh;
-        font-size: .45em;
+        /* font-size: .45em; */
     }
 }
+
 
 @media only screen and (max-height: 340px) {
     .prs3-main {

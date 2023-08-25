@@ -1,6 +1,6 @@
 import React from "react";
-import '../style-sheets/FooterSalida.css';
-import logo from '../images/logoAzulClaro.png';
+import '../../style-sheets/Footer/FooterSalida.css';
+import logo from '../../images/logoAzulClaro.png';
 
 function Footer() {
     return (  
