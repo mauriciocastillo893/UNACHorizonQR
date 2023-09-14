@@ -1,7 +1,15 @@
 import React from "react";
 import '../../style-sheets/Header/HeaderSalida.css'
+import { useNavigate } from "react-router-dom";
 
 function Header2() {
+
+    const navigate = useNavigate();
+
+    const regresarMenu=()=>{
+        navigate("/panelrecepcion");
+    }
+
     return (  
         <header>
             <div className="container-header-hs">
@@ -34,7 +42,7 @@ function Header2() {
                 </div>
                 <div className="second-partH-hs">
                     <div className="itemsp-regresarmenu-hs">
-                        <button className="botton-rm-hs hoverable">REGRESAR AL MENÚ</button>
+                        <button className="botton-rm-hs hoverable" onClick={regresarMenu}>REGRESAR AL MENÚ</button>
                     </div>
                     <div className="barra-hs">
 

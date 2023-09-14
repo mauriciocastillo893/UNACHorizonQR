@@ -1,24 +1,13 @@
 .prs3-main{
-    font-size: 16px;
     background: linear-gradient(180deg, #A7EEF3 0%, rgba(167, 238, 243, 0.33) 100%);
-    background-color: transparent;
+    background-color: #0E6065;
     width: 100%;
     min-width: 500px;
     height: 100%;
-    min-height: 100vh;
-    padding: 10vh 18vh;
+    min-height: 100%;
+    padding: 5em 7em;
     margin-top: 0;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-
-.prs3-first-part{
-    /* background-color: #e900fa; */
-    width: 100%;
-    min-width: 60vh;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    height: 100px;
 }
 
 .prs3-second-part{
@@ -49,19 +38,9 @@
     text-align: center;
 }
 
-.prs3-title{
-    /* background-color: red; */
-    width: 60%;
-    height: 50px;
-    padding: 0;
-    font-weight: 700;
-    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 2em;
-    text-transform: uppercase;
-}
-
 .prs3-title2{
-    background: linear-gradient(180deg, #FAA300 0%, rgba(250, 163, 0, 0.75) 100%, rgba(250, 163, 0, 0.75) 100%);
+    background-color: #FAA300;
+    background: linear-gradient(to bottom, #FFA500, #efba0e);
     width: 100%;
     height: 10%;
     padding: .35em;
@@ -74,29 +53,6 @@
     align-items: center;
 }
 
-.prs3-date{
-    background-color: #FAA300;
-    width: 40%;
-    height: 3em;
-    padding: .75em;
-    font-weight: 700;
-    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.13em;
-    text-align: right;
-    border-radius: 8px;
-}
-
-.prs3-subtitle{
-    /* background-color: green; */
-    width: 50%;
-    min-width: 235px;
-    height: 50px;
-    font-weight: 600;
-    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.5em;
-    text-align: left;
-}
-
 .prs3-subtitle2{
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     color: #FCFAF9;
@@ -107,6 +63,7 @@
     font-size: 1em;
     text-align: center;
     padding: 1.5em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .prs3-subtitle3{
@@ -123,7 +80,7 @@
     text-align:justify;
 }
 
-.prs3-subtitle4{
+.prs3-subtitle4, .prs3-subtitle4-d{
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     color: #FCFAF9;
     width: 100%;
@@ -134,6 +91,7 @@
     text-align: left;
     overflow-y: none;
     text-align:justify;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .prs3-subtitle4 > button{
@@ -150,34 +108,32 @@
     width: 50%;
 }
 
-.prs3-comment-input{
+.prs3-subtitle4-d > button{
     background-color: #262626;
-    color: #FCFAF9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #BAC2C9;
     cursor: pointer; 
-    font-weight: 700;
+    font-weight: 1000;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: .9em;
-    text-align: center;
+    font-size: .8em;
     padding: 0.8em 1.6em; 
     border: none;
     text-transform: uppercase;
-    height: 15%;
-    width: 100%;
-}
-
-.prs3-comment-input:focus{
-    outline: none;
+    height: 50%;
+    width: 50%;
+    cursor: not-allowed;
 }
 
 .prs3-ul {
     list-style: none;
     counter-reset: my-counter;
+    font-weight: 700;
 }
     .prs3-ul > li {
         counter-increment: counter1 1 counter2 2;
     }
     .prs3-ul > li::before {
-        content: counter(counter1) ".- ";
+        content: counter(counter1) ". ";
         margin-right: 5px;
     }
 
@@ -217,7 +173,7 @@
     text-align: right;
     text-transform: lowercase;
     text-overflow: clip;
-    height: 35%;
+    height: 60%;
     width: 100%;
     position: relative;
 }
@@ -248,7 +204,26 @@
     cursor: pointer; 
     font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.2em;
+    font-size: 2em;
+    border-radius: 5px; 
+    border: none;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 30%;
+}
+
+.prs3_b-disabled{
+    background-color: #4b4b4b;
+    box-shadow: 0px 4px 4px rgba(89, 86, 86, 0.25);
+    color: #878080;
+    cursor: not-allowed; 
+    font-weight: 800;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2em;
     border-radius: 5px; 
     border: none;
     text-transform: uppercase;
@@ -268,6 +243,14 @@
     font-weight: 1000;
 }
 
+.prs3-subtitle4-d > button:hover{
+    background-color: #aaa;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #262626;  
+    transition: all .4s ease;
+    font-weight: 1000;
+}
+
 .prs3-botton2:hover{
     background-color: #FCD9D9;
     color: #197D84;  
@@ -282,17 +265,25 @@
     font-weight: 800;
 }
 
+.prs3-p{
+    font-size: 1.25em;
+    font-weight: 800;
+}
+
+.prs3_b-disabled:hover{
+    color: #262626;  
+    transition: all .4s ease;
+    font-weight: 1000;
+    background-color: #aaa;
+}
+
 /* SECCION RESPONSIVA */
 @media only screen and (max-width: 1180px) {
     .prs3-main{
-        max-width: 100%;
-        background-color: #f4d289;
-        transition: all 1s ease;
         font-size: .7em;
     }
-
-    .prs3-botton{
-        text-align: right;
+    .prs3-right, .prs3-left{
+        margin-top: -30px;
     }
 }
 
@@ -300,65 +291,16 @@
     .prs3-main{
         font-size: 0.5em;
     }
-}
-
-@media (max-width: 600px) {
-    .prs3-main{
-        max-width: 600px;
-        background-color: #875F08;
-        transition: all 1s ease;
-        padding: 7vh 9vh;
-        font-size: .4em;
-    }
-
-    .prs3-date{
-        height: 25px;
+    .prs3-right, .prs3-left{
+        margin-top: -30px;
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
     .prs3-main{
         font-size: .4em;
     }
-}
-
-
-@media (min-width: 600px){
-    .prs3-main{
-        background-color: #0E6065;
-        transition: all 1s ease;
-    }
-}
-    
-@media only screen and (max-height: 600px) {
-    .prs3-main {
-        padding: 10vh 9vh;
-        /* font-size: .45em; */
-    }
-}
-
-
-@media only screen and (max-height: 340px) {
-    .prs3-main {
-        padding: 15vh 9vh;
-    }
-}
-
-@media only screen and (max-height: 200px) {
-    .prs3-main {
-        padding: 20vh 9vh;
-    }
-}
-
-
-@media only screen and (max-height: 150px) {
-    .prs3-main {
-        padding: 30vh 9vh;
-    }
-}
-
-@media only screen and (max-height: 100px) {
-    .prs3-main {
-        padding: 40vh 9vh;
+    .prs3-right, .prs3-left{
+        margin-top: -55px;
     }
 }

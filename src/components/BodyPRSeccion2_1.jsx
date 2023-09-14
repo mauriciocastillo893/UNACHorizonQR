@@ -4,11 +4,12 @@ import '../style-sheets/BodyPRSeccion2_1.css';
 import Swal from 'sweetalert2'
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import FirstPartMain from "./Tools/FirstPartMain";
 
 function BodyPRSeccion2_1() {
-    const fecha = new Date();
     const location = useLocation();
     const { matricula } = location.state || {};
+
     const [dataAlumno, setDataAlumno] = useState({
         nombre: '',
         apellido_materno: '',
@@ -30,12 +31,13 @@ function BodyPRSeccion2_1() {
 
     useEffect(() =>{
         obtenerNombreAsistencia();
+        window.scrollTo(0, 0);
     }, []);
 
     const navigate = useNavigate();
 
-    const seccion2=()=>{
-        navigate("/seccion2");
+    const buscarUsuarioCAA=()=>{
+        navigate("/buscarUsuarioCAA");
         // return <BodyPRSeccion2_1 matricula={matricula}/>;
     }
 
@@ -101,7 +103,7 @@ function BodyPRSeccion2_1() {
                 allowEscapeKey: false, // Evitar cerrar con la tecla Escape
             }).then((result) => {
                 if (result.isConfirmed) {
-                    seccion2(); // Llama a la función seccion2 si se hace clic en "ACEPTAR"
+                    buscarUsuarioCAA(); // Llama a la función buscarUsuarioCAA si se hace clic en "ACEPTAR"
                 }
             });
     }
@@ -114,14 +116,15 @@ function BodyPRSeccion2_1() {
             icon: "info",
             confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
             confirmButtonColor: '#262626',
+            allowOutsideClick: false,
             footer: "<b>SERÁS REDIRECCIONADO PARA BUSCAR A QUIEN AÑADIR UNA ASISTENCIA<b>"
             // timer: 1000,
         }).then((result) => {
             if (result.isConfirmed) {
-                seccion2(); // Llama a la función seccion2 si se hace clic en "ACEPTAR"
+                buscarUsuarioCAA(); // Llama a la función buscarUsuarioCAA si se hace clic en "ACEPTAR"
             }
         });
-}
+    }
 
     const successAlert = () => {
         Swal.fire({
@@ -144,7 +147,7 @@ function BodyPRSeccion2_1() {
             icon: "error",
             confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
             confirmButtonColor: '#262626',
-            footer: "<b>Lo sentimos. Si este error persite, por favor contactese lo más pronto con SOPORTE TECNICO<b>"
+            footer: "<b>LO SENTIMOS. SI ESTE ERROR PERSISTE, POR FAVOR REPORTE ESTE PROBLEMA LO MÁS PRONTO CON SOPORTE TECNICO<b>"
             // timer: 1000,
         })
     }
@@ -163,17 +166,9 @@ function BodyPRSeccion2_1() {
 
     return (
     <div className="prs2_1-main">
-        <div className="prs2_1-first-part">
-            <div className="prs2_1-titleS1">
-                <p>Añadir asistencias a usuarios</p>
-            </div>
-            <div className="prs2_1-date">
-                <p>{fecha.toDateString()}</p>
-            </div>
-            <div className="prs2_1-subtitle">
-                <p>Añadir manualmente a usuarios la asistencia</p>                
-            </div>
-        </div>
+        <FirstPartMain 
+            title="Añadir asistencias a usuarios"
+            subtitle="Añadir manualmente a usuarios la asistencia"/>
         <div className="prs2_1-second-part">
             <div className="prs2_1-nombre-usu"><p className="prs2_1_p">Nombre del usuario</p></div>
             <input 
@@ -202,7 +197,7 @@ function BodyPRSeccion2_1() {
                 <div className="prs2_1-asis-anadir"><p className="prs2_1_p">Asistencias para añadir</p></div>
                 <input 
                         className={(status=="2") ? "prs_2_1_i" : "prs_2_1_i notallowed"}
-                        type="number"
+                        type="number" 
                         min="0"
                         value={asistenciaAlumno}
                         placeholder='0'
@@ -222,7 +217,7 @@ function BodyPRSeccion2_1() {
                 <div className="prs2_1-min-anadir"><p className="prs2_1_p">Minutos a añadir</p></div>
                 <input 
                         className={(status=="2") ? "prs_2_1_i" : "prs_2_1_i notallowed"}
-                        type="number" 
+                        type="number" inputmode="none"y
                         min="0"
                         value={minutosAlumno}
                         disabled={(status=="2") ? false : true}
@@ -240,8 +235,9 @@ function BodyPRSeccion2_1() {
                         }}
                 ></input>
             </div>
-            <div className="prs2_1-bottons">
-                    <button className={(status=="2") ? "prs2_1-botton hoverable" : "prs2_1_b-disabled"} disabled={(status=="2") ? false : true} onClick={() => {enviarAsistencia();}}>Agregar opciones</button>  
+            <div className="prs2_1-bottons">Cambiar a:
+            <button className={(status=="2") ? "prs2_1-botton hoverable" : "prs2_1_b-disabled"} disabled={(status=="2") ? false : true} onClick={() => {enviarAsistencia();}}><p>RESTAR</p></button>
+                    <button className={(status=="2") ? "prs2_1-botton hoverable" : "prs2_1_b-disabled"} disabled={(status=="2") ? false : true} onClick={() => {enviarAsistencia();}}>Enviar Modificacion</button>
                 </div>
         </div>
     </div>

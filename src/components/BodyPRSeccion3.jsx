@@ -1,89 +1,123 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import '../style-sheets/BodyPRSeccion3.css';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+import Fecha from './Clock/Fecha'
+import Hora from './Clock/Hora'
+import FirstPartMain from "./Tools/FirstPartMain";
+
 
 function BodyPRSeccion3() {
-    // Fecha
-    const fecha = new Date();
-    // Objeto de usuarios
-    const [usuarios, setUsuarios] = useState([]);
+    const location = useLocation();
+    const usuariosEmergencia = location.state?.usuariosEmergencia || {};
+    const usuariosEmergenciaVacios = Object.keys(usuariosEmergencia).length === 0;
+    const totalUsuarios = location.state?.totalUsuarios || 0;
 
-    const peticionGet=async()=>{
-        await axios.get("https://jsonplaceholder.typicode.com/users")
-            .then(response => {
-                setUsuarios(response.data);
-                // console.log(response.data);
-            }).catch(error => {
-                console.log(error);
-            })
+    const [reason, setReason] = useState("")
+    const [usuarios, setUsuarios] = useState([])
+    let lengthObject;
+
+    const navigate = useNavigate();
+
+    // const peticionGet=async()=>{
+    //     await axios.get("http://localhost:5000/users")
+    //         .then(response => {
+    //             setUsuarios(response.data);
+    //             // console.log(response.data);
+    //         }).catch(error => {
+    //             console.log(error);
+    //         })
+    // }
+
+    const getLength=()=>{
+        lengthObject = Object.keys(usuariosEmergencia).length
+        return lengthObject
     }
 
     useEffect(() => {
-        peticionGet();   
+        // peticionGet();
+        getLength()
+        window.scrollTo(0, 0);
     },[]);
+
+    const panelRecepcion=()=>{
+        navigate("/panelrecepcion");
+    }
+
+    const mostrarRedireccion = () => {
+        Swal.fire({
+            title: "NO HAY DATOS",
+            // text: "FALTA UN CAMPO POR LLENAR",
+            html: "<div class='bold-text'>¿ESTÁS INTENTANDO ENTRAR SIN UNA LLAVE?</div>",
+            icon: "info",
+            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
+            confirmButtonColor: '#262626',
+            allowOutsideClick: false,
+            footer: "<b>SERÁS REDIRECCIONADO AL MENÚ PRINCIPAL<b>"
+            // timer: 1000,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                panelRecepcion(); // Llama a la función buscarUsuarioCAA si se hace clic en "ACEPTAR"
+            }
+        });
+    }
 
     return (
     <div className="prs3-main">
-        <div className="prs3-first-part">
-            <div className="prs3-title">
-                <p>Marcar salida de emergencia</p>
-            </div>
-            <div className="prs3-date">
-                <p>{fecha.toDateString()}</p>
-            </div>
-            <div className="prs3-subtitle">
-                <p>Salida de emergencia</p>                
-            </div>
-        </div>
+        <FirstPartMain 
+            title="Marcar salida de emergencia"
+            subtitle="Salida de emergencia"/>
         <div className="prs3-second-part">
             <div className="prs3-right">
                 <div className="prs3-title2">
                     <p>Cantidad de usuarios a salir</p>
                 </div>
                 <div className="prs3-subtitle2">
-                    <p>15 personas de 15 del total</p>
+                <p className="prs3-p">
+                    {getLength()}{" "}{
+                    getLength() === 1 ? "PERSONA" : "PERSONAS"} DE{" "}
+                    {totalUsuarios} DEL TOTAL
+                    </p>
                 </div>
                 <div className="prs3-title2">
                     <p>Usuarios con pase de salida</p>
                 </div>
                 <div className="prs3-subtitle3">
-                <ul className="prs3-ul">
-                    {usuarios.map((usuario, index) => (
-                        // <li key={usuario.id}> {index+1}.- {usuario.name}</li>
-                        <li key={usuario.id} className="prs3-li"> {usuario.name} </li>
-                    ))}
-                </ul>
-
-                </div>
+                {usuariosEmergenciaVacios ? (
+                    <p>NO HAY USUARIOS SELECCIONADOS.</p>
+                ) : (
+                    <ul className="prs3-ul">
+                        {Object.values(usuariosEmergencia).map(student => (
+                            <li key={student.matricula}>
+                                [{student.matricula}] {student.usuario} {student.apellido_materno} {student.apellido_paterno}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
                 <div className="prs3-title2">
                     <p>Hora de salida</p>
                 </div>
                 <div className="prs3-subtitle2">
-                    <p>{fecha.toDateString()}</p>
+                    <p className="prs3-p">
+                        <Fecha /> <Hora />
+                    </p>
                 </div>
             </div>
             <div className="prs3-left">
                 <div className="prs3-title2">
                     <p>Razón</p>
                 </div>
-                <div className="prs3-subtitle4">
-                    <button value="TEMBLOR/TERREMOTO">TEMBLOR/TERREMOTO</button>
-                    <button value="EMERGENCIA MEDICA">EMERGENCIA MEDICA</button>
-                    <button value="SIMULACROS">SIMULACROS</button>
-                    <button value="OTRA RAZON">OTRA RAZÓN</button>
+                <div className={(totalUsuarios!==0) ? "prs3-subtitle4" : "prs3-subtitle4-d"}>
+                    <button value="TEMBLOR/TERREMOTO" onClick={() => setReason("TEMBLOR/TERREMOTO")} disabled={totalUsuarios!==0}>TEMBLOR/TERREMOTO</button>
+                    <button value="EMERGENCIA MEDICA" onClick={() => setReason("EMERGENCIA MEDICA")}>EMERGENCIA MEDICA</button>
+                    <button value="SIMULACROS" onClick={() => setReason("SIMULACROS")}>SIMULACROS</button>
+                    <button value="RAZONES PERSONALES" onClick={() => setReason("RAZONES PERSONALES")}>RAZONES PERSONALES</button>
                 </div>
-                <div className="prs3-title2">
-                    <p>Comentarios adicionales</p>
-                </div>
-                <input 
-                        className="prs3-comment-input"
-                        type="text" 
-                        // value="reemplazar valor aqui"
-                        placeholder='Añadir comentarios'
-                        // onChange="reemplazar datos aqui"
-                        ></input>
                 <div className="prs3-bottons">
-                    <button className="prs3-botton2 hoverable">SALIDA A TODOS</button>
+                    <button className={(totalUsuarios!==0) ? "prs3-botton2 hoverable" : "prs3_b-disabled"} onClick={() => console.log(reason)} disabled={usuariosEmergenciaVacios}>SALIDA A TODOS</button>
                 </div>      
             </div>
         </div>

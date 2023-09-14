@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.container-header-2{
+    width: 100%;
+}
+
 .header{
     background-color: #A0D0FB;
     width: 100%;

@@ -2,6 +2,15 @@ button{
   transition: all .6s ease;
 }
 
+table {
+  border-collapse: collapse;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+  td:nth-child(n+2):nth-last-child(n+2) {
+      border-left: 1px solid #262626;
+      border-right: 1px  solid #262626;
+}
+
 /* Estilos para la barra de desplazamiento */
 ::-webkit-scrollbar {
     width: 10px; /* Ancho de la barra de desplazamiento */
@@ -12,7 +21,7 @@ button{
     background-color: #024B8E; /* Color de fondo del thumb */
 }
 
-  /* Estilos para el track (el "fondo" de la barra de desplazamiento) */
+  /* Estilos para el track (el "fondo" de la barra de desplazami  ento) */
 ::-webkit-scrollbar-track {
     background-color: #262626; /* Color de fondo del track */
 }
@@ -40,6 +49,38 @@ button{
   color: #BAC2C9;
 }
 
+.bold-confirm-register {
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  color: #094e0b;
+}
+
+.bold-confirm-register-salida {
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  color: #084144;
+}
+
+.bold-confirm-exit {
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  color: #510303;
+}
+
+.bold-cancel {
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  color: #262626;
+}
+
+  .azulClaro{
+    color: #149da7;
+  }
+
+  .verdeClaro{
+    color: #4CAF50;
+  }
+
 .swal2-footer {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #1B1315;
@@ -51,4 +92,18 @@ button{
   font-size: large;
   margin: 20px 60px 0 60px;
   border-radius: 5px;
+}
+
+/* Botones */
+.delete {
+  background-color: #063763;
+  color: #74aee5;
+  font-weight: 700;
+  /* background: linear-gradient(90deg, #0A42A5 0%, #000000 100%); */
+}
+
+.delete:hover{
+  background-color: #74aee5;
+  color: #063763;
+  font-weight: 1000;
 }

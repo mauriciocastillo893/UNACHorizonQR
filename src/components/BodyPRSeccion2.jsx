@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import '../style-sheets/BodyPRSeccion2.css';
 import Swal from 'sweetalert2'
-import BodyPRSeccion2_1 from "./BodyPRSeccion2_1";
 import { useNavigate } from "react-router-dom";
+import Fecha from './Clock/Fecha'
+import FirstPartMain from "./Tools/FirstPartMain";
 
 function BodyPRSeccion2() {
-    // Fecha
-    const fecha = new Date();
     // Objeto de usuarios
     const [usuarios, setUsuarios] = useState([]);
     // Tabla de objeto de usuarios
@@ -15,11 +14,25 @@ function BodyPRSeccion2() {
     // Busqueda de nombre de usuarios
     const [busqueda, setBusqueda] = useState("");
     // Estatus de si se encontro o no el usuario
-    const[status, setStatus] = useState("online");
+    const [status, setStatus] = useState("online");
+    const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
 
-    const[totalPersonas, setTotalPersonas] = useState("");
+    const [usuariosEmergencia, setUsuariosEmergencia] = useState({}); // Estado para almacenar el diccionario de usuarios
+    // const [usuariosTotales, setUsuariosTotales] = useState({});
+    // Función para agregar un usuario al diccionario
+    const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
+        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno, totalUsuarios } }));
+    };
 
-    const peticionGet=async()=>{
+    const totalUsuarios = Object.keys(usuarios).length
+    const [statusBoton, setStatusBoton] = useState(false)
+
+    const queryParams = new URLSearchParams(location.search);
+    const emergencyDirect = Boolean(queryParams.get("emergencyDirect"));
+
+    const navigate = useNavigate();
+
+    const peticionGet = async () => {
         await axios.get("http://localhost:5000/users")
             .then(response => {
                 setUsuarios(response.data.users);
@@ -29,15 +42,15 @@ function BodyPRSeccion2() {
             })
     }
 
-    const handleChange=e=>{
+    const handleChange = e => {
         setBusqueda(e.target.value);
         filtrar(e.target.value);
     }
 
-    const handleClearClick=e=>{
+    const handleClearClick = e => {
         setBusqueda("");
     }
-    
+
     const filtrar = (terminoBusqueda) => {
         var resultadoBusqueda = tablaUsuarios.filter((elemento) => {
             if (
@@ -49,9 +62,9 @@ function BodyPRSeccion2() {
             }
             return false; // Si no coincide, devuelve false
         });
-        
+
         setUsuarios(resultadoBusqueda);
-    
+
         if (resultadoBusqueda.length) {
             setStatus(`${resultadoBusqueda.length} encontrados`);
             if (resultadoBusqueda.length === 1) {
@@ -61,52 +74,100 @@ function BodyPRSeccion2() {
             setStatus("no encontrado");
         }
     }
-    
-    const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
 
-
-    const handleCheckboxChange = (matricula) => {
+    const handleCheckboxChange = (matricula, usuario, apellido_materno, apellido_paterno) => {
         if (usuariosSeleccionados.has(matricula)) {
             const nuevosSeleccionados = new Set(usuariosSeleccionados);
             nuevosSeleccionados.delete(matricula);
             setUsuariosSeleccionados(nuevosSeleccionados);
             console.log('Usuario retirado');
+            removeUserFromEmergency(matricula);
         } else {
             setUsuariosSeleccionados(new Set(usuariosSeleccionados).add(matricula));
             console.log(matricula);
+            addUserToEmergency(matricula, usuario, apellido_materno, apellido_paterno);
         }
     };
-    
 
-    const enviarPersonas=()=>{
+    const removeUserFromEmergency = (matricula) => {
+        setUsuariosEmergencia(prevUsuarios => {
+            const nuevosUsuarios = { ...prevUsuarios };
+            delete nuevosUsuarios[matricula]; // Eliminamos al usuario del diccionario
+            return nuevosUsuarios;
+        });
+    };
+
+    const enviarPersonas = () => {
         console.log("Usuarios Seleccionados:");
-        [...usuariosSeleccionados].map(usuario => {
-            console.log(usuario)
+        [...usuariosSeleccionados].forEach(matricula => {
+            const usuario = usuariosEmergencia[matricula];
+            console.log("Nombre:", usuario.usuario, usuario.apellido_materno, usuario.apellido_paterno);
+            console.log("Matrícula:", usuario.matricula);
             console.log("---------------");
         });
-        
-    }
+        const matriculas = Object.keys(usuariosEmergencia);
+        console.log("Array", usuariosEmergencia)
+        console.log("Selected: " + JSON.stringify(matriculas));
+        navigate("/salidaEmergencia", { state: { usuariosEmergencia, totalUsuarios } })
+    };
 
-    const navigate = useNavigate();
+    const marcarTodosLosCheckboxes = () => {
+        const todasLasMatriculas = usuarios.map(usuario => usuario.matricula);
+        setUsuariosSeleccionados(new Set(todasLasMatriculas));
+    };
 
-    const addUser=(matricula)=>{
+    const cargarTodasLasPersonas = () => {
+        usuarios.forEach(usuario => {
+            usuariosEmergencia[usuario.matricula] = {
+                matricula: usuario.matricula,
+                usuario: usuario.nombre,
+                apellido_materno: usuario.apellido_materno,
+                apellido_paterno: usuario.apellido_paterno
+            };
+            addUserToEmergency(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno);
+        });
+        // setUsuariosTotales(usuariosEmergencia);
+    };
+
+    const enviarTodasLasPersonas = () => {
+        marcarTodosLosCheckboxes(); // Marcar todos los checkboxes primero
+        setStatusBoton(true);
+        setTimeout(() => {
+            cargarTodasLasPersonas(); // Cargar los datos antes de enviarlos
+            // console.log(totalUsuarios)
+            navigate("/salidaEmergencia", { state: { usuariosEmergencia, totalUsuarios } });
+            // mostrarAlerta2();
+        }, 1000); // Esperar 2 segundos antes de navegar
+    };
+
+    const addUser = (matricula) => {
         const state = { matricula };
-        navigate("/seccion21",  { state });
-        // return <BodyPRSeccion2_1 matricula={matricula}/>;
+        navigate("/seccion21", { state });
     }
 
-    useEffect(() => {
-        peticionGet();   
-    },[]);
+    setTimeout(() => {
+        if (emergencyDirect) {
+            console.log("entre")
+            enviarTodasLasPersonas();
+            console.log(usuarios)
+        }
+    }, 1000)
 
     useEffect(() => {
-        if(busqueda === ""){
+        peticionGet();
+        window.scrollTo(0, 0)
+        console.log(emergencyDirect)
+    }, []);
+
+    useEffect(() => {
+        if (busqueda === "") {
             setStatus("online");
         }
     }, [busqueda])
-    
+
+
     const mostrarAlerta = () => {
-        if(usuariosSeleccionados.size<1){
+        if (usuariosSeleccionados.size < 1) {
             Swal.fire({
                 title: "HA OCURRIDO UN PROBLEMA",
                 // text: "FALTA UN CAMPO POR LLENAR",
@@ -117,42 +178,51 @@ function BodyPRSeccion2() {
                 // footer: "<b>CENTRO DE AUTOACCESO<b>"
                 // timer: 1000,
             })
-        }else{
-            return
+        } else {
+            enviarPersonas();
+        }
+    }
+
+    const mostrarAlertaCritica = () => {
+        if (usuariosSeleccionados.size < 1) {
+            Swal.fire({
+                title: "HA OCURRIDO UN ERROR CRÍTICO",
+                // text: "FALTA UN CAMPO POR LLENAR",
+                html: "<div class='bold-text'>UN ERROR INESPERADO OCURRIÓ</div>",
+                icon: "info",
+                confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
+                confirmButtonColor: '#262626',
+                footer: "<b>LO SENTIMOS. SI ESTE ERROR PERSISTE, POR FAVOR REPORTE ESTE PROBLEMA LO MÁS PRONTO CON SOPORTE TECNICO<b>"
+                // timer: 1000,
+            })
+        } else {
+            enviarPersonas();
         }
     }
 
     return (
-    <div className="prs2-main">
-        <div className="prs2-first-part">
-            <div className="prs2-titleS1">
-                <p>Buscar usuario en el CAA</p>
-            </div>
-            <div className="prs2-date">
-                <p>{fecha.toDateString()}</p>
-            </div>
-            <div className="prs2-subtitle">
-                <p>Ingrese el nombre del usuario para buscarlo</p>                
-            </div>
-        </div>
+        <div className="prs2-main">
+            <FirstPartMain
+                title="Buscar usuario en el CAA"
+                subtitle="Ingrese el nombre del usuario para buscarlo" />
             <div className="prs2-searcher">
                 <div className="prs2-first-s">
                     <div className="prs2-title-first"><p>Nombre del usuario</p></div>
-                        <input 
+                    <input
                         className="prs2-searcher-input"
-                        type="search" 
-                        value={busqueda} 
+                        type="search"
+                        value={busqueda}
                         placeholder='Búsqueda por nombre'
                         onChange={handleChange}>
-                        </input>
+                    </input>
                 </div>
                 <div className="prs2-second-s">
                     <div className="prs2-title-second"><p>Estatus</p></div>
-                        <p className="prs2-subtitle-second">{status}</p>
+                    <p className="prs2-subtitle-second">{status}</p>
                 </div>
             </div>
-            <div id="prs2-tabla-all">
-                <div id="prs2-table-headboard">Usuarios actuales dentro de autoacceso</div>
+            <div id="prs2-table-headboard">Usuarios actuales dentro de autoacceso</div>
+            {(totalUsuarios) ? <div id="prs2-tabla-all">
                 <table id='prs2-table'>
                     <thead id='prs2-th'>
                         <tr id='prs2-tr'>
@@ -161,31 +231,27 @@ function BodyPRSeccion2() {
                             <th className='prs2-th-3'>GÉNERO</th>
                             <th className='prs2-th-4'>IDIOMA Y NIVEL</th>
                             <th className='prs2-th-5'>SALIDA DE EMERGENCIA</th>
-                            <th className='prs2-th-7'>AÑADIR ASISTENCIAs</th>
-                            <th className='prs2-th-6'>REGISTRAR ENTRADA</th>
-                            <th className='prs2-th-6'>REGISTRAR SALIDA</th>
+                            <th className='prs2-th-6'>AÑADIR ASISTENCIAs</th>
+                            <th className='prs2-th-8'>REGISTRAR SALIDA</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {usuarios && usuarios.map((usuario)=>(
+                        {usuarios && usuarios.map((usuario) => (
                             <tr key={usuario.id} className="prs2-tr-body">
                                 <td className='prs2-td'>{usuario.matricula}</td>
                                 <td className='prs2-td'>{usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno}</td>
                                 <td className='prs2-td'>{usuario.genero}</td>
                                 <td className='prs2-td'>{usuario.idiomas}</td>
                                 <td className='prs2-td'>{
-                                    <input 
-                                    type="checkbox" 
-                                    className="prs2-cb"
-                                    checked={usuariosSeleccionados.has(usuario.matricula)}
-                                    onChange={() => handleCheckboxChange(usuario.matricula)}
+                                    <input
+                                        type="checkbox"
+                                        className="prs2-cb"
+                                        checked={usuariosSeleccionados.has(usuario.matricula)}
+                                        onChange={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}
                                     ></input>
                                 }</td>
                                 <td className='prs2-td'>{
                                     <button className="prs2-b-ma" onClick={() => addUser(usuario.matricula)}>Añadir</button>
-                                }</td>
-                                <td className='prs2-td'>{
-                                    <button className="prs2-b-ma">Entrada</button>
                                 }</td>
                                 <td className='prs2-td'>{
                                     <button className="prs2-b-ma">Salida</button>
@@ -193,16 +259,19 @@ function BodyPRSeccion2() {
                             </tr>
                         ))}
                     </tbody>
-
                 </table>
             </div>
-        <div className="prs2-bottons">
-                <button className="prs2-botton hoverable" onClick={() => {mostrarAlerta();}}>Salida para: {usuariosSeleccionados.size} personas</button>  
-                <button className="prs2-botton hoverable" onClick={() => {enviarPersonas();}}>Salida a todas las personas</button>
-                <button className="prs2-botton hoverable" onClick={() => {peticionGet(); handleClearClick();}}>LIMPIAR BUSCADOR</button>
-                <button className="prs2-botton hoverable bs-exit" onClick={() => {setUsuariosSeleccionados(new Set());}}>ELIMINAR OPCIONES</button>
+
+                : <div className="prs2-no-datos"><p className="prs2-p">NO HAY DATOS PARA MOSTRAR</p></div>}
+
+
+            <div className="prs2-bottons">
+                <button className="prs2-botton hoverable" onClick={() => { mostrarAlerta(); }}>Salida para: {usuariosSeleccionados.size} personas</button>
+                {/* <button className={(busqueda === "" ? "prs2-botton hoverable" : "prs2_b-disabled")} onClick={() => {enviarTodasLasPersonas();}} disabled={busqueda !== ""}>Salida a todas las personas</button> */}
+                <button className="prs2-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
+                <button className={(!statusBoton) ? "prs2-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={statusBoton} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosEmergencia({}); }}>ELIMINAR OPCIONES</button>
+            </div>
         </div>
-    </div>
     );
 }
 
