@@ -21,12 +21,12 @@ function App() {
                 <Route path="/salida" element={<Salida />}/>
                 {/* MANTENIMIENTO */}
                 <Route path="/panelrecepcion" element={<PanelRecepcion />}/>
-                <Route path='/seccion1' element={<PRSeccion1 />}/>
+                <Route path='/buscarVisitante' element={<PRSeccion1 />}/>
                 <Route path='/seccion11' element={<PRSeccion1_1 />}/>
-                <Route path='/seccion2' element={<PRSeccion2 />}/>
+                <Route path='/buscarUsuarioCAA' element={<PRSeccion2 />}/>
                 <Route path='/seccion21' element={<PRSeccion2_1 />}/>
-                <Route path='/seccion3' element={<PRSeccion3 />}/>
-                <Route path='/seccion7' element={<PRSeccion7 />}/>
+                <Route path='/salidaEmergencia' element={<PRSeccion3 />}/>
+                <Route path='/usuarioAsistencia' element={<PRSeccion7 />}/>
             </Routes>
 
         </BrowserRouter>  
