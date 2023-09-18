@@ -11,7 +11,6 @@
 }
 
 .prs7-searcher{
-    /* background-color: rgb(163, 71, 255); */
     background-color: transparent;
     width: 100%;
     min-width: 385px;
@@ -94,7 +93,7 @@
 }
 
 .prs7-botton{
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -111,29 +110,42 @@
 }
 
 .prs7-b-ma{
+    display: flex;
+    justify-content: end;
+    width: 95%;
+    height: 100%;
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #BAC2C9;
     cursor: pointer; 
-    font-weight: 600;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: .9em;
-    border-radius: 5px; 
-    padding: 0.6em 1.4em; 
+    border-radius: 8px 40px 8px 50px;
+    padding: 0.8em 1.4em;
+    font-weight: 800;
     border: none;
-    margin: .2em;
     text-transform: uppercase;
+}
+
+.prs7-fondo-boton{
+    display: flex;
+    justify-content: center;
+    background-color: #149da7;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    transition: background-color .6s;
+
 }
 
 /* SECCION DE LA TABLA */
 #prs7-tabla-all{
+    background: linear-gradient(to bottom, #063763, #0c559a);
     width: 100%;
     margin-bottom: 1.5%;
     border-collapse: collapse;
-    max-height: 25em;
-    min-height: 25em;
+    min-height: 27.8em;
     overflow-y: auto;
-
 }
 
 #prs7-table-headboard{
@@ -157,7 +169,7 @@
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 100%;
     height: 100%;
-    min-height: 25em;
+    min-height: 27.8em;
     margin-bottom: 1.5%;
     display: flex;
     justify-content: center;
@@ -214,19 +226,19 @@
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 25%;
+        width: 18%;
     }
     .prs7-th-6{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 15%;
+        width: 16%;
     }
     .prs7-th-7{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 15%;
+        width: 18%;
     }
 
 .prs7-tr-body:nth-child(even){
@@ -245,7 +257,7 @@
 
 .prs7-td{
     font-weight: 600;
-    font-size: .9em;
+    font-size: 1em;
     padding: .5em;
 }
 
@@ -264,11 +276,15 @@
     font-weight: 800;
 }
 
-.prs7-b-ma:hover {
-    background-color: #BAC2C9;
+.prs7-fondo-boton:hover .prs7-b-ma {
+    background-color: #149da7;
     color: #262626;  
-    transition: all .4s ease;
+    width: 85%;
     font-weight: 1000;
+}
+
+.prs7-td:hover .prs7-fondo-boton{
+    background-color: #262626;
 }
 
 /* SECCION RESPONSIVA */
@@ -295,6 +311,9 @@
     .prs7-searcher{
         margin-top: -20px;
     }
+    .prs7-b-ma{
+        font-size: .6em;
+    }
 }
 
 @media (max-width: 750px) {
@@ -312,5 +331,8 @@
     }
     .prs7-botton{
         font-size: 1em;
+    }
+    .prs7-b-ma{
+        font-size: .3em;
     }
 }

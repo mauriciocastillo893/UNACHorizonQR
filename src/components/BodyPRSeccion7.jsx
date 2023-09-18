@@ -15,18 +15,20 @@ function BodyPRSeccion7() {
     // Estatus de si se encontro o no el usuario
     const [status, setStatus] = useState("online");
     const totalUsuarios = Object.keys(usuarios).length
+    const [statusFecha, setStatusFecha] = useState(false);
+    const [indexActualTabla, setIndexActualTabla] = useState(0);
 
     const peticionGet = async () => {
-        //await axios.get("https://jsonplaceholder.typicode.com/users")
-        // await axios.get("http://localhost/unachorizonqr/usuarios.php?CONSULTAR='1'")
-        await axios.get("http://localhost:5000/users")
+        await axios.get("http://localhost:5000/todosLosUsuariosDelCAA")
             .then(response => {
                 console.log(response.data.users);
                 setUsuarios(response.data.users);
                 setTablaUsuarios(response.data.users);
-                console.log(response.data);
             }).catch(error => {
                 console.log(error);
+                setTimeout(() => {
+                    mostrarAlertaDeConexion()
+                }, 2000)
             })
     }
 
@@ -38,7 +40,6 @@ function BodyPRSeccion7() {
     const handleClearClick = e => {
         setBusqueda("");
     }
-
 
     const filtrar = (terminoBusqueda) => {
         var resultadoBusqueda = tablaUsuarios.filter((elemento) => {
@@ -63,109 +64,126 @@ function BodyPRSeccion7() {
         }
     }
 
-    const mantenimiento = () => {
+    useEffect(() => {
+        peticionGet()
+        window.scrollTo(0, 0);
+        if (busqueda === "") {
+            setStatus("online");
+        }
+    }, []);
+
+    const mostrarAlertaDeConexion = () => {
         Swal.fire({
-            title: "ESTAMOS EN MANTENIMIENTO",
+            title: "<div class='rojoClaro'>HA OCURRIDO UN ERROR DE CONEXIÓN</div>",
             // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>Esta sección podría no funcionar correctamente</div>",
-            icon: "warning",
-            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-            confirmButtonColor: '#262626',
-            // footer: "<b>CENTRO DE AUTOACCESO<b>"
+            html: "<div class='bold-text rojoClaro'><b>VOLVIENDO A ESTABLECER CONEXIÓN...</div>",
+            icon: "info",
+            iconColor: "#7a0808",
+            confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
+            confirmButtonColor: '#D92D2D',
+            footer: "<div class='rojoClaro'><b>LO SENTIMOS. SI ESTE ERROR PERSISTE, POR FAVOR REPORTE ESTE PROBLEMA<b></div>"
             // timer: 1000,
         })
     }
 
-    useEffect(() => {
-        peticionGet();
-        window.scrollTo(0, 0);
-        // mantenimiento();
-    }, []);
-
-    useEffect(() => {
-        if (busqueda === "") {
-            setStatus("online");
-        }
-    }, [busqueda])
-
-    const registrarAsistEntrOrSal = async (matricula, tipoAsistencia, hora) => {
+    const registrarAsistEntrOrSal = async (matricula, tipoAsistencia, hora, index) => {
         const data = {
             matricula: matricula,
             hora: hora,
         };
-
-        axios.post((tipoAsistencia.toLowerCase()==="entrada"
-            ? 'http://localhost:5000/addEntrada'
-            : 'http://localhost:5000/addSalida'
+        axios.post((tipoAsistencia.toLowerCase() === "entrada"
+            ? 'http://localhost:5000/agregarEntrada'
+            : 'http://localhost:5000/agregarSalida'
         ), data)
             .then(response => {
-                // console.log("Respuesta del servidor:", response.data);
                 if (response.data.status != '0') {
                     console.log(response.data)
                     peticionGet();
                     Swal.fire({
-                        title: 
-                            `${(tipoAsistencia.toLowerCase()==="entrada") ? `ENTRADA GUARDADA`
-                            : `SALIDA GUARDADA`}`,
-                        html: 
-                            `${(tipoAsistencia.toLowerCase()==="entrada") ? `<div class='bold-text'>Entrada guardada correctamente a la hora: <br><strong>${hora}</strong></div>`
-                            : `<div class='bold-text'>Salida guardada correctamente a la hora: <br><strong>${hora}</strong></div>`}`,
+                        title:
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `ENTRADA GUARDADA`
+                                : `SALIDA GUARDADA`}`,
+                        html:
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `<div class='bold-text'>Entrada guardada correctamente a la hora: <br><strong>${hora}</strong></div>`
+                                : `<div class='bold-text'>Salida guardada correctamente a la hora: <br><strong>${hora}</strong></div>`}`,
+                        position: 'top-end',
                         icon: "success",
+                        iconColor:
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
+                                : "#149da7"}`,
+                        background: "#262626",
+                        color: "#BAC2C9",
+                        toast: true,
+                        timerProgressBar: true,
+                        timer: 5000,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        },
                         confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
                         confirmButtonColor:
-                        `${(tipoAsistencia.toLowerCase()==="entrada") ? "#4CAF50"
-                        : "#149da7"}`,
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
+                                : "#149da7"}`,
                     })
+                    setStatusFecha(true)
+                    setTimeout(() => {
+                        setStatusFecha(false)
+                    }, 4800)
+                    setIndexActualTabla(index)
                 } else {
-                    console.log(response.data.status)
+                    console.log(response.data)
+                    Swal.fire({
+                        title:
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `ENTRADA NO GUARDADA`
+                                : `SALIDA NO GUARDADA`}`,
+                        html: `<div class='bold-text'><strong>${response.data.mensaje}</div>
+                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2}</strong></div>` : ""}`,
+                        icon: "error",
+                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
+                        confirmButtonColor:
+                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
+                                : "#149da7"}`,
+                    })
                 }
             })
             .catch(error => {
-                console.error('Error en la solicitud POST:', error);
-                // errorAlert();
+                console.error('Error:', error);
             });
     }
 
-    const registrarAsistencia = (matricula, hora, tipoAsistencia) => {
-        Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
+    const registrarAsistencia = (matricula, hora, tipoAsistencia, index) => {
         Swal.fire({
-            title: 
-                `${(tipoAsistencia.toLowerCase()==="entrada") ? '¿REGISTRAR ENTRADA?'
-                : '¿REGISTRAR SALIDA?'}`
+            title:
+                `${(tipoAsistencia.toLowerCase() === "entrada") ? '¿REGISTRAR ENTRADA?'
+                    : '¿REGISTRAR SALIDA?'}`
             ,
-            html: 
-                `${(tipoAsistencia.toLowerCase()==="entrada") ? "<div class='bold-text'>Estas por poner la <strong>asistencia de entrada.</strong></div>"
-                : "<div class='bold-text'>Estas por poner la <strong>asistencia de salida.</strong></div>"}`
+            html:
+                `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-text'>Estas por poner la <strong>asistencia de entrada.</strong></div>"
+                    : "<div class='bold-text'>Estas por poner la <strong>asistencia de salida.</strong></div>"}`
             ,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 
-                `${(tipoAsistencia.toLowerCase()==="entrada") ? "<div class='bold-confirm-register'>DAR ENTRADA</div>"
-                : "<div class='bold-confirm-register-salida'>DAR SALIDA</div>"}`,
+            confirmButtonText:
+                `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-confirm-register'>DAR ENTRADA</div>"
+                    : "<div class='bold-confirm-register-salida'>DAR SALIDA</div>"}`,
             confirmButtonColor:
-                `${(tipoAsistencia.toLowerCase()==="entrada") ? "#4CAF50"
-                : "#149da7"}`,
+                `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
+                    : "#149da7"}`,
             cancelButtonText: "<div class='bold-confirm-exit'>CANCELAR</div>",
             cancelButtonColor: "#D92D2D",
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                registrarAsistEntrOrSal(matricula, tipoAsistencia, (<Hora />).type())
+                registrarAsistEntrOrSal(matricula, tipoAsistencia, hora, index)
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {
                 Swal.fire({
                     title: "OPERACIÓN CANCELADA",
-                    html: 
-                        `${(tipoAsistencia.toLowerCase()==="entrada") ? "<div class='bold-text'>La operación para guardar la <strong>asistencia de entrada</strong>, <br>ha sido cancelada.</div>"
-                        : "<div class='bold-text'>La operación para guardar la <strong>asistencia de salida</strong>, <br>ha sido cancelada.</div>"}`,
+                    html:
+                        `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-text'>La operación para guardar la <strong>asistencia de entrada</strong><br>ha sido cancelada.</div>"
+                            : "<div class='bold-text'>La operación para guardar la <strong>asistencia de salida</strong>, <br>ha sido cancelada.</div>"}`,
                     icon: "warning",
                     confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
                     confirmButtonColor: "#D92D2D",
@@ -177,7 +195,7 @@ function BodyPRSeccion7() {
 
     return (
         <div className="prs7-main">
-            <FirstPartMain 
+            <FirstPartMain
                 title="BUSCAR USUARIO PARA ASISTENCIA"
                 subtitle="Busque al usuario para darle una asistencia"
             />
@@ -207,26 +225,29 @@ function BodyPRSeccion7() {
                             <th className='prs7-th-3'>GÉNERO</th>
                             <th className='prs7-th-4'>ASISTENCIAS TOTALES</th>
                             <th className='prs7-th-5'>ÚLTIMA VISITA</th>
-                            <th className='prs2-th-6'>REGISTRAR ENTRADA</th>
-                            <th className='prs2-th-7'>REGISTRAR SALIDA</th>
+                            <th className='prs7-th-6'>REGISTRAR ENTRADA</th>
+                            <th className='prs7-th-7'>REGISTRAR SALIDA</th>
                         </tr>
                     </thead>
                     <tbody>
                         {usuarios && usuarios
-                            // .filter(usuario => usuario.tipo_de_estudiante.toLowerCase() === "visitante")
-                            .map((usuario) => (
+                            .filter(usuario => usuario.tipo_de_estudiante.toLowerCase() !== "visitante" && usuario.activo !== 0)
+                            .map((usuario, index) => (
                                 <tr key={usuario.id} className="prs7-tr-body">
-                                    <td className='prs7-td'>{usuario.matricula}</td>
-                                    <td className='prs7-td'>{usuario.nombre}</td>
+                                    <td className='prs7-td'>{usuario.tipo_de_estudiante}</td>
+                                    <td className='prs7-td'>{usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno}</td>
                                     <td className='prs7-td'>{usuario.genero}</td>
                                     <td className='prs7-td'>{usuario.asistencias}</td>
-                                    {/* <td className='prs7-td'>{usuario.ultima_salida_fecha}</td> */}
-                                    <td className='prs7-td'>{usuario.ultima_entrada_hora}</td>
+                                    <td className={(statusFecha && index === indexActualTabla) ? "prs7-td brillar" : "prs7-td"}>{usuario.ultima_salida_fecha} <br></br><strong>{usuario.ultima_salida_hora}</strong></td>
                                     <td className='prs7-td'>{
-                                        <button className="prs7-b-ma" onClick={() => registrarAsistencia(usuario.matricula, (<Hora />).type(), "entrada")}>Marcar</button>
+                                        <div className="prs7-fondo-boton">
+                                            <button className="prs7-b-ma" onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "entrada", index); }}>| Marcar</button>
+                                        </div>
                                     }</td>
                                     <td className='prs7-td'>{
-                                        <button className="prs7-b-ma"  onClick={() => registrarAsistencia(usuario.matricula, (<Hora />).type(), "salida")}>Marcar</button>
+                                        <div className="prs7-fondo-boton">
+                                            <button className="prs7-b-ma" onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "salida", index); }}>| Marcar</button>
+                                        </div>
                                     }</td>
                                 </tr>
                             ))}
@@ -235,7 +256,6 @@ function BodyPRSeccion7() {
             </div>
                 : <div className="prs7-no-datos"><p className="prs2-p">NO HAY DATOS PARA MOSTRAR</p></div>}
             <div className="prs7-bottons">
-                <button className="prs7-botton hoverable">AÑADIR NUEVO USUARIO</button>
                 <button className="prs7-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
             </div>
         </div>

@@ -118,7 +118,8 @@
 }
 
 .prs2_b-disabled{
-    margin-left: 2em;
+    width: 100%;
+    height: 100%;
     background-color: #262626;
     box-shadow: 0px 4px 4px rgba(89, 86, 86, 0.25);
     cursor: pointer; 
@@ -137,7 +138,10 @@
 }
 
 .prs2-cb{
-    transform: scale(1.5);
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transform: scale(2);
 }
 
 .prs2-b-ma{
@@ -157,13 +161,13 @@
 
 /* SECCION DE LA TABLA */
 #prs2-tabla-all{
+    background: linear-gradient(to bottom, #063763, #0c559a);
     width: 100%;
     margin-bottom: 1.5%;
     border-collapse: collapse;
-    max-height: 25em;
-    min-height: 25em;
-    overflow-y: scroll;
-
+    min-height: 27.8em;
+    overflow-y: auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .prs2-no-datos{
@@ -173,7 +177,7 @@
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 100%;
     height: 100%;
-    min-height: 25em;
+    min-height: 27.8em;
     margin-bottom: 1.5%;
     display: flex;
     justify-content: center;
@@ -346,7 +350,10 @@
     .prs2-searcher{
         margin-top: -20px;
     }
-
+    .prs2-cb{
+        transform: scale(1.5);
+        transition: transform 1s ease;
+    }
 }
 
 @media (max-width: 750px) {
@@ -355,6 +362,9 @@
     }
     .prs2-bottons{
         padding-inline: 0;
+    }
+    .prs2-cb{
+        transform: scale(1);
     }
 }
 
