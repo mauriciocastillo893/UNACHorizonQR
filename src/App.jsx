@@ -9,6 +9,7 @@ import PRSeccion3 from './pages/PRSeccion3';
 import PRSeccion7 from './pages/PRSeccion7';
 import PRSeccion1_1 from './pages/PRSeccion1_1';
 import PRSeccion2_1 from './pages/PRSeccion2_1';
+import MiComponenteFuncional from "./components/Tools/MiComponenteFuncional";
 import './style-sheets/App.css'
 
 function App() {
@@ -22,11 +23,12 @@ function App() {
                 {/* MANTENIMIENTO */}
                 <Route path="/panelrecepcion" element={<PanelRecepcion />}/>
                 <Route path='/buscarVisitante' element={<PRSeccion1 />}/>
-                <Route path='/seccion11' element={<PRSeccion1_1 />}/>
+                <Route path='/agregarNuevoVisitante' element={<PRSeccion1_1 />}/>
                 <Route path='/buscarUsuarioCAA' element={<PRSeccion2 />}/>
                 <Route path='/seccion21' element={<PRSeccion2_1 />}/>
                 <Route path='/salidaEmergencia' element={<PRSeccion3 />}/>
                 <Route path='/usuarioAsistencia' element={<PRSeccion7 />}/>
+                <Route path='/prueba1' element={<MiComponenteFuncional />}/>
             </Routes>
 
         </BrowserRouter>  

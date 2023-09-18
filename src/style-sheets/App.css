@@ -35,6 +35,12 @@ table {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.swal-toast{
+  background-color: #1B1315;
+  color: #FAA300;
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 .swal2-title {
   font-weight: 800; /* Agrega el grosor de letra (bold) al título */
 }
@@ -81,6 +87,10 @@ table {
     color: #4CAF50;
   }
 
+  .rojoClaro{
+    color: #D92D2D;
+  }
+
 .swal2-footer {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #1B1315;
@@ -99,11 +109,31 @@ table {
   background-color: #063763;
   color: #74aee5;
   font-weight: 700;
-  /* background: linear-gradient(90deg, #0A42A5 0%, #000000 100%); */
 }
 
 .delete:hover{
   background-color: #74aee5;
   color: #063763;
   font-weight: 1000;
+}
+
+.brillar {
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    animation: colorChange 1.2s infinite;
+    background: linear-gradient(90deg, #063763, #74aee5); /* Fondo degradado */
+    -webkit-background-clip: text; /* Clip degradado al texto */
+    background-clip: text ;
+    color: transparent; /* Texto transparente */
+    background-size: 200% 100%; /* Tamaño inicial del fondo degradado */
+    background-position: 100% 0; /* Posición inicial del fondo degradado */
+  }
+
+@keyframes colorChange {
+  0% {
+    background-position: 100% 0; /* Inicio del degradado al principio del texto */
+  }
+  100% {
+    background-position: -100% 0; /* Fin del degradado al final del texto */
+    /* opacity: .8; */
+  }
 }

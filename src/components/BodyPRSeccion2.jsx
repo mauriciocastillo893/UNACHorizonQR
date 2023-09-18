@@ -3,7 +3,6 @@ import axios from 'axios';
 import '../style-sheets/BodyPRSeccion2.css';
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
-import Fecha from './Clock/Fecha'
 import FirstPartMain from "./Tools/FirstPartMain";
 
 function BodyPRSeccion2() {
@@ -24,7 +23,8 @@ function BodyPRSeccion2() {
         setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno, totalUsuarios } }));
     };
 
-    const totalUsuarios = Object.keys(usuarios).length
+    const totalUsuarios = usuarios ? Object.keys(usuarios).length : 0;
+
     const [statusBoton, setStatusBoton] = useState(false)
 
     const queryParams = new URLSearchParams(location.search);
@@ -33,8 +33,9 @@ function BodyPRSeccion2() {
     const navigate = useNavigate();
 
     const peticionGet = async () => {
-        await axios.get("http://localhost:5000/users")
+        await axios.get("http://localhost:5000/usuariosEnElCCA")
             .then(response => {
+                console.log(response.data.users)
                 setUsuarios(response.data.users);
                 setTablaUsuarios(response.data.users);
             }).catch(error => {
@@ -165,6 +166,37 @@ function BodyPRSeccion2() {
         }
     }, [busqueda])
 
+    function formatearDatos(datosOriginales) {
+        const pares = datosOriginales.split(',');
+        const paresFormateados = [];
+
+        for (let i = 0; i < pares.length; i += 2) {
+            const prePalabra = pares[i];
+            const palabra = prePalabra.toUpperCase()
+            const numero = parseInt(pares[i + 1]);
+
+            let numeroFormateado;
+
+            if (numero === 1) {
+                numeroFormateado = `${numero}RO`;
+            } else if (numero % 10 === 2) {
+                numeroFormateado = `${numero}DO`;
+            } else if (numero % 10 === 3) {
+                numeroFormateado = `${numero}RO`;
+            } else if (numero % 10 === 7 || numero % 10 === 10) {
+                numeroFormateado = `${numero}MO`;
+            } else if (numero % 10 === 8 || numero % 10 === 11 || numero % 10 === 12) {
+                numeroFormateado = `${numero}VO`;
+            } else if (numero % 10 === 9) {
+                numeroFormateado = `${numero}NO`;
+            } else {
+                numeroFormateado = `${numero}TO`;
+            }
+            const parFormateado = `${palabra} ${numeroFormateado}`;
+            paresFormateados.push(parFormateado);
+        }
+        return paresFormateados.join(', ');
+    }
 
     const mostrarAlerta = () => {
         if (usuariosSeleccionados.size < 1) {
@@ -236,12 +268,13 @@ function BodyPRSeccion2() {
                         </tr>
                     </thead>
                     <tbody>
-                        {usuarios && usuarios.map((usuario) => (
+                        {usuarios && usuarios
+                        .map((usuario) => (
                             <tr key={usuario.id} className="prs2-tr-body">
-                                <td className='prs2-td'>{usuario.matricula}</td>
-                                <td className='prs2-td'>{usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno}</td>
+                                <td className='prs2-td'>{usuario.id}</td>
+                                <td className='prs2-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs2-td'>{usuario.genero}</td>
-                                <td className='prs2-td'>{usuario.idiomas}</td>
+                                <td className='prs2-td'>{formatearDatos(usuario.idiomas)}</td>
                                 <td className='prs2-td'>{
                                     <input
                                         type="checkbox"
