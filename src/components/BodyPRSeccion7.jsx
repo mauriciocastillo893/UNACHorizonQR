@@ -16,7 +16,9 @@ function BodyPRSeccion7() {
     const [status, setStatus] = useState("online");
     const totalUsuarios = Object.keys(usuarios).length
     const [statusFecha, setStatusFecha] = useState(false);
+    const [statusAsistencias, setStatusAsistencias] = useState(false);
     const [indexActualTabla, setIndexActualTabla] = useState(0);
+
 
     const peticionGet = async () => {
         await axios.get("http://localhost:5000/todosLosUsuariosDelCAA")
@@ -125,10 +127,17 @@ function BodyPRSeccion7() {
                             `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
                                 : "#149da7"}`,
                     })
-                    setStatusFecha(true)
-                    setTimeout(() => {
-                        setStatusFecha(false)
-                    }, 4800)
+                    if(tipoAsistencia.toLowerCase() === "salida"){
+                        setStatusFecha(true)
+                        setTimeout(() => {
+                            setStatusFecha(false)
+                        }, 4800)
+                    }else{
+                        setStatusAsistencias(true)
+                        setTimeout(() => {
+                            setStatusAsistencias(false)
+                        }, 4800)
+                    }
                     setIndexActualTabla(index)
                 } else {
                     console.log(response.data)
@@ -235,18 +244,18 @@ function BodyPRSeccion7() {
                             .map((usuario, index) => (
                                 <tr key={usuario.id} className="prs7-tr-body">
                                     <td className='prs7-td'>{usuario.tipo_de_estudiante}</td>
-                                    <td className='prs7-td'>{usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno}</td>
+                                    <td className='prs7-td'>{(usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno).toUpperCase()}</td>
                                     <td className='prs7-td'>{usuario.genero}</td>
-                                    <td className='prs7-td'>{usuario.asistencias}</td>
+                                    <td className={(statusAsistencias && index === indexActualTabla) ? "prs7-td brillar" : "prs7-td"}>{usuario.asistencias}</td>
                                     <td className={(statusFecha && index === indexActualTabla) ? "prs7-td brillar" : "prs7-td"}>{usuario.ultima_salida_fecha} <br></br><strong>{usuario.ultima_salida_hora}</strong></td>
                                     <td className='prs7-td'>{
-                                        <div className="prs7-fondo-boton">
-                                            <button className="prs7-b-ma" onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "entrada", index); }}>| Marcar</button>
+                                        <div className={(usuario.se_encuentra_ahora == 0) ? "fondo-boton" : "fondo-boton-disabled"}>
+                                            <button className={(usuario.se_encuentra_ahora == 0) ? "b-ma" : "b-ma-disabled not-allowed"} onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "entrada", index); }} disabled={usuario.se_encuentra_ahora == 1}>| Marcar</button>
                                         </div>
                                     }</td>
                                     <td className='prs7-td'>{
-                                        <div className="prs7-fondo-boton">
-                                            <button className="prs7-b-ma" onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "salida", index); }}>| Marcar</button>
+                                        <div className={(usuario.se_encuentra_ahora == 1) ? "fondo-boton" : "fondo-boton-disabled"}>
+                                            <button className={(usuario.se_encuentra_ahora == 1) ? "b-ma" : "b-ma-disabled not-allowed"} onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type(), "salida", index); }} disabled={usuario.se_encuentra_ahora == 0}>| Marcar</button>
                                         </div>
                                     }</td>
                                 </tr>

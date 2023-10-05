@@ -1,41 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import '../style-sheets/BodyPRSeccion2.css';
+import '../style-sheets/BodyPRSeccion6.css';
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import FirstPartMain from "./Tools/FirstPartMain";
-import Hora from "./Clock/Hora"
 
-function BodyPRSeccion2() {
-    // Objeto de usuarios
+function BodyPRSeccion6() {
     const [usuarios, setUsuarios] = useState([]);
-    // Tabla de objeto de usuarios
     const [tablaUsuarios, setTablaUsuarios] = useState([]);
-    // Busqueda de nombre de usuarios
     const [busqueda, setBusqueda] = useState("");
-    // Estatus de si se encontro o no el usuario
     const [status, setStatus] = useState("online");
     const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
-
     const [usuariosEmergencia, setUsuariosEmergencia] = useState({}); // Estado para almacenar el diccionario de usuarios
-    // const [usuariosTotales, setUsuariosTotales] = useState({});
-    // Función para agregar un usuario al diccionario
-    const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
-        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
-    };
 
-    // const totalUsuarios = usuarios ? Object.keys(usuarios).length : 0;
     const totalUsuarios = usuarios.length;
-
     const [statusBoton, setStatusBoton] = useState(false)
-
-    const queryParams = new URLSearchParams(location.search);
-    const emergencyDirect = Boolean(queryParams.get("emergencyDirect"));
-
     const navigate = useNavigate();
 
     const peticionGet = async () => {
-        await axios.get("http://localhost:5000/usuariosEnElCCA")
+        await axios.get("http://localhost:5000/allUsers")
             .then(response => {
                 console.log(response.data.users)
                 setUsuarios(response.data.users);
@@ -44,6 +27,10 @@ function BodyPRSeccion2() {
                 console.log(error);
             })
     }
+
+    const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
+        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
+    };
 
     const handleChange = e => {
         setBusqueda(e.target.value);
@@ -114,11 +101,6 @@ function BodyPRSeccion2() {
         navigate("/salidaEmergencia", { state: { usuariosEmergencia } })
     };
 
-    const marcarTodosLosCheckboxes = () => {
-        const todasLasMatriculas = usuarios.map(usuario => usuario.matricula);
-        setUsuariosSeleccionados(new Set(todasLasMatriculas));
-    };
-
     const enviarTodasLasPersonas = () => {
         marcarTodosLosCheckboxes(); // Marcar todos los checkboxes primero
         setStatusBoton(true);
@@ -127,7 +109,6 @@ function BodyPRSeccion2() {
             navigate("/salidaEmergencia", { state: { statusTodosLosUsuarios } });
         }, 1000); // Esperar 2 segundos antes de navegar
     };
-
 
     const addUser = (matricula) => {
         navigate(`/seccion21?matricula=${matricula}`);
@@ -146,38 +127,6 @@ function BodyPRSeccion2() {
             setStatus("online");
         }
     }, []);
-
-    function formatearDatos(datosOriginales) {
-        const pares = datosOriginales.split(',');
-        const paresFormateados = [];
-
-        for (let i = 0; i < pares.length; i += 2) {
-            const prePalabra = pares[i];
-            const palabra = prePalabra.toUpperCase()
-            const numero = parseInt(pares[i + 1]);
-
-            let numeroFormateado;
-
-            if (numero === 1) {
-                numeroFormateado = `${numero}RO`;
-            } else if (numero % 10 === 2) {
-                numeroFormateado = `${numero}DO`;
-            } else if (numero % 10 === 3) {
-                numeroFormateado = `${numero}RO`;
-            } else if (numero % 10 === 7 || numero % 10 === 10) {
-                numeroFormateado = `${numero}MO`;
-            } else if (numero % 10 === 8 || numero % 10 === 11 || numero % 10 === 12) {
-                numeroFormateado = `${numero}VO`;
-            } else if (numero % 10 === 9) {
-                numeroFormateado = `${numero}NO`;
-            } else {
-                numeroFormateado = `${numero}TO`;
-            }
-            const parFormateado = `${palabra} ${numeroFormateado}`;
-            paresFormateados.push(parFormateado);
-        }
-        return paresFormateados.join(', ');
-    }
 
     const mostrarAlerta = () => {
         if (usuariosSeleccionados.size < 1) {
@@ -268,81 +217,72 @@ function BodyPRSeccion2() {
     }
 
     return (
-        <div className="prs2-main">
+        <div className="prs6-main">
             <FirstPartMain
-                title="Buscar usuario en el CAA"
+                title="Corregir nombre del usuario"
                 subtitle="Ingrese el nombre del usuario para buscarlo" />
-            <div className="prs2-searcher">
-                <div className="prs2-first-s">
-                    <div className="prs2-title-first"><p>Nombre del usuario</p></div>
+            <div className="prs6-searcher">
+                <div className="prs6-first-s">
+                    <div className="prs6-title-first"><p>Nombre del usuario</p></div>
                     <input
-                        className="prs2-searcher-input"
+                        className="prs6-searcher-input"
                         type="search"
                         value={busqueda}
                         placeholder='Búsqueda por nombre'
                         onChange={handleChange}>
                     </input>
                 </div>
-                <div className="prs2-second-s">
-                    <div className="prs2-title-second"><p>Estatus</p></div>
-                    <p className="prs2-subtitle-second">{status}</p>
+                <div className="prs6-second-s">
+                    <div className="prs6-title-second"><p>Estatus</p></div>
+                    <p className="prs6-subtitle-second">{status}</p>
                 </div>
             </div>
-            <div id="prs2-table-headboard">Usuarios actuales dentro de autoacceso</div>
-            {(totalUsuarios) ? <div id="prs2-tabla-all">
-                <table id='prs2-table'>
-                    <thead id='prs2-th'>
-                        <tr id='prs2-tr'>
-                            <th className='prs2-th-1'>NÚM</th>
-                            <th className='prs2-th-2'>NOMBRE COMPLETO</th>
-                            <th className='prs2-th-3'>GÉNERO</th>
-                            <th className='prs2-th-4'>IDIOMA Y NIVEL</th>
-                            <th className='prs2-th-5'>SALIDA DE EMERGENCIA</th>
-                            <th className='prs2-th-6'>AÑADIR ASISTENCIAs</th>
-                            <th className='prs2-th-7'>REGISTRAR SALIDA</th>
+            <div id="prs6-table-headboard">Todos los usuarios del autoacceso</div>
+            {(totalUsuarios) ? <div id="prs6-tabla-all">
+                <table id='prs6-table'>
+                    <thead id='prs6-th'>
+                        <tr id='prs6-tr'>
+                            <th className='prs6-th-1'>NÚM</th>
+                            <th className='prs6-th-2'>NOMBRE COMPLETO</th>
+                            <th className='prs6-th-3'>GÉNERO</th>
+                            <th className='prs6-th-4'>TIPO DE ESTUDIANTE</th>
+                            <th className='prs6-th-5'>ASISTENCIAS TOTALES</th>
+                            <th className='prs6-th-6'>ÚLTIMA VISITA</th>
+                            <th className='prs6-th-7'>MARCAR PARA FUSIONAR</th>
                         </tr>
                     </thead>
                     <tbody>
                         {usuarios && usuarios
                         .map((usuario) => (
-                            <tr key={usuario.id} className="prs2-tr-body">
-                                <td className='prs2-td'>{usuario.id}</td>
-                                <td className='prs2-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
-                                <td className='prs2-td'>{usuario.genero}</td>
-                                <td className='prs2-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : formatearDatos(usuario.idiomas)}</td>
-                                <td className='prs2-td'>{
+                            <tr key={usuario.id} className="prs6-tr-body">
+                                <td className='prs6-td'>{usuario.id}</td>
+                                <td className='prs6-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
+                                <td className='prs6-td'>{usuario.genero}</td>
+                                <td className='prs6-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : usuario.tipo_de_estudiante.toUpperCase()}</td>
+                                <td className='prs6-td'>{usuario.asistencias}</td>
+                                <td className='prs6-td'>{usuario.ultima_salida_fecha}</td>
+                                <td className='prs6-td'>{
                                     <input
                                         type="checkbox"
-                                        className="prs2-cb"
+                                        className="prs6-cb"
                                         checked={usuariosSeleccionados.has(usuario.matricula)}
                                         onChange={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}
                                     ></input>
                                 }</td>
-                                <td className='prs2-td'>{
-                                    <div className={(usuario.se_encuentra_ahora == 1) ? "fondo-boton" : "fondo-boton-disabled"}>
-                                        <button className={(usuario.se_encuentra_ahora == 1) ? "b-ma" : "b-ma-disabled not-allowed"} onClick={() => addUser(usuario.matricula)}>| Añadir</button>
-                                    </div>
-                                }</td>
-                                    <td className='prs7-td'>{
-                                        <div className={(usuario.se_encuentra_ahora == 1) ? "fondo-boton" : "fondo-boton-disabled"}>
-                                            <button className={(usuario.se_encuentra_ahora == 1) ? "b-ma" : "b-ma-disabled not-allowed"} onClick={() => { registrarAsistencia(usuario.matricula, (<Hora />).type()); }} disabled={usuario.se_encuentra_ahora == 0}>| Marcar</button>
-                                        </div>
-                                    }</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-                : <div className="prs2-no-datos"><p className="prs2-p">NO HAY DATOS PARA MOSTRAR</p></div>}
-            <div className="prs2-bottons">
-                <button className="prs2-botton hoverable" onClick={() => { mostrarAlerta(); }}>Salida para: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
-                {/* <button className={(busqueda === "" ? "prs2-botton hoverable" : "prs2_b-disabled")} onClick={() => {enviarTodasLasPersonas();}} disabled={busqueda !== ""}>Salida a todas las personas</button> */}
-                <button className="prs2-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
-                <button className={(!statusBoton) ? "prs2-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={statusBoton} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosEmergencia({}); }}>ELIMINAR OPCIONES</button>
+                : <div className="prs6-no-datos"><p className="prs6-p">NO HAY DATOS PARA MOSTRAR</p></div>}
+            <div className="prs6-bottons">
+                <button className="prs6-botton hoverable" onClick={() => { mostrarAlerta(); }}>Fusionar a: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
+                <button className="prs6-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
+                <button className={(!statusBoton) ? "prs6-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={statusBoton} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosEmergencia({}); }}>ELIMINAR OPCIONES</button>
             </div>
         </div>
     );
 }
 
-export default BodyPRSeccion2;
+export default BodyPRSeccion6;

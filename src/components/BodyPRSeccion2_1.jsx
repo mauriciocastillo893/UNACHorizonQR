@@ -2,82 +2,70 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import '../style-sheets/BodyPRSeccion2_1.css';
 import Swal from 'sweetalert2'
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { matchRoutes, useLocation, useNavigate } from "react-router-dom";
 import FirstPartMain from "./Tools/FirstPartMain";
 
 function BodyPRSeccion2_1() {
-    const location = useLocation();
-    const { matricula } = location.state || {};
-
-    const [dataAlumno, setDataAlumno] = useState({
-        nombre: '',
-        apellido_materno: '',
-        apellido_paterno: '',
-        asistencias: 0,
-        mensaje: '',
-    });
-    const [id, setId] = useState(0);
+    const queryParams = new URLSearchParams(location.search);
+    const matricula = queryParams.get("matricula") || "";
+    const [dataUser, setDataUser] = useState([])
     const [asistenciaAlumno, setAsistenciaAlumno] = useState(0);
     const [minutosAlumno, setMinutosAlumno] = useState(0);
-    const [status, setStatus] = useState("1");
+    const [chooseSelect, setChooseSelect] = useState(true);
     const cargando = "Cargando...";
 
-    const data = {
-        id: id,
-        asistencias: asistenciaAlumno,
-        minutos_totales: minutosAlumno
-    };
-
     useEffect(() =>{
-        obtenerNombreAsistencia();
         window.scrollTo(0, 0);
+        // console.log(matricula)
+        peticionGet()
     }, []);
 
     const navigate = useNavigate();
-
     const buscarUsuarioCAA=()=>{
         navigate("/buscarUsuarioCAA");
-        // return <BodyPRSeccion2_1 matricula={matricula}/>;
     }
 
-    const obtenerNombreAsistencia = async () => {
-        // Realizar la solicitud POST con la matrícula
-        axios.post("http://localhost:5000/buscarMatricula", { matricula })
+    const peticionGet=async()=>{
+        const data = {
+            matricula: matricula
+        }
+        if(matricula!=""){
+            await axios.post('http://localhost:5000/findStudentByIDUser', data)
             .then(response => {
-                // console.log(response.data)
-                if(response.data.status == '0'){
-                    mostrarAlerta();
-                    setStatus("1");
-                }if(response.data.status == '-1'){
-                    mostrarAlerta2();
-                    setStatus("1");
+                if(response.data.status !== 0){
+                    setDataUser(response.data.datos)
                 }else{
-                    console.log("Datos del alumno:", response.data);
-                    setId(response.data.id);
-                    setDataAlumno(response.data);
-                    setStatus("2");
+                    console.log("Something was wrong", response.data)
                 }
-                
             })
             .catch(error => {
-                console.error(error);
-                mostrarAlerta();
+                console.error('Error en la solicitud POST:', error);
+                errorAlert();
             });
+        }else{
+            mostrarAlerta()
+        }
     }
 
     const enviarAsistencia = async () => {
-        if(asistenciaAlumno || minutosAlumno !== 0)
-            axios.post('http://localhost:5000/addAsistencias', data)
+        const data = {
+            matricula: matricula,
+            asistencias_a_agregar: asistenciaAlumno,
+            minutos_a_agregar: minutosAlumno,
+            simbolo: chooseSelect
+        }
+        if(asistenciaAlumno !==0 || minutosAlumno !== 0)
+            await axios.post('http://localhost:5000/agregarAsistencias', data)
             .then(response => {
-                // console.log("Respuesta del servidor:", response.data);
                 if(response.data.status == '0'){
                     mostrarAlerta();
+                } else if(response.data.status > '1'){
+                    somethingWentWrong(response.data.mensaje)
                 }else{
                     successAlert();
-                    obtenerNombreAsistencia();
                     setAsistenciaAlumno(0);
                     setMinutosAlumno(0);
+                    peticionGet()
                 }
             })
             .catch(error => {
@@ -88,79 +76,119 @@ function BodyPRSeccion2_1() {
             errorAlertNumVacio();
         }
     };
+
+    const switchData=()=>{
+        if(chooseSelect)
+            setChooseSelect(false)
+        else
+            setChooseSelect(true)
+    }
     
+    const somethingWentWrong = (type) => {
+        Swal.fire({
+            title: "ALGO NO FUE COMO SE ESPERABA",
+            html: `<div class='bold-text600'>${(type).toUpperCase()}</div>`,
+            icon: "error",
+            position: 'top-end',
+            iconColor:" #D92D2D",
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
+            confirmButtonColor: "#D92D2D",
+        })
+    }
 
     const mostrarAlerta = () => {
             Swal.fire({
                 title: "NO EXISTE LA MATRICULA",
-                // text: "FALTA UN CAMPO POR LLENAR",
-                html: "<div class='bold-text'>LA MATRICULA SELECCIONADA NO ESTÁ REGISTRADA</div>",
-                icon: "info",
-                confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-                confirmButtonColor: '#262626',
-                footer: "<b>PRUEBE CON OTRO USUARIO, LO REGRESAREMOS A LA SECCION DE BUSQUEDA<b>",
-                allowOutsideClick: false, // Evitar clic fuera del SweetAlert
-                allowEscapeKey: false, // Evitar cerrar con la tecla Escape
-            }).then((result) => {
-                if (result.isConfirmed) {
+                html: `<div class='bold-text600'>${(matricula!="") ? "LA MATRICULA SELECCIONADA NO ESTÁ REGISTRADA." :
+                    "NO PODEMOS BUSCAR UNA MATRICULA VACÍA, DATOS INCOMPLETOS."} VAMOS A REGRESARTE A UNA PÁGINA ATRÁS.</div>`,
+                position: 'top-end',
+                icon: "error",
+                iconColor:" #D92D2D",
+                background: "#262626",
+                color: "#BAC2C9",
+                toast: true,
+                timerProgressBar: true,
+                timer: 10000,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                },
+                confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
+                confirmButtonColor: "#BAC2C9",
+            }).then(() => {
                     buscarUsuarioCAA(); // Llama a la función buscarUsuarioCAA si se hace clic en "ACEPTAR"
-                }
             });
-    }
-
-    const mostrarAlerta2 = () => {
-        Swal.fire({
-            title: "NO HAY DATOS",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>¿ESTAS INTENTANDO ENTRAR SIN UNA LLAVE?</div>",
-            icon: "info",
-            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-            confirmButtonColor: '#262626',
-            allowOutsideClick: false,
-            footer: "<b>SERÁS REDIRECCIONADO PARA BUSCAR A QUIEN AÑADIR UNA ASISTENCIA<b>"
-            // timer: 1000,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                buscarUsuarioCAA(); // Llama a la función buscarUsuarioCAA si se hace clic en "ACEPTAR"
-            }
-        });
     }
 
     const successAlert = () => {
         Swal.fire({
-            title: "¡ASISTENCIA GUARDADA!",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>LA ASISTENCIA Y LOS MINUTOS FUERON AGREGADOS CORRECTAMENTE</div>",
+            title: "CAMBIOS GUARDADOS",
+            html: "<div class='bold-text600'>LA(S) ASISTENCIA(S) O EL/LOS MINUTO(S) FUERON AGREGADOS CORRECTAMENTE</div>",
             icon: "success",
-            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-            confirmButtonColor: '#262626',
-            // footer: "<b>CENTRO DE AUTOACCESO<b>"
-            // timer: 1000,
+            position: 'top-end',
+            iconColor:" #4CAF50",
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
+            confirmButtonColor: "#4CAF50",
         })
     }
 
     const errorAlert = () => {
         Swal.fire({
             title: "ALGO SALIÓ MAL",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>PARECE QUE ALGO NO FUE COMO SE ESPERABA</div>",
+            html: "<div class='bold-text600'>PARECE QUE ALGO NO FUE COMO SE ESPERABA. SI PERSISTE ESTE ERROR, REPORTELO EN SU PRONTITUD.</div>",
+            position: 'top-end',
             icon: "error",
-            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-            confirmButtonColor: '#262626',
-            footer: "<b>LO SENTIMOS. SI ESTE ERROR PERSISTE, POR FAVOR REPORTE ESTE PROBLEMA LO MÁS PRONTO CON SOPORTE TECNICO<b>"
-            // timer: 1000,
+            iconColor:" #D92D2D",
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
+            confirmButtonColor: "#D92D2D",
         })
     }
 
     const errorAlertNumVacio = () => {
         Swal.fire({
             title: "DATOS INCOMPLETOS",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>DEBES PONER AL MENOS UN DATO EN ALGUN CUADRO PARA ACTUALIZAR LA INFORMACIÓN</div>",
+            html: "<div class='bold-text600'>DEBES PONER AL MENOS <strong>UN DATO</strong> EN ALGÚN CUADRO PARA ACTUALIZAR LA INFORMACIÓN</div>",
+            position: 'top-end',
             icon: "error",
-            confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-            confirmButtonColor: '#262626',
-            // timer: 1000,
+            iconColor:" #D92D2D",
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
+            confirmButtonColor: "#D92D2D",
         })
     }
 
@@ -174,34 +202,38 @@ function BodyPRSeccion2_1() {
             <input 
                         className="prs2_1-mostrar-nombre notallowed"
                         type="text" 
-                        // value={matricula || ""}
-                        // readOnly
-                        value={
-                            status
-                                ? `${dataAlumno.nombre || ''} ${dataAlumno.apellido_materno || ''} ${dataAlumno.apellido_paterno || ''}`
-                                : cargando
-                        }
+                        value={(dataUser.length > 0) ?
+                            `${dataUser[0].nombre || 'NO SE ENCONTRÓ'} ${dataUser[0].apellido_materno || ''} ${dataUser[0].apellido_paterno || ''}` : cargando}
                         readOnly
             ></input>
-            <div className="prs2_1-anadir-cosas-usu">
                 <div className="prs2_1-asis-tot"><p className="prs2_1_p" >Asistencias Totales</p></div>
                 <input 
-                        className="prs_2_1_i notallowed"
+                        className="prs_2_1_i i1 notallowed"
                         type="number" 
                         min="0"
-                        value={dataAlumno.asistencias}
-                        readOnly
+                        value={(dataUser.length > 0) ? dataUser[0].asistencias : 0}
                         disabled={true}
                         placeholder='0'
                 ></input>
-                <div className="prs2_1-asis-anadir"><p className="prs2_1_p">Asistencias para añadir</p></div>
+                <div className="prs2_1-min-tot"><p className="prs2_1_p" >Minutos Totales</p></div>
                 <input 
-                        className={(status=="2") ? "prs_2_1_i" : "prs_2_1_i notallowed"}
+                        className="prs_2_1_i i4 notallowed"
+                        type="number" 
+                        min="0"
+                        value={(dataUser.length > 0) ? dataUser[0].minutos_totales : 0}
+                        disabled={true}
+                        placeholder='0'
+                ></input>
+                <div className="prs2_1-asis-anadir">{(chooseSelect) 
+                    ? <p className="prs2_1_p">Asistencias a añadir (+)</p> 
+                    : <p className="prs2_1_p">Asistencias a restar (-)</p>}</div>
+                <input 
+                        className={(dataUser.length > 0) ? "prs_2_1_i i2" : "prs_2_1_i i2 notallowed"}
                         type="number" 
                         min="0"
                         value={asistenciaAlumno}
                         placeholder='0'
-                        disabled={(status=="2") ? false : true}
+                        disabled={(!dataUser.length > 0)}
                         onChange={(e) => {
                             const inputValue = e.target.value;
                             if (inputValue === "") {
@@ -214,13 +246,15 @@ function BodyPRSeccion2_1() {
                             }
                         }}
                 ></input>
-                <div className="prs2_1-min-anadir"><p className="prs2_1_p">Minutos a añadir</p></div>
+                <div className="prs2_1-min-anadir">{(chooseSelect) 
+                    ? <p className="prs2_1_p">Min. a añadir (+)</p>
+                    : <p className="prs2_1_p">Min. a restar (-)</p>}</div>
                 <input 
-                        className={(status=="2") ? "prs_2_1_i" : "prs_2_1_i notallowed"}
-                        type="number" inputmode="none"y
+                        className={(dataUser.length > 0) ? "prs_2_1_i i3" : "prs_2_1_i i3 notallowed"}
+                        type="number"
                         min="0"
                         value={minutosAlumno}
-                        disabled={(status=="2") ? false : true}
+                        disabled={(!dataUser.length > 0)}
                         placeholder='0'
                         onChange={(e) => {
                             const inputValue = e.target.value;
@@ -234,11 +268,21 @@ function BodyPRSeccion2_1() {
                             }
                         }}
                 ></input>
-            </div>
-            <div className="prs2_1-bottons">Cambiar a:
-            <button className={(status=="2") ? "prs2_1-botton hoverable" : "prs2_1_b-disabled"} disabled={(status=="2") ? false : true} onClick={() => {enviarAsistencia();}}><p>RESTAR</p></button>
-                    <button className={(status=="2") ? "prs2_1-botton hoverable" : "prs2_1_b-disabled"} disabled={(status=="2") ? false : true} onClick={() => {enviarAsistencia();}}>Enviar Modificacion</button>
+            <div className="prs2_1-bottons">
+                <div className={(dataUser.length > 0) ? "prs2_1-fondo-boton" : "prs2_1-fondo-boton-disabled"}>
+                    <button className={(dataUser.length > 0) ? "prs2_1-botton hoverable" : "prs2_1-botton-disabled not-allowed"} disabled={(!dataUser.length > 0)} onClick={() => {enviarAsistencia();}}>Enviar Modificacion</button>
                 </div>
+                <div className={(dataUser.length > 0) ? "prs2_1-fondo-boton" : "prs2_1-fondo-boton-disabled"}>
+                    <button className={(dataUser.length > 0) ? "prs2_1-botton hoverable" : "prs2_1-botton-disabled not-allowed"} disabled={(!dataUser.length > 0)} onClick={() => {switchData();}}>
+                        {(chooseSelect) 
+                        ? <p>Cambiar a RESTAR</p>
+                        : <p>Cambiar a SUMAR</p>}
+                        </button>
+                </div>
+                <div className={(dataUser.length > 0) ? "prs2_1-fondo-boton" : "prs2_1-fondo-boton-disabled"}>
+                    <button className={(dataUser.length > 0) ? "prs2_1-botton hoverable" : "prs2_1-botton-disabled not-allowed"} disabled={(!dataUser.length > 0)} onClick={() => {setAsistenciaAlumno(0); setMinutosAlumno(0);}}>Borrar</button>
+                </div>
+            </div>
         </div>
     </div>
     );

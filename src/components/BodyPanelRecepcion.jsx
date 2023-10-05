@@ -6,28 +6,28 @@ import FirstPartMain from "./Tools/FirstPartMain";
 
 function BodyPanelRecepcion() {
 
-    const fecha = new Date();
-
     const secciones = [
         { titulo: "ASISTENCIA VISITANTES", subtitulo: "BUSCAR A UN VISITANTE PARA SU ASISTENCIA", boton: "BUSCAR VISITANTE", seccion: "buscarVisitante" },
         { titulo: "ASISTENCIA A USUARIOS", subtitulo: "DAR ASISTENCIA A USUARIOS DE AUTOACCESO", boton: "DAR ASISTENCIA", seccion: "usuarioAsistencia" },
         { titulo: "BUSCAR USUARIOS", subtitulo: "BUSCAR USUARIOS DENTRO DEL CENTRO DE AUTOACCESO", boton: "BUSCAR USUARIO CAA", seccion: "buscarUsuarioCAA" },
-        { titulo: "CORREGIR USUARIOS", subtitulo: "UNIR A USUARIOS IGUALES PERO MAL ESCRITOS", boton: "IR AL ACOPLADOR", seccion: "acopladorUsuario" },
+        { titulo: "CORREGIR USUARIOS", subtitulo: "UNIR A USUARIOS IGUALES PERO MAL ESCRITOS", boton: "IR AL ACOPLADOR", seccion: "acoplarUsuario" },
         { titulo: "SALIDA DE EMERGENCIA", subtitulo: "DAR SALIDA DE EMERGENCIA A TODOS", boton: "SALIDA DE EMERGENCIA", seccion: "buscarUsuarioCAA" },
     ];
 
     const cargando = () => {
         Swal.fire({
-            title: "CARGANDO DATOS...",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text'>SE ESTÁ PROCESANDO LA INFORMACIÓN</div>",
+            title: "CARGANDO DATOS",
+            html: "<div class='bold-text'>SE ESTÁ PROCESANDO LA <br>INFORMACIÓN PARA SER ENVIADA</div>",
             icon: "info",
+            iconColor:" #0E6065",
+            background: "#262626",
+            color: "#BAC2C9",
+            timerProgressBar: true,
             showConfirmButton: false,
             allowOutsideClick: false,
             confirmButtonColor: '#262626',
-            footer: "<b>ESPERE MIENTRAS SE ESTÁ RECOPILANDO LA INFORMACIÓN NECESARIA<b>",
-            timer: 2500,
-        })
+            timer: 3500,
+            footer: "<div class='bold-confirm'>ESPERE POR FAVOR</div>"        })
     }
 
     useEffect(() => {

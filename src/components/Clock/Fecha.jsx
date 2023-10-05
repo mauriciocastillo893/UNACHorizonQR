@@ -11,7 +11,8 @@ function Fecha() {
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
             ];
             const monthName = monthNames[month];
-        const day = fechaSeparada.getDate().toString().padStart(2, '0'); // Obtener el día del mes (1-31)
+        var day = fechaSeparada.getDate()+1
+        day = day.toString().padStart(2, '0'); // Obtener el día del mes (1-31)
         const fechaObtenida = `${day} de ${monthName} del ${year}`
         return fechaObtenida.toUpperCase()
     }

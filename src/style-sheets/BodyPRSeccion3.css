@@ -4,7 +4,7 @@
     width: 100%;
     min-width: 500px;
     height: 100%;
-    min-height: 100%;
+    min-height: 80vh;
     padding: 5em 7em;
     margin-top: 0;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -54,6 +54,9 @@
 }
 
 .prs3-subtitle2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
     color: #FCFAF9;
     width: 100%;
@@ -100,7 +103,7 @@
     cursor: pointer; 
     font-weight: 1000;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: .8em;
+    font-size: .9em;
     padding: 0.8em 1.6em; 
     border: none;
     text-transform: uppercase;
@@ -115,7 +118,7 @@
     cursor: pointer; 
     font-weight: 1000;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: .8em;
+    font-size: .85em;
     padding: 0.8em 1.6em; 
     border: none;
     text-transform: uppercase;
@@ -169,32 +172,12 @@
 }
 
 .prs3-bottons{
-    /* background-color: gray; */
+    margin-top: auto;
     text-align: right;
     text-transform: lowercase;
     text-overflow: clip;
-    height: 60%;
+    height: 20%;
     width: 100%;
-    position: relative;
-}
-
-.prs3-botton{
-    background-color: #262626;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #FAA300;
-    cursor: pointer; 
-    font-weight: 800;
-    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.2em;
-    border-radius: 5px; 
-    border: none;
-    text-transform: uppercase;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 30%;
 }
 
 .prs3-botton2{
@@ -205,15 +188,11 @@
     font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 2em;
-    border-radius: 5px; 
+    border-radius: 8px; 
     border: none;
     text-transform: uppercase;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 100%;
-    height: 30%;
+    height: 100%;
 }
 
 .prs3_b-disabled{
@@ -224,15 +203,11 @@
     font-weight: 800;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 2em;
-    border-radius: 5px; 
+    border-radius: 8px; 
     border: none;
     text-transform: uppercase;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 100%;
-    height: 30%;
+    height: 100%;
 }
 
 /* SECCION HOVER */
@@ -243,23 +218,23 @@
     font-weight: 1000;
 }
 
-.prs3-subtitle4-d > button:hover{
+/* .prs3-subtitle4-d > button:hover{
     background-color: #aaa;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: #262626;  
     transition: all .4s ease;
     font-weight: 1000;
-}
+} */
 
 .prs3-botton2:hover{
-    background-color: #FCD9D9;
-    color: #197D84;  
+    background-color: #FCD9D9; 
     transition: all 1s ease;
     font-weight: 1000;
+    box-shadow: 0px 40px 40px rgba(0, 0, 0, 0.25);
+    color: #197D84; 
 }
 
 .prs3-subtitle-second:hover {
-    /* background-color: #FAA300; */
     color: #FAA300;  
     transition: all .4s ease;
     font-weight: 800;
@@ -270,12 +245,12 @@
     font-weight: 800;
 }
 
-.prs3_b-disabled:hover{
+/* .prs3_b-disabled:hover{
     color: #262626;  
     transition: all .4s ease;
     font-weight: 1000;
     background-color: #aaa;
-}
+} */
 
 /* SECCION RESPONSIVA */
 @media only screen and (max-width: 1180px) {
@@ -299,6 +274,7 @@
 @media (max-width: 700px) {
     .prs3-main{
         font-size: .4em;
+        padding: 10em 7em;
     }
     .prs3-right, .prs3-left{
         margin-top: -55px;

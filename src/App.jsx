@@ -11,6 +11,8 @@ import PRSeccion1_1 from './pages/PRSeccion1_1';
 import PRSeccion2_1 from './pages/PRSeccion2_1';
 import MiComponenteFuncional from "./components/Tools/MiComponenteFuncional";
 import './style-sheets/App.css'
+import NotFound from "./pages/NotFound";
+import PRSeccion6 from "./pages/PRSeccion6";
 
 function App() {
     return (  
@@ -27,8 +29,10 @@ function App() {
                 <Route path='/buscarUsuarioCAA' element={<PRSeccion2 />}/>
                 <Route path='/seccion21' element={<PRSeccion2_1 />}/>
                 <Route path='/salidaEmergencia' element={<PRSeccion3 />}/>
+                <Route path='/acoplarUsuario' element={<PRSeccion6 />}/>
                 <Route path='/usuarioAsistencia' element={<PRSeccion7 />}/>
                 <Route path='/prueba1' element={<MiComponenteFuncional />}/>
+                <Route path='*' element={<NotFound/>}/>
             </Routes>
 
         </BrowserRouter>  
