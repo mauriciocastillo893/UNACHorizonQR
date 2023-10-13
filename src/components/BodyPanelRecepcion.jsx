@@ -19,15 +19,16 @@ function BodyPanelRecepcion() {
             title: "CARGANDO DATOS",
             html: "<div class='bold-text'>SE ESTÁ PROCESANDO LA <br>INFORMACIÓN PARA SER ENVIADA</div>",
             icon: "info",
-            iconColor:" #0E6065",
+            iconColor: " #0E6065",
             background: "#262626",
             color: "#BAC2C9",
             timerProgressBar: true,
             showConfirmButton: false,
             allowOutsideClick: false,
             confirmButtonColor: '#262626',
-            timer: 3500,
-            footer: "<div class='bold-confirm'>ESPERE POR FAVOR</div>"        })
+            timer: 2000,
+            footer: "<div class='bold-confirm'>ESPERE POR FAVOR</div>"
+        })
     }
 
     useEffect(() => {

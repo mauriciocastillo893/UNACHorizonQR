@@ -13,6 +13,7 @@ import MiComponenteFuncional from "./components/Tools/MiComponenteFuncional";
 import './style-sheets/App.css'
 import NotFound from "./pages/NotFound";
 import PRSeccion6 from "./pages/PRSeccion6";
+import PRSeccion6_1 from "./pages/PRSeccion6_1";
 
 function App() {
     return (  
@@ -30,6 +31,7 @@ function App() {
                 <Route path='/seccion21' element={<PRSeccion2_1 />}/>
                 <Route path='/salidaEmergencia' element={<PRSeccion3 />}/>
                 <Route path='/acoplarUsuario' element={<PRSeccion6 />}/>
+                <Route path='/unirUsuarios' element={<PRSeccion6_1 />}/>
                 <Route path='/usuarioAsistencia' element={<PRSeccion7 />}/>
                 <Route path='/prueba1' element={<MiComponenteFuncional />}/>
                 <Route path='*' element={<NotFound/>}/>

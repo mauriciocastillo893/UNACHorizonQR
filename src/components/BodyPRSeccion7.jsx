@@ -28,9 +28,7 @@ function BodyPRSeccion7() {
                 setTablaUsuarios(response.data.users);
             }).catch(error => {
                 console.log(error);
-                setTimeout(() => {
-                    mostrarAlertaDeConexion()
-                }, 2000)
+                ShowAssistanceAlert("ERROR INESPERADO", "SI PERSIGUE ESTE ERROR, FAVOR DE REPORTARLO, <br><br><strong>DETALLES:</strong><br>" + error, "error", undefined)
             })
     }
 
@@ -74,20 +72,36 @@ function BodyPRSeccion7() {
         }
     }, []);
 
-    const mostrarAlertaDeConexion = () => {
+    const ShowAssistanceAlert= (tittle, message, status, type) => {
         Swal.fire({
-            title: "<div class='rojoClaro'>HA OCURRIDO UN ERROR DE CONEXIÓN</div>",
-            // text: "FALTA UN CAMPO POR LLENAR",
-            html: "<div class='bold-text rojoClaro'><b>VOLVIENDO A ESTABLECER CONEXIÓN...</div>",
-            icon: "info",
-            iconColor: "#7a0808",
-            confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
-            confirmButtonColor: '#D92D2D',
-            footer: "<div class='rojoClaro'><b>LO SENTIMOS. SI ESTE ERROR PERSISTE, POR FAVOR REPORTE ESTE PROBLEMA<b></div>"
-            // timer: 1000,
+            title: `${tittle.toUpperCase()}`,
+            html: `<div class='bold-text'>${message.toUpperCase()}</div>`,
+            position: 'top-end',
+            icon: `${(status)}`,
+            iconColor: 
+                `${(status=="success")
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`,
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "<div class='bold-confirm-register'>ACEPTAR</div>" : "<div class='bold-confirm-register-salida'>ACEPTAR</div>")
+                : ("<div class='bold-confirm-exit'>ACEPTAR</div>")}`,
+            confirmButtonColor: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`
         })
     }
-
+    
     const registrarAsistEntrOrSal = async (matricula, tipoAsistencia, hora, index) => {
         const data = {
             matricula: matricula,
@@ -101,58 +115,24 @@ function BodyPRSeccion7() {
                 if (response.data.status != '0') {
                     console.log(response.data)
                     peticionGet();
-                    Swal.fire({
-                        title:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `ENTRADA GUARDADA`
-                                : `SALIDA GUARDADA`}`,
-                        html:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `<div class='bold-text'>Entrada guardada correctamente a la hora: <br><strong>${hora}</strong></div>`
-                                : `<div class='bold-text'>Salida guardada correctamente a la hora: <br><strong>${hora}</strong></div>`}`,
-                        position: 'top-end',
-                        icon: "success",
-                        iconColor:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
-                                : "#149da7"}`,
-                        background: "#262626",
-                        color: "#BAC2C9",
-                        toast: true,
-                        timerProgressBar: true,
-                        timer: 5000,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        },
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
-                                : "#149da7"}`,
-                    })
+                    if(tipoAsistencia.toLowerCase()=="entrada")
+                        ShowAssistanceAlert("ENTRADA GUARDADA", `<strong>Entrada guardada</strong> correctamente a la hora: <br><strong>${hora}</strong>`, "success", "entrada")
+                    else if(tipoAsistencia.toLowerCase()=="salida")
+                        ShowAssistanceAlert("SALIDA GUARDADA", `<strong>Salida guardada</strong> correctamente a la hora: <br><strong>${hora}</strong>`, "success", "salida")
                     if(tipoAsistencia.toLowerCase() === "salida"){
                         setStatusFecha(true)
-                        setTimeout(() => {
-                            setStatusFecha(false)
-                        }, 4800)
+                        setTimeout(() => { setStatusFecha(false) }, 4800)
                     }else{
                         setStatusAsistencias(true)
-                        setTimeout(() => {
-                            setStatusAsistencias(false)
-                        }, 4800)
+                        setTimeout(() => { setStatusAsistencias(false) }, 4800)
                     }
                     setIndexActualTabla(index)
                 } else {
-                    console.log(response.data)
-                    Swal.fire({
-                        title:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? `ENTRADA NO GUARDADA`
-                                : `SALIDA NO GUARDADA`}`,
-                        html: `<div class='bold-text'><strong>${response.data.mensaje}</div>
-                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2}</strong></div>` : ""}`,
-                        icon: "error",
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor:
-                            `${(tipoAsistencia.toLowerCase() === "entrada") ? "#4CAF50"
-                                : "#149da7"}`,
-                    })
+                    // console.log(response.data)
+                    if(tipoAsistencia.toLowerCase()=="entrada")
+                        ShowAssistanceAlert("ENTRADA NO GUARDADA", `<strong>DETALLES: </strong><br>${response.data.mensaje}`, "error", undefined)
+                    else if(tipoAsistencia.toLowerCase()=="salida")
+                        ShowAssistanceAlert("SALIDA NO GUARDADA", `<strong>DETALLES: </strong><br>${response.data.mensaje}`, "error", undefined)
                 }
             })
             .catch(error => {
@@ -167,10 +147,11 @@ function BodyPRSeccion7() {
                     : '¿REGISTRAR SALIDA?'}`
             ,
             html:
-                `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-text'>Estas por poner la <strong>asistencia de entrada.</strong></div>"
-                    : "<div class='bold-text'>Estas por poner la <strong>asistencia de salida.</strong></div>"}`
+                `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-text'>ESTAR POR PONER LA <strong>ASISTENCIA DE ENTRADA.</strong></div>"
+                    : "<div class='bold-text'>ESTAS POR PONER LA <strong>ASISTENCIA DE SALIDA.</strong></div>"}`
             ,
             icon: 'question',
+            iconColor: (tipoAsistencia.toLowerCase()=="entrada" ? "#4CAF50" : "#149da7"),
             showCancelButton: true,
             confirmButtonText:
                 `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-confirm-register'>DAR ENTRADA</div>"
@@ -185,22 +166,15 @@ function BodyPRSeccion7() {
             if (result.isConfirmed) {
                 registrarAsistEntrOrSal(matricula, tipoAsistencia, hora, index)
             } else if (
-                /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire({
-                    title: "OPERACIÓN CANCELADA",
-                    html:
-                        `${(tipoAsistencia.toLowerCase() === "entrada") ? "<div class='bold-text'>La operación para guardar la <strong>asistencia de entrada</strong><br>ha sido cancelada.</div>"
-                            : "<div class='bold-text'>La operación para guardar la <strong>asistencia de salida</strong>, <br>ha sido cancelada.</div>"}`,
-                    icon: "warning",
-                    confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
-                    confirmButtonColor: "#D92D2D",
-                })
+            if (tipoAsistencia.toLowerCase()=="entrada")
+                ShowAssistanceAlert("OPERACIÓN CANCELADA", `<strong>DETALLES: </strong><br>La operación para guardar la <strong>asistencia de entrada</strong> ha sido cancelada`, "error", undefined)
+            else if (tipoAsistencia.toLowerCase()=="salida")
+                ShowAssistanceAlert("OPERACIÓN CANCELADA", `<strong>DETALLES: </strong><br>La operación para guardar la <strong>asistencia de salida</strong> ha sido cancelada`, "error", undefined)
             }
         })
     }
-
 
     return (
         <div className="prs7-main">

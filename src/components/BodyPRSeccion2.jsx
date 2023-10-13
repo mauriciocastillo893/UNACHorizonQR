@@ -206,7 +206,7 @@ function BodyPRSeccion2() {
                     peticionGet();
                     Swal.fire({
                         title: "SALIDA GUARDADA",
-                        html:`<div class='bold-text'>Salida guardada correctamente a la hora: <br><strong>${hora}</strong></div>`,
+                        html:`<div class='bold-text'><strong>SALIDA GUARDADA</strong> CORRECTAMENTE A LA HORA DE: <br><strong>${hora}</strong></div>`,
                         position: 'top-end',
                         icon: "success",
                         iconColor:"#149da7",
@@ -225,8 +225,8 @@ function BodyPRSeccion2() {
                 } else {
                     Swal.fire({
                         title: "SALIDA NO GUARDADA",
-                        html: `<div class='bold-text'><strong>${response.data.mensaje}</div>
-                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2}</strong></div>` : ""}`,
+                        html: `<div class='bold-text'><strong>${response.data.mensaje.toUpperCase()}</div>
+                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2.toUpperCase()}</strong></div>` : ""}`,
                         icon: "error",
                         confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
                         confirmButtonColor: "#149da7"
@@ -241,7 +241,7 @@ function BodyPRSeccion2() {
     const registrarAsistencia = (matricula, hora) => {
         Swal.fire({
             title: '¿REGISTRAR SALIDA?',
-            html: "<div class='bold-text'>Estas por poner la <strong>asistencia de salida.</strong></div>",
+            html: "<div class='bold-text'>ESTAS POR PONER LA <strong>ASISTENCIA DE SALIDA.</strong></div>",
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: "<div class='bold-confirm-register-salida'>DAR SALIDA</div>",
@@ -258,7 +258,7 @@ function BodyPRSeccion2() {
             ) {
                 Swal.fire({
                     title: "OPERACIÓN CANCELADA",
-                    html: "<div class='bold-text'>La operación para guardar la <strong>asistencia de salida</strong>, <br>ha sido cancelada.</div>",
+                    html: "<div class='bold-text'>LA OPERACIÓN PARA GUARDAR LA <strong>ASISTENCIA DE SALIDA</strong>, HA SIDO CANCELADA.</div>",
                     icon: "warning",
                     confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
                     confirmButtonColor: "#D92D2D",

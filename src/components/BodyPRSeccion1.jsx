@@ -16,7 +16,7 @@ function BodyPRSeccion1() {
     const totalUsuarios = Object.keys(usuarios).length
 
     const peticionGet = async () => {
-        await axios.get("http://localhost:5000/users")
+        await axios.get("http://localhost:5000/allVisitors")
             .then(response => {
                 console.log(response.data.users);
                 setUsuarios(response.data.users);
@@ -41,8 +41,7 @@ function BodyPRSeccion1() {
             if ((
                 elemento.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
                 elemento.apellido_materno.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
-                elemento.apellido_paterno.toLowerCase().includes(terminoBusqueda.toLowerCase())) &&
-                elemento.tipo_de_estudiante.toLowerCase().includes("visitante")
+                elemento.apellido_paterno.toLowerCase().includes(terminoBusqueda.toLowerCase()))
             ) {
                 return true; // Devuelve true si el elemento coincide con la búsqueda
             }
@@ -109,7 +108,6 @@ function BodyPRSeccion1() {
                         </thead>
                         <tbody>
                             {usuarios && usuarios
-                                .filter(usuario => usuario.tipo_de_estudiante.toLowerCase() === "visitante")
                                 .map(usuario => (
                                     <tr key={usuario.id} className="prs1-tr-body">
                                         <td className='prs1-td'>{usuario.tipo_de_estudiante}</td>

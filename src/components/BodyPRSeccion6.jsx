@@ -11,14 +11,13 @@ function BodyPRSeccion6() {
     const [busqueda, setBusqueda] = useState("");
     const [status, setStatus] = useState("online");
     const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
-    const [usuariosEmergencia, setUsuariosEmergencia] = useState({}); // Estado para almacenar el diccionario de usuarios
+    const [usuariosFusionar, setUsuariosFusionar] = useState({}); // Estado para almacenar el diccionario de usuarios
 
     const totalUsuarios = usuarios.length;
-    const [statusBoton, setStatusBoton] = useState(false)
     const navigate = useNavigate();
 
     const peticionGet = async () => {
-        await axios.get("http://localhost:5000/allUsers")
+        await axios.get("http://localhost:5000/allVisitors")
             .then(response => {
                 console.log(response.data.users)
                 setUsuarios(response.data.users);
@@ -29,7 +28,7 @@ function BodyPRSeccion6() {
     }
 
     const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
-        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
+        setUsuariosFusionar(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
     };
 
     const handleChange = e => {
@@ -80,7 +79,7 @@ function BodyPRSeccion6() {
     };
 
     const removeUserFromEmergency = (matricula) => {
-        setUsuariosEmergencia(prevUsuarios => {
+        setUsuariosFusionar(prevUsuarios => {
             const nuevosUsuarios = { ...prevUsuarios };
             delete nuevosUsuarios[matricula]; // Eliminamos al usuario del diccionario
             return nuevosUsuarios;
@@ -90,35 +89,16 @@ function BodyPRSeccion6() {
     const enviarPersonas = () => {
         console.log("Usuarios Seleccionados:");
         [...usuariosSeleccionados].forEach(matricula => {
-            const usuario = usuariosEmergencia[matricula];
+            const usuario = usuariosFusionar[matricula];
             console.log("Nombre:", usuario.usuario, usuario.apellido_materno, usuario.apellido_paterno);
             console.log("Matrícula:", usuario.matricula);
             console.log("---------------");
         });
-        const matriculas = Object.keys(usuariosEmergencia);
-        console.log("Array", usuariosEmergencia)
+        const matriculas = Object.keys(usuariosFusionar);
+        console.log("Array", usuariosFusionar)
         console.log("Selected: " + JSON.stringify(matriculas));
-        navigate("/salidaEmergencia", { state: { usuariosEmergencia } })
+        navigate("/unirUsuarios", { state: { usuariosFusionar } })
     };
-
-    const enviarTodasLasPersonas = () => {
-        marcarTodosLosCheckboxes(); // Marcar todos los checkboxes primero
-        setStatusBoton(true);
-        setTimeout(() => {
-            const statusTodosLosUsuarios = true // Cargar los datos antes de enviarlos
-            navigate("/salidaEmergencia", { state: { statusTodosLosUsuarios } });
-        }, 1000); // Esperar 2 segundos antes de navegar
-    };
-
-    const addUser = (matricula) => {
-        navigate(`/seccion21?matricula=${matricula}`);
-    }
-
-    setTimeout(() => {
-        if (emergencyDirect) {
-            enviarTodasLasPersonas();
-        }
-    }, 1000)
 
     useEffect(() => {
         peticionGet();
@@ -237,7 +217,7 @@ function BodyPRSeccion6() {
                     <p className="prs6-subtitle-second">{status}</p>
                 </div>
             </div>
-            <div id="prs6-table-headboard">Todos los usuarios del autoacceso</div>
+            <div id="prs6-table-headboard">Todos los visitantes del autoacceso</div>
             {(totalUsuarios) ? <div id="prs6-tabla-all">
                 <table id='prs6-table'>
                     <thead id='prs6-th'>
@@ -253,15 +233,15 @@ function BodyPRSeccion6() {
                     </thead>
                     <tbody>
                         {usuarios && usuarios
-                        .map((usuario) => (
+                        .map((usuario, index) => (
                             <tr key={usuario.id} className="prs6-tr-body">
                                 <td className='prs6-td'>{usuario.id}</td>
-                                <td className='prs6-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
+                                <td className='prs6-td'>{usuario.nombre.toUpperCase()+ " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs6-td'>{usuario.genero}</td>
                                 <td className='prs6-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : usuario.tipo_de_estudiante.toUpperCase()}</td>
                                 <td className='prs6-td'>{usuario.asistencias}</td>
                                 <td className='prs6-td'>{usuario.ultima_salida_fecha}</td>
-                                <td className='prs6-td'>{
+                                <td className='prs6-td' onClick={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}>{
                                     <input
                                         type="checkbox"
                                         className="prs6-cb"
@@ -279,7 +259,7 @@ function BodyPRSeccion6() {
             <div className="prs6-bottons">
                 <button className="prs6-botton hoverable" onClick={() => { mostrarAlerta(); }}>Fusionar a: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
                 <button className="prs6-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
-                <button className={(!statusBoton) ? "prs6-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={statusBoton} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosEmergencia({}); }}>ELIMINAR OPCIONES</button>
+                <button className={(usuariosFusionar) ? "prs6-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={!usuariosFusionar} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosFusionar({}); }}>ELIMINAR OPCIONES</button>
             </div>
         </div>
     );
