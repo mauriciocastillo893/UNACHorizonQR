@@ -38,13 +38,9 @@ function BodyPRSeccion6_1() {
             .then(response => {
                 if (response.data.status !== '0') {
                     setUsuariosFusionar(response.data.matriculas)
-                    // const matriculas = response.data.matriculas.map(matriculaObj => matriculaObj.matricula);
-                    // setMatriculasSeleccionadas(matriculas);
-                    console.log(response.data);
                     getTotalMinutes(response.data.matriculas)
                     getTotalAssistance(response.data.matriculas)
-
-                    getNewIDUser(response.data.more_data[1])
+                    // getNewIDUser(response.data.more_data[1])
                 } else {
                     ShowSweetAlert("NO HAY NADA QUE MOSTRAR", "OCURRIÓ UN ERROR AL MOMENTO DE CARGAR LOS DATOS", "error")
                     console.log(response.data);
@@ -54,13 +50,19 @@ function BodyPRSeccion6_1() {
             })
     }
     
-    const getNewIDUser = async (lastIDUser) => {
-        await axios.post("http://localhost:5000/generateNewIDUser", {data: lastIDUser})
+    const getNewIDUser = async () => {
+        await axios.post("http://localhost:5000/generateNewIDUser", {matriculas: postUsuariosFusionar})
             .then(response => {
                 if (response.data.status !== '0') {
+                    console.log(postUsuariosFusionar.length)
                     console.log(response.data);
-                    setNewIDUser(response.data.IDUser)
-                    ShowSweetAlert("MATRICULA ENCONTRADA", "NUEVA MATRICULA DISPONIBLE: <br><strong>" + response.data.IDUser, "success")
+                    if(postUsuariosFusionar.length!==10){
+                        setNewIDUser(response.data.IDUser)
+                        ShowSweetAlert("MATRICULA ENCONTRADA", "NUEVA MATRICULA DISPONIBLE: <br><strong>" + response.data.IDUser, "success")
+                    }else{
+                        setNewIDUser(response.data.IDUser)
+                        ShowSweetAlert("MATRICULA SIN MODIFICACIÓN", "LA MATRICULA SE MANTIENE IGUAL: <br><strong>NO HAY BIFURCACIÓN", "success")
+                    }
                 } else {
                     ShowSweetAlert("ERROR INESPERADO", "UN ERROR CRÍTICO HA OCURRIDO, FAVOR DE REPORTAR ESTE ERROR", "error")
                     console.log(response.data);
@@ -90,7 +92,11 @@ function BodyPRSeccion6_1() {
             await axios.post("http://localhost:5000/sendFork", data)
                 .then(response => {
                     if (response.data.status !== '0') {
-                        ShowSweetAlert(response.data.message.toUpperCase(), "MATRICULA BIFURCADA: <br><strong>" + response.data.IDUser, "success")
+                        if(usuariosFusionar.length == 1){
+                            ShowSweetAlert("MATRICULA ACTUALIZADA", "DATOS DE MATRICULA ACTUALIZADOS CORRECTAMENTE", "success")
+                        }else{
+                            ShowSweetAlert(response.data.message.toUpperCase(), response.data.IDUser, "success")
+                        }
                         console.log("Forked", response.data)
                         navigate("/acoplarUsuario")
                     } else {
@@ -147,6 +153,7 @@ function BodyPRSeccion6_1() {
 
     useEffect(() => {
         alumnosBuscar()
+        getNewIDUser()
         window.scrollTo(0, 0);
     }, []);
 
@@ -249,7 +256,7 @@ function BodyPRSeccion6_1() {
                     </div>
                     <div className={whatIReading!="" ? `waiting_info` : `waiting_info wi-none`}>{whatIReading!="" ? whatIReading : ''}</div>
                     <div className="prs6_1-bottons">
-                        <button className={(usuariosFusionar.length !== 0) ? "prs6_1-botton2 hoverable" : "prs3_b-disabled"} onClick={() => { console.log(usuariosFusionar); sendFork(); }} disabled={usuariosFusionar.length == 0}>FUSION NERO ZEN</button>
+                        <button className={(usuariosFusionar.length !== 0) ? "prs6_1-botton2 hoverable" : "prs3_b-disabled"} onClick={() => { console.log(usuariosFusionar); sendFork(); }} disabled={usuariosFusionar.length == 0}>BIFURCAR</button>
                     </div>
                 </div>
             </div>

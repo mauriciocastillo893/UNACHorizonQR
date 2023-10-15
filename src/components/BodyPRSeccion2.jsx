@@ -7,32 +7,26 @@ import FirstPartMain from "./Tools/FirstPartMain";
 import Hora from "./Clock/Hora"
 
 function BodyPRSeccion2() {
-    // Objeto de usuarios
     const [usuarios, setUsuarios] = useState([]);
-    // Tabla de objeto de usuarios
     const [tablaUsuarios, setTablaUsuarios] = useState([]);
-    // Busqueda de nombre de usuarios
     const [busqueda, setBusqueda] = useState("");
-    // Estatus de si se encontro o no el usuario
     const [status, setStatus] = useState("online");
     const [usuariosSeleccionados, setUsuariosSeleccionados] = useState(new Set());
-
     const [usuariosEmergencia, setUsuariosEmergencia] = useState({}); // Estado para almacenar el diccionario de usuarios
-    // const [usuariosTotales, setUsuariosTotales] = useState({});
-    // Función para agregar un usuario al diccionario
-    const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
-        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
-    };
-
-    // const totalUsuarios = usuarios ? Object.keys(usuarios).length : 0;
     const totalUsuarios = usuarios.length;
-
     const [statusBoton, setStatusBoton] = useState(false)
-
     const queryParams = new URLSearchParams(location.search);
-    const emergencyDirect = Boolean(queryParams.get("emergencyDirect"));
+    var emergencyDirect = Boolean(queryParams.get("emergencyDirect"));
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        peticionGet();
+        window.scrollTo(0, 0)
+        if (busqueda === "") {
+            setStatus("online");
+        }
+    }, []);
 
     const peticionGet = async () => {
         await axios.get("http://localhost:5000/usuariosEnElCCA")
@@ -44,6 +38,10 @@ function BodyPRSeccion2() {
                 console.log(error);
             })
     }
+
+    const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
+        setUsuariosEmergencia(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
+    };
 
     const handleChange = e => {
         setBusqueda(e.target.value);
@@ -120,12 +118,12 @@ function BodyPRSeccion2() {
     };
 
     const enviarTodasLasPersonas = () => {
-        marcarTodosLosCheckboxes(); // Marcar todos los checkboxes primero
-        setStatusBoton(true);
-        setTimeout(() => {
-            const statusTodosLosUsuarios = true // Cargar los datos antes de enviarlos
-            navigate("/salidaEmergencia", { state: { statusTodosLosUsuarios } });
-        }, 1000); // Esperar 2 segundos antes de navegar
+            marcarTodosLosCheckboxes(); // Marcar todos los checkboxes primero
+            setStatusBoton(true);
+            setTimeout(() => {
+                    const statusTodosLosUsuarios = true // Cargar los datos antes de enviarlos
+                    navigate("/salidaEmergencia", { state: { statusTodosLosUsuarios } });
+            }, 1000); // Esperar 2 segundos antes de navegar
     };
 
 
@@ -139,13 +137,35 @@ function BodyPRSeccion2() {
         }
     }, 1000)
 
-    useEffect(() => {
-        peticionGet();
-        window.scrollTo(0, 0)
-        if (busqueda === "") {
-            setStatus("online");
-        }
-    }, []);
+    const ShowAssistanceAlert= (tittle, message, status, type) => {
+        Swal.fire({
+            title: `${tittle.toUpperCase()}`,
+            html: `<div class='bold-text'>${message.toUpperCase()}</div>`,
+            position: 'top-end',
+            icon: `${(status)}`,
+            iconColor: 
+                `${(status=="success")
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`,
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "<div class='bold-confirm-register'>ACEPTAR</div>" : "<div class='bold-confirm-register-salida'>ACEPTAR</div>")
+                : ("<div class='bold-confirm-exit'>ACEPTAR</div>")}`,
+            confirmButtonColor: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`
+        })
+    }
 
     function formatearDatos(datosOriginales) {
         const pares = datosOriginales.split(',');
@@ -181,14 +201,7 @@ function BodyPRSeccion2() {
 
     const mostrarAlerta = () => {
         if (usuariosSeleccionados.size < 1) {
-            Swal.fire({
-                title: "HA OCURRIDO UN PROBLEMA",
-                html: "<div class='bold-text'>DEBE SELECCIONAR AL MENOS UNA PERSONA PARA CONTINUAR</div>",
-                icon: "info",
-                iconColor: "#FAA300",
-                confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-                confirmButtonColor: '#262626',
-            })
+            ShowAssistanceAlert("SALIDAS NO ENVIADAS", `<strong>DETALLES:</strong><br>Debes seleccionar al menos un usuario para continuar`, "error", undefined)
         } else {
             enviarPersonas();
         }
@@ -204,33 +217,9 @@ function BodyPRSeccion2() {
                 if (response.data.status != '0') {
                     console.log(response.data)
                     peticionGet();
-                    Swal.fire({
-                        title: "SALIDA GUARDADA",
-                        html:`<div class='bold-text'><strong>SALIDA GUARDADA</strong> CORRECTAMENTE A LA HORA DE: <br><strong>${hora}</strong></div>`,
-                        position: 'top-end',
-                        icon: "success",
-                        iconColor:"#149da7",
-                        background: "#262626",
-                        color: "#BAC2C9",
-                        toast: true,
-                        timerProgressBar: true,
-                        timer: 5000,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        },
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor:"#149da7"
-                    })
+                    ShowAssistanceAlert("SALIDA GUARDADA", `<strong>Salida guardada</strong> correctamente a la hora: <br><strong>${hora}</strong>`, "success", "salida")
                 } else {
-                    Swal.fire({
-                        title: "SALIDA NO GUARDADA",
-                        html: `<div class='bold-text'><strong>${response.data.mensaje.toUpperCase()}</div>
-                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2.toUpperCase()}</strong></div>` : ""}`,
-                        icon: "error",
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor: "#149da7"
-                    })
+                    ShowAssistanceAlert("SALIDA NO GUARDADA", `<strong>DETALLES: </strong><br>${response.data.mensaje}`, "error", undefined)
                 }
             })
             .catch(error => {
@@ -253,16 +242,9 @@ function BodyPRSeccion2() {
             if (result.isConfirmed) {
                 registrarAsistEntrOrSal(matricula, hora)
             } else if (
-                /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire({
-                    title: "OPERACIÓN CANCELADA",
-                    html: "<div class='bold-text'>LA OPERACIÓN PARA GUARDAR LA <strong>ASISTENCIA DE SALIDA</strong>, HA SIDO CANCELADA.</div>",
-                    icon: "warning",
-                    confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
-                    confirmButtonColor: "#D92D2D",
-                })
+                ShowAssistanceAlert("OPERACIÓN CANCELADA", `<strong>DETALLES: </strong><br>LA OPERACIÓN PARA GUARDAR LA SALIDA DE ASISTENCIA FUE CANCELADA`, "error", undefined)
             }
         })
     }
@@ -310,7 +292,7 @@ function BodyPRSeccion2() {
                                 <td className='prs2-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs2-td'>{usuario.genero}</td>
                                 <td className='prs2-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : formatearDatos(usuario.idiomas)}</td>
-                                <td className='prs2-td'>{
+                                <td className='prs2-td'  onClick={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}>{
                                     <input
                                         type="checkbox"
                                         className="prs2-cb"

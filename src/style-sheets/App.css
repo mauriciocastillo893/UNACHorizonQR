@@ -77,6 +77,12 @@ table {
   color: #510303;
 }
 
+.bold-confirm-info {
+  font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  color: #FAA300;
+}
+
 .bold-cancel {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 700;

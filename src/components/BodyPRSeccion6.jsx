@@ -27,6 +27,36 @@ function BodyPRSeccion6() {
             })
     }
 
+    const ShowAssistanceAlert= (tittle, message, status, type) => {
+        Swal.fire({
+            title: `${tittle.toUpperCase()}`,
+            html: `<div class='bold-text'>${message.toUpperCase()}</div>`,
+            position: 'top-end',
+            icon: `${(status)}`,
+            iconColor: 
+                `${(status=="success")
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`,
+            background: "#262626",
+            color: "#BAC2C9",
+            toast: true,
+            timerProgressBar: true,
+            timer: 5000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            confirmButtonText: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "<div class='bold-confirm-register'>ACEPTAR</div>" : "<div class='bold-confirm-register-salida'>ACEPTAR</div>")
+                : ("<div class='bold-confirm-exit'>ACEPTAR</div>")}`,
+            confirmButtonColor: 
+                `${(status=="success") 
+                ? (type=="entrada" ? "#4CAF50" : "#149da7")
+                : ("#D92D2D")}`
+        })
+    }
+
     const addUserToEmergency = (matricula, usuario, apellido_materno, apellido_paterno) => {
         setUsuariosFusionar(prevUsuarios => ({ ...prevUsuarios, [matricula]: { matricula, usuario, apellido_materno, apellido_paterno } }));
     };
@@ -110,90 +140,10 @@ function BodyPRSeccion6() {
 
     const mostrarAlerta = () => {
         if (usuariosSeleccionados.size < 1) {
-            Swal.fire({
-                title: "HA OCURRIDO UN PROBLEMA",
-                html: "<div class='bold-text'>DEBE SELECCIONAR AL MENOS UNA PERSONA PARA CONTINUAR</div>",
-                icon: "info",
-                iconColor: "#FAA300",
-                confirmButtonText: "<div class='bold-confirm'>ACEPTAR</div>",
-                confirmButtonColor: '#262626',
-            })
+            ShowAssistanceAlert("BIFURCACIÓN NO ENVIADA", `<strong>DETALLES:</strong><br>Debes seleccionar al menos un usuario para continuar`, "error", undefined)
         } else {
             enviarPersonas();
         }
-    }
-
-    const registrarAsistEntrOrSal = async (matricula, hora) => {
-        const data = {
-            matricula: matricula,
-            hora: hora,
-        };
-        axios.post('http://localhost:5000/agregarSalida', data)
-            .then(response => {
-                if (response.data.status != '0') {
-                    console.log(response.data)
-                    peticionGet();
-                    Swal.fire({
-                        title: "SALIDA GUARDADA",
-                        html:`<div class='bold-text'>Salida guardada correctamente a la hora: <br><strong>${hora}</strong></div>`,
-                        position: 'top-end',
-                        icon: "success",
-                        iconColor:"#149da7",
-                        background: "#262626",
-                        color: "#BAC2C9",
-                        toast: true,
-                        timerProgressBar: true,
-                        timer: 5000,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        },
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor:"#149da7"
-                    })
-                } else {
-                    Swal.fire({
-                        title: "SALIDA NO GUARDADA",
-                        html: `<div class='bold-text'><strong>${response.data.mensaje}</div>
-                            ${(response.data.mensaje2) ? `${" " + response.data.mensaje2}</strong></div>` : ""}`,
-                        icon: "error",
-                        confirmButtonText: "<div class='bold-confirm-register'>ACEPTAR</div>",
-                        confirmButtonColor: "#149da7"
-                    })
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    const registrarAsistencia = (matricula, hora) => {
-        Swal.fire({
-            title: '¿REGISTRAR SALIDA?',
-            html: "<div class='bold-text'>Estas por poner la <strong>asistencia de salida.</strong></div>",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: "<div class='bold-confirm-register-salida'>DAR SALIDA</div>",
-            confirmButtonColor: "#149da7",
-            cancelButtonText: "<div class='bold-confirm-exit'>CANCELAR</div>",
-            cancelButtonColor: "#D92D2D",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                registrarAsistEntrOrSal(matricula, hora)
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                Swal.fire({
-                    title: "OPERACIÓN CANCELADA",
-                    html: "<div class='bold-text'>La operación para guardar la <strong>asistencia de salida</strong>, <br>ha sido cancelada.</div>",
-                    icon: "warning",
-                    confirmButtonText: "<div class='bold-confirm-exit'>ACEPTAR</div>",
-                    confirmButtonColor: "#D92D2D",
-                })
-            }
-        })
     }
 
     return (
@@ -235,7 +185,7 @@ function BodyPRSeccion6() {
                         {usuarios && usuarios
                         .map((usuario, index) => (
                             <tr key={usuario.id} className="prs6-tr-body">
-                                <td className='prs6-td'>{usuario.id}</td>
+                                <td className='prs6-td'>{usuario.matricula}</td>
                                 <td className='prs6-td'>{usuario.nombre.toUpperCase()+ " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs6-td'>{usuario.genero}</td>
                                 <td className='prs6-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : usuario.tipo_de_estudiante.toUpperCase()}</td>
@@ -257,7 +207,7 @@ function BodyPRSeccion6() {
 
                 : <div className="prs6-no-datos"><p className="prs6-p">NO HAY DATOS PARA MOSTRAR</p></div>}
             <div className="prs6-bottons">
-                <button className="prs6-botton hoverable" onClick={() => { mostrarAlerta(); }}>Fusionar a: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
+                <button className="prs6-botton hoverable" onClick={() => { mostrarAlerta(); }}>Bifurcar a: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
                 <button className="prs6-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
                 <button className={(usuariosFusionar) ? "prs6-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={!usuariosFusionar} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosFusionar({}); }}>ELIMINAR OPCIONES</button>
             </div>
