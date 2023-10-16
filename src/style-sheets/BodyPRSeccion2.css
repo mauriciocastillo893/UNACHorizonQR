@@ -138,6 +138,7 @@
 }
 
 .prs2-td .prs2-cb{
+    cursor: pointer;
     transform: scale(2);
 }
 

@@ -275,7 +275,7 @@ function BodyPRSeccion2() {
                 <table id='prs2-table'>
                     <thead id='prs2-th'>
                         <tr id='prs2-tr'>
-                            <th className='prs2-th-1'>NÚM</th>
+                            <th className='prs2-th-1'>MATRICULA</th>
                             <th className='prs2-th-2'>NOMBRE COMPLETO</th>
                             <th className='prs2-th-3'>GÉNERO</th>
                             <th className='prs2-th-4'>IDIOMA Y NIVEL</th>
@@ -288,7 +288,7 @@ function BodyPRSeccion2() {
                         {usuarios && usuarios
                         .map((usuario) => (
                             <tr key={usuario.id} className="prs2-tr-body">
-                                <td className='prs2-td'>{usuario.id}</td>
+                                <td className='prs2-td'>{usuario.matricula}</td>
                                 <td className='prs2-td'>{usuario.nombre.toUpperCase() + " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs2-td'>{usuario.genero}</td>
                                 <td className='prs2-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : formatearDatos(usuario.idiomas)}</td>

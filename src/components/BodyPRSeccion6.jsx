@@ -4,6 +4,9 @@ import '../style-sheets/BodyPRSeccion6.css';
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import FirstPartMain from "./Tools/FirstPartMain";
+import { RiUserUnfollowFill } from "react-icons/ri";
+import { FaSync } from "react-icons/fa";
+
 
 function BodyPRSeccion6() {
     const [usuarios, setUsuarios] = useState([]);
@@ -25,6 +28,40 @@ function BodyPRSeccion6() {
             }).catch(error => {
                 console.log(error);
             })
+    }
+
+    const deletePetition=async(IDUserToDelete)=>{
+        await axios.post("http://localhost:5000/eliminarVisitante", {matricula: IDUserToDelete})
+        .then(response => {
+            if(response.data.status==="1"){
+                ShowAssistanceAlert("MATRICULA ELIMINADA", `${response.data.message}`, "success", "entrada")
+                peticionGet()
+            }else{
+                ShowAssistanceAlert("ERROR INESPERADO", "UN ERROR CRÍTICO HA OCURRIDO, SI PERSISTE ESTE ERROR FAVOR DE REPORTARLO", "error", "entrada")
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    const deleteByIDUser =(IDUserToDelete, name, firstLastName, secondLastName) => {
+        Swal.fire({
+            title: `¿DESEA ELIMINAR AL USUARIO ${IDUserToDelete}?`,
+            html: `<div class='bold-text'>ESTAS POR ELIMINAR A: <br><strong> ${name + " " + firstLastName + " " + secondLastName}</strong><br><br><strong>ESTA ACCIÓN ES IRREVERSIBLE</strong> </div>`,
+            icon: 'question',
+            iconColor: "#D92D2D",
+            showCancelButton: true,
+            confirmButtonText: "<div class='bold-confirm-register'>ELIMINAR</div>",
+            confirmButtonColor: "#4CAF50",
+            cancelButtonText: "<div class='bold-confirm-exit'>CANCELAR</div>",
+            cancelButtonColor: "#D92D2D",
+        }).then((result) => {
+            if (!result.isConfirmed) {
+                ShowAssistanceAlert("OPERACIÓN CANCELADA", `<strong>DETALLES: </strong><br>OPERACIÓN PARA ELIMINAR A LA MATRICULA <strong>${IDUserToDelete}</strong> DESCARTADA`, "error", undefined)
+            }else{
+                deletePetition(IDUserToDelete)
+            }
+        })
     }
 
     const ShowAssistanceAlert= (tittle, message, status, type) => {
@@ -179,6 +216,7 @@ function BodyPRSeccion6() {
                             <th className='prs6-th-5'>ASISTENCIAS TOTALES</th>
                             <th className='prs6-th-6'>ÚLTIMA VISITA</th>
                             <th className='prs6-th-7'>MARCAR PARA FUSIONAR</th>
+                            <th className='prs6-th-8'>ELIMINAR</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,7 +226,7 @@ function BodyPRSeccion6() {
                                 <td className='prs6-td'>{usuario.matricula}</td>
                                 <td className='prs6-td'>{usuario.nombre.toUpperCase()+ " " + usuario.apellido_materno.toUpperCase() + " " + usuario.apellido_paterno.toUpperCase()}</td>
                                 <td className='prs6-td'>{usuario.genero}</td>
-                                <td className='prs6-td'>{(usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : usuario.tipo_de_estudiante.toUpperCase()}</td>
+                                <td className='prs6-td'>{((usuario.tipo_de_estudiante.toLowerCase() == 'visitante') ? 'NO INSCRITO [VISITANTE]' : usuario.tipo_de_estudiante.toUpperCase())}<strong>{(usuario.activo) ? <p className="verdeClaro2">{"( ACTIVO )"}</p> : <p className="rojoClaro2">{"( INACTIVO )"}</p>}</strong></td>
                                 <td className='prs6-td'>{usuario.asistencias}</td>
                                 <td className='prs6-td'>{usuario.ultima_salida_fecha}</td>
                                 <td className='prs6-td' onClick={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}>{
@@ -199,6 +237,11 @@ function BodyPRSeccion6() {
                                         onChange={() => handleCheckboxChange(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}
                                     ></input>
                                 }</td>
+                                <td className='prs6-td' onClick={() => deleteByIDUser(usuario.matricula, usuario.nombre, usuario.apellido_materno, usuario.apellido_paterno)}>{
+                                    <div className="riuserunfollowfill">
+                                        <RiUserUnfollowFill/>
+                                    </div>
+                                }</td>
                             </tr>
                         ))}
                     </tbody>
@@ -208,7 +251,7 @@ function BodyPRSeccion6() {
                 : <div className="prs6-no-datos"><p className="prs6-p">NO HAY DATOS PARA MOSTRAR</p></div>}
             <div className="prs6-bottons">
                 <button className="prs6-botton hoverable" onClick={() => { mostrarAlerta(); }}>Bifurcar a: {usuariosSeleccionados.size}{(usuariosSeleccionados.size == 1) ? " persona" : " personas"}</button>
-                <button className="prs6-botton delete hoverable" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
+                <button className="prs6-botton delete hoverable bs-exit-s2" onClick={() => { peticionGet(); handleClearClick(); }}>LIMPIAR BUSCADOR</button>
                 <button className={(usuariosFusionar) ? "prs6-botton hoverable bs-exit-s2" : "prs2_b-disabled"} disabled={!usuariosFusionar} onClick={() => { setUsuariosSeleccionados(new Set()); setUsuariosFusionar({}); }}>ELIMINAR OPCIONES</button>
             </div>
         </div>

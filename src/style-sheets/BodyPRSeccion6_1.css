@@ -10,6 +10,14 @@
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.prs6-wi{
+    align-self: flex-start;
+    grid-area: 1 / 1 / 2 / 2;
+    position: relative;
+    top: -65%;
+    width: 100%;
+}
+
 .prs6_1-second-part{
     /* background-color: #e900fa; */
     width: 100%;
@@ -21,19 +29,18 @@
 }
 
 .prs6_1-right{
-    /* background-color:yellowgreen; */
-    display: flex;
-    flex-direction: column;
-    width: 45%;
+    display: grid;
+    grid-template-columns: 1fr 10px 1fr;
+    grid-template-rows: 8% 12% 5% 8% 12% 5% 8% 12% 5% 5% 20%;
+    width: 55%;
     height: 100%;
     text-align: center;
 }
 
 .prs6_1-left{
-    /* background-color: #f4d289; */
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 40%;
     height: 100%;
     text-align: center;
 }
@@ -52,6 +59,94 @@
     justify-content: center;
     align-items: center;
 }
+
+    .name{
+        grid-area: 1 / 1 / 2 / 4;
+        height: 100%;
+    }
+
+    .name-input{
+        grid-area: 2 / 1 / 3 / 4;
+        height: 100%;
+    }
+
+    .first-lastname{
+        grid-area: 4 / 1 / 5 / 2;
+        height: 100%;
+    }
+
+    .first-lastname-input{
+        grid-area: 5 / 1 / 6 / 2;
+        height: 100%;
+    }
+
+    .second-lastname{
+        grid-area: 4 / 3 / 5 / 4;
+        height: 100%;
+    }
+    
+    .second-lastname-input{
+        grid-area: 5 / 3 / 6 / 4;
+        height: 100%;
+    }
+
+    .genero{
+        grid-area: 7 / 1 / 8 / 2;
+        height: 100%;
+    }
+
+    .genero-input{
+        grid-area: 8 / 1 / 9 / 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-inline: 20px;
+        gap: 20px;
+        background-color: #262626;
+        background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        color: #FCFAF9;
+        cursor: pointer;
+        font-weight: 800;
+        font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 1em;
+        border: none;
+        text-transform: uppercase;
+        width: 100%;
+        height: 100%;
+        text-overflow: ellipsis;
+        transition: all .4s ease;
+    }
+
+    .persona-activa{
+        grid-area: 7 / 3 / 8 / 4;
+        height: 100%;
+    }
+
+    .persona-activa-input{
+        grid-area: 8 / 3 / 9 / 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-inline: 20px;
+        gap: 20px;
+        background-color: #262626;
+        background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        color: #FCFAF9;
+        cursor: pointer;
+        font-weight: 800;
+        font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 1em;
+        border: none;
+        text-transform: uppercase;
+        width: 100%;
+        height: 100%;
+        text-overflow: ellipsis;
+        transition: all .4s ease;
+    }
 
 .prs6_1-subtitle2{
     display: flex;
@@ -88,6 +183,20 @@
     color: #FCFAF9;
     width: 100%;
     height: 12%;
+    font-weight: 600;
+    font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1em;
+    text-align: left;
+    overflow-y: none;
+    text-align:justify;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.prs6_1-subtitle4_1, .prs6_1-subtitle4_1-d{
+    background: linear-gradient(180deg, #262626 0%, rgba(38, 38, 38, 0.9) 100%);
+    color: #FCFAF9;
+    width: 100%;
+    height: 100%;
     font-weight: 600;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1em;
@@ -162,42 +271,68 @@
 }
 
 .prs6_1-bottons{
-    margin-top: auto;
+    grid-area: 11 / 1 / 12 / 4;
     text-align: right;
     text-transform: lowercase;
     text-overflow: clip;
-    height: 20%;
+    height: 100%;
     width: 100%;
 }
 
-.prs6_1-botton2{
-    background-color: #FAA300; 
+.prs6_1-fondo-boton {
+    display: flex;
+    justify-content: center;
+    background-color: #FAA300;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    transition: background-color .6s;
+}
+
+.prs6_1-fondo-boton-disabled {
+    background-color: #353535;
+    display: flex;
+    justify-content: center;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    transition: background-color .6s;
+}
+
+.prs6_1-b-ma {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 100%;
+    background-color: #262626;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #262626;
-    cursor: pointer; 
-    font-weight: 800;
+    color: #BAC2C9;
+    cursor: pointer;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 2em;
-    border-radius: 8px; 
+    border-radius: 8px 40px 8px 50px;
+    padding: 0.8em 1.4em;
+    font-weight: 800;
     border: none;
     text-transform: uppercase;
-    width: 100%;
-    height: 100%;
 }
 
-.prs3_b-disabled{
-    background-color: #4b4b4b;
-    box-shadow: 0px 4px 4px rgba(89, 86, 86, 0.25);
-    color: #878080;
-    cursor: not-allowed; 
-    font-weight: 800;
+.prs6_1-b-ma-disabled {
+    background-color: #4c4c4c;
+    display: flex;
+    justify-content: end;
+    width: 95%;
+    height: 100%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #353434;
     font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 2em;
-    border-radius: 8px; 
+    font-size: 1.8em;
+    border-radius: 8px 40px 8px 50px;
+    padding: 0.8em 1.4em;
+    font-weight: 800;
     border: none;
     text-transform: uppercase;
-    width: 100%;
-    height: 100%;
 }
 
 /* SECCION HOVER */
@@ -220,12 +355,16 @@
     font-weight: 800;
 }
 
-/* .prs3_b-disabled:hover{
-    color: #262626;  
-    transition: all .4s ease;
+.prs6_1-fondo-boton:hover .prs6_1-b-ma {
+    background-color: #FAA300;
+    color: #262626;
+    width: 85%;
     font-weight: 1000;
-    background-color: #aaa;
-} */
+}
+
+.prs6_1-fondo-boton:hover {
+    background-color: #262626;
+}
 
 /* SECCION RESPONSIVA */
 @media only screen and (max-width: 1180px) {
@@ -255,4 +394,3 @@
         margin-top: -55px;
     }
 }
-

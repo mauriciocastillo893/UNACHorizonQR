@@ -15,8 +15,25 @@ function BodyPRSeccion6_1() {
     const [inputValueName, setInputValueName] = useState("")
     const [inputFirstLastName, setInputFirstLastName] = useState("")
     const [inputSecondLastName, setInputSecondLastName] = useState("")
-    const [whatIReading, setWhatIReading] = useState(""); // Cambiado para usar estado
+    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+    const [activePersonCheckbox, setActivePersonCheckbox] = useState(true);
     const navigate = useNavigate();
+
+    const handleCheckboxChange = (checkboxIndex) => {
+        if (selectedCheckbox === checkboxIndex) {
+            setSelectedCheckbox(null);
+        } else {
+            setSelectedCheckbox(checkboxIndex);
+        }
+    };
+
+    const handleCheckboxChangePersonActive = (checkboxIndex) => {
+        if (activePersonCheckbox === checkboxIndex) {
+            setActivePersonCheckbox(false);
+        } else {
+            setActivePersonCheckbox(checkboxIndex);
+        }
+    };
 
     const handleNewName =(e)=>{
         setInputValueName(e.target.value);
@@ -40,7 +57,6 @@ function BodyPRSeccion6_1() {
                     setUsuariosFusionar(response.data.matriculas)
                     getTotalMinutes(response.data.matriculas)
                     getTotalAssistance(response.data.matriculas)
-                    // getNewIDUser(response.data.more_data[1])
                 } else {
                     ShowSweetAlert("NO HAY NADA QUE MOSTRAR", "OCURRIÓ UN ERROR AL MOMENTO DE CARGAR LOS DATOS", "error")
                     console.log(response.data);
@@ -79,6 +95,8 @@ function BodyPRSeccion6_1() {
             ShowSweetAlert("NOMBRE A CAMBIAR VACÍO", "DEBE ELEGIR EL <strong>NUEVO APELLIDO MATERNO</strong> A CAMBIAR ANTES DE ENVIAR", "error")
         }else if(inputSecondLastName==""){
             ShowSweetAlert("NOMBRE A CAMBIAR VACÍO", "DEBE ELEGIR EL <strong>NUEVO APELLIDO PATERNO</strong> A CAMBIAR ANTES DE ENVIAR", "error")
+        }else if(selectedCheckbox==null){
+            ShowSweetAlert("NOMBRE A CAMBIAR VACÍO", "DEBE ELEGIR EL <strong>GENERO</strong> A CAMBIAR ANTES DE ENVIAR", "error")
         }else if(newIDUser!=""){
             const data = {
                 matricula: newIDUser,
@@ -88,6 +106,8 @@ function BodyPRSeccion6_1() {
                 newSecondLastName: inputSecondLastName,
                 minutosTotales: minutosTotales,
                 asistenciasTotales: asistenciasTotales,
+                genero: selectedCheckbox,
+                activo: activePersonCheckbox,
             }
             await axios.post("http://localhost:5000/sendFork", data)
                 .then(response => {
@@ -163,7 +183,7 @@ function BodyPRSeccion6_1() {
                 title="Unir visitantes a uno"
                 subtitle="Correción del nombre y fusión de horas y minutos" />
             <div className="prs6_1-second-part">
-                <div className="prs6_1-right">
+                <div className="prs6_1-left">
                     <div className="prs6_1-title2">
                         <p>Cantidad de visitantes a fusionar</p>
                     </div>
@@ -183,7 +203,9 @@ function BodyPRSeccion6_1() {
                             <ul className="prs6_1-ul">
                                 {Object.values(usuariosFusionar).map(user => (
                                     <li key={user.matricula}>
-                                        [{"  " + user.matricula + "  "}] {(user.nombre + " " + user.apellido_materno + " " + user.apellido_paterno).toUpperCase()} [{"  " + user.minutos_totales + "min" + "  "}]
+                                        {`[${"  " + user.matricula + "  "}]`} {(user.nombre + " " + user.apellido_materno + " " + user.apellido_paterno).toUpperCase()}
+                                        <p>{("\u00A0".repeat(20)) + "REGISTRO: " + "[ " + user.minutos_totales + " min" + " ] " + " [" + user.asistencias + " asist." + "]"}</p>
+                                        <p>{"\u00A0".repeat(1)}</p>
                                     </li>
                                 ))}
                             </ul>
@@ -199,64 +221,113 @@ function BodyPRSeccion6_1() {
                         </p>
                     </div>
                     <div className="prs6_1-title2">
-                        <p>MINUTOS TOTALES A FUSIONAR</p>
+                        <p>MIN. Y ASIST. TOTALES A FUSIONAR</p>
                     </div>
                     <div className="prs6_1-subtitle2">
                         <p className="prs6_1-p">
-                            {(usuariosFusionar != "") ? minutosTotales : "NO HAY INFORMACIÓN"}{(usuariosFusionar != "") ? (minutosTotales == 1) ? " MINUTO" : " MINUTOS" : ""} {(usuariosFusionar != "") ? "TOTALES" : ""}
+                            {(usuariosFusionar != "") ? minutosTotales || asistenciasTotales : "NO HAY INFORMACIÓN"}{(usuariosFusionar != "") ? (minutosTotales == 1) ? " MINUTO" : " MINUTOS" : ""} {"Y " + asistenciasTotales} {(asistenciasTotales==1) ? "ASISTENCIA" : "ASISTENCIAS"}
                         </p>
                     </div>
 
                 </div>
-                <div className="prs6_1-left">
-                    <div className="prs6_1-title2">
+                <div className="prs6_1-right">
+                    <div className="prs6_1-title2 name">
                         <p>NOMBRE CORRECTO</p>
                     </div>
-                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4" : "prs6_1-subtitle4-d"}>
+                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4_1 name-input" : "prs6_1-subtitle4_1-d name-input"}>
                         <input
                             className="prs6_1-searcher-input"
                             type="search"
-                            placeholder='Escriba el nombre correcto'
+                            placeholder='Rellene este campo'
                             value={inputValueName}
                             onChange={handleNewName}
-                            onFocus={()=>{setWhatIReading("Leyendo nombre")}}
-                            onBlur={()=>{setWhatIReading("")}}
                         >
                         </input>
                     </div>
-                    <div className="prs6_1-title2">
-                        <p>APELLIDO MATERNO CORRECTO</p>
+                    <div className="prs6_1-title2 first-lastname">
+                        <p>APELLIDO MATERNO</p>
                     </div>
-                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4" : "prs6_1-subtitle4-d"}>
+                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4_1 first-lastname-input" : "prs6_1-subtitle4_1-d first-lastname-input"}>
                         <input
                             className="prs6_1-searcher-input"
                             type="search"
-                            placeholder='Escriba el apellido materno correcto'
+                            placeholder='Rellene este campo'
                             value={inputFirstLastName}
                             onChange={handleNewFirstLastName}
-                            onFocus={()=>{setWhatIReading("Leyendo apellido materno")}}
-                            onBlur={()=>{setWhatIReading("")}}
                         >
                         </input>
                     </div>
-                    <div className="prs6_1-title2">
-                        <p>APELLIDO PARTERNO CORRECTO</p>
+                    <div className="prs6_1-title2 second-lastname">
+                        <p>APELLIDO PATERNO</p>
                     </div>
-                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4" : "prs6_1-subtitle4-d"}>
+                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4_1 second-lastname-input" : "prs6_1-subtitle4_1-d second-lastname-input"}>
                         <input
                             className="prs6_1-searcher-input"
                             type="search"
-                            placeholder='Escriba el apellido paterno correcto'
+                            placeholder='Rellene este campo'
                             value={inputSecondLastName}
                             onChange={handleNewSecondLastName}
-                            onFocus={()=>{setWhatIReading("Leyendo apellido paterno")}}
-                            onBlur={()=>{setWhatIReading("")}}
                         >
                         </input>
                     </div>
-                    <div className={whatIReading!="" ? `waiting_info` : `waiting_info wi-none`}>{whatIReading!="" ? whatIReading : ''}</div>
+                    <div className="prs6_1-title2 genero">
+                        <p>GÉNERO</p>
+                    </div>
+                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4_1 genero-input" : "prs6_1-subtitle4_1-d genero-input"}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={selectedCheckbox === "M"}
+                            onChange={() => handleCheckboxChange("M")}
+                        />
+                        M
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={selectedCheckbox === "H"}
+                            onChange={() => handleCheckboxChange("H")}
+                        />
+                        H
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={selectedCheckbox === "N-D"}
+                            onChange={() => handleCheckboxChange("N-D")}
+                        />
+                        NO DEFINIDO
+                    </label>
+                    </div>
+                    <div className="prs6_1-title2 persona-activa">
+                        <p>USUARIO ACTIVO</p>
+                    </div>
+                    <div className={(usuariosFusionar.length !== 0) ? "prs6_1-subtitle4_1 persona-activa-input" : "prs6_1-subtitle4_1-d persona-activa-input"}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={activePersonCheckbox}
+                            onChange={() => handleCheckboxChangePersonActive(true)}
+                        />
+                        ACTIVO
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={!activePersonCheckbox}
+                            onChange={() => handleCheckboxChangePersonActive(true)}
+                        />
+                        NO ACTIVO
+                    </label>
+                    </div>
+                    
                     <div className="prs6_1-bottons">
-                        <button className={(usuariosFusionar.length !== 0) ? "prs6_1-botton2 hoverable" : "prs3_b-disabled"} onClick={() => { console.log(usuariosFusionar); sendFork(); }} disabled={usuariosFusionar.length == 0}>BIFURCAR</button>
+                        <div className={(newIDUser.length > 0) ? "prs6_1-fondo-boton" : "prs6_1-fondo-boton-disabled"}>
+                            <button className={(usuariosFusionar.length !== 0) ? "prs6_1-b-ma hoverable" : "prs6_1-b-ma-disabled"} onClick={() => { console.log(usuariosFusionar); sendFork(); }} disabled={usuariosFusionar.length == 0}>BIFURCAR</button>
+                        </div>
                     </div>
                 </div>
             </div>

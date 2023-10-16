@@ -97,8 +97,16 @@ table {
     color: #4CAF50;
   }
 
+  .verdeClaro2{
+    color: #3dd342;
+  }
+
   .rojoClaro{
     color: #D92D2D;
+  }
+
+  .rojoClaro2{
+    color: #f12424;
   }
 
 .swal2-footer {

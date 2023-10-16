@@ -203,7 +203,7 @@ function BodyPRSeccion7() {
                 <table id='prs7-table'>
                     <thead id='prs7-th'>
                         <tr id='prs7-tr'>
-                            <th className='prs7-th-1'>NÚM</th>
+                            <th className='prs7-th-1'>MATRICULA</th>
                             <th className='prs7-th-2'>NOMBRE COMPLETO</th>
                             <th className='prs7-th-3'>GÉNERO</th>
                             <th className='prs7-th-4'>ASISTENCIAS TOTALES</th>
@@ -217,7 +217,7 @@ function BodyPRSeccion7() {
                             .filter(usuario => usuario.tipo_de_estudiante.toLowerCase() !== "visitante" && usuario.activo !== 0)
                             .map((usuario, index) => (
                                 <tr key={usuario.id} className="prs7-tr-body">
-                                    <td className='prs7-td'>{usuario.tipo_de_estudiante}</td>
+                                    <td className='prs7-td'>{usuario.matricula}</td>
                                     <td className='prs7-td'>{(usuario.nombre + " " + usuario.apellido_materno + " " + usuario.apellido_paterno).toUpperCase()}</td>
                                     <td className='prs7-td'>{usuario.genero}</td>
                                     <td className={(statusAsistencias && index === indexActualTabla) ? "prs7-td brillar" : "prs7-td"}>{usuario.asistencias}</td>

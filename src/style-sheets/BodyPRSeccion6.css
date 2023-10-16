@@ -138,6 +138,7 @@
 }
 
 .prs6-cb{
+    cursor: pointer;
     transform: scale(2);
 }
 
@@ -209,7 +210,7 @@
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 5%;
+        width: 8%;
     }
 
     .prs6-th-2{
@@ -234,19 +235,25 @@
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 10%;
+        width: 8%;
     }
     .prs6-th-6{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 15%;
+        width: 10%;
     }
     .prs6-th-7{
         background-color: #262626;
         color: #FCFAF9;
         padding: .5em;
-        width: 15%;
+        width: 12%;
+    }
+    .prs6-th-8{
+        background-color: #262626;
+        color: #FCFAF9;
+        padding: .5em;
+        width: 7%;
     }
 
 .prs6-tr-body:nth-child(even){
@@ -303,6 +310,18 @@
     transition: all .4s ease;
     font-weight: 1000;
     background-color: #aaa;
+}
+
+.riuserunfollowfill{
+    display: flex;
+    position: relative;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    width: 50%;
+    left: 25%;
+    transform: scale(2);
+    cursor: pointer;
 }
 
 /* SECCION RESPONSIVA */

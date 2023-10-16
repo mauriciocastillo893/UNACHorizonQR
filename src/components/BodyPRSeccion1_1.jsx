@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../style-sheets/BodyPRSeccion1_1.css';
 import Swal from 'sweetalert2'
@@ -11,6 +12,7 @@ function BodyPRSeccion1_1() {
     const [apellidoPaterno, setApellidoPaterno] = useState("");
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
     const [newIDUser, setNewIDUser] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -20,6 +22,54 @@ function BodyPRSeccion1_1() {
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
+
+    const sendNewVisitant =async()=>{
+        const data = {
+            nombre: nombre,
+            apellidoMaterno: apellidoMaterno,
+            apellidoPaterno: apellidoPaterno,
+            genero: selectedCheckbox,
+            matriculaNueva: newIDUser
+        }
+        console.log("New IDUser", newIDUser)
+        if(newIDUser){
+            await axios.post('http://localhost:5000/agregarNuevoVisitante', data)
+                .then(response=>{
+                    if(response.data.status==="1"){
+                        console.log("response", response)
+                        console.log("response.data", response.data)
+                        ShowAssistanceAlert("REGISTRO EXITOSO", `${response.data.message}`, "success", "entrada")
+                        setTimeout(()=>{
+                            navigate("/buscarVisitante")
+                        }, 1000)
+                    }else{
+                        ShowAssistanceAlert("REGISTRO INCONCLUSO", `<strong>DETALLES:</strong><br>${response.data.message}`, "error", "entrada")
+                    }
+                }).catch(error=>{
+                    ShowAssistanceAlert("ERROR INESPERADO", `NO SE PUDO AGREGAR AL VISITANTE <br><br><strong>DETALLES</strong><br>${error}`, "error", "entrada")
+                    console.log("Error when we were trying to send a new visitant", error)
+                })
+        }else{
+            ShowAssistanceAlert("MATRICULA NO CARGADA", `NO SE PUDO AGREGAR AL VISITANTE <br><br><strong>DETALLES</strong><br>MATRICULA VACIA, VUELVA A INTENTAR`, "error", "entrada")
+        }
+    }
+    
+    const getNewIDUser = async () => {
+        await axios.post("http://localhost:5000/generateNewIDUser", {matriculas: ""})
+            .then(response => {
+                if (response.data.status !== '0') {
+                    console.log(response.data);
+                    setNewIDUser(response.data.IDUser)
+                    ShowAssistanceAlert("MATRICULA ENCONTRADA", "NUEVA MATRICULA DISPONIBLE: <br><strong>" + response.data.IDUser, "success", "entrada")
+                } else {
+                    ShowAssistanceAlert("ERROR INESPERADO", "UN ERROR CRÍTICO HA OCURRIDO, FAVOR DE REPORTAR ESTE ERROR", "error", "entrada")
+                    console.log(response.data);
+                }
+            }).catch(error => {
+                ShowAssistanceAlert("ERROR INESPERADO", `UN ERROR CRÍTICO HA OCURRIDO, FAVOR DE REPORTAR ESTE ERROR <br><br><strong>DETALLES</strong><br>${error}`, "error", "entrada")
+                console.log(error);
+            })
+    }
 
     const ShowAssistanceAlert= (tittle, message, status, type) => {
         Swal.fire({
@@ -75,23 +125,6 @@ function BodyPRSeccion1_1() {
         }
     };
 
-    const getNewIDUser = async () => {
-        await axios.post("http://localhost:5000/generateNewIDUser", {matriculas: ""})
-            .then(response => {
-                if (response.data.status !== '0') {
-                    console.log(response.data);
-                    setNewIDUser(response.data.IDUser)
-                    ShowAssistanceAlert("MATRICULA ENCONTRADA", "NUEVA MATRICULA DISPONIBLE: <br><strong>" + response.data.IDUser, "success", "entrada")
-                } else {
-                    ShowAssistanceAlert("ERROR INESPERADO", "UN ERROR CRÍTICO HA OCURRIDO, FAVOR DE REPORTAR ESTE ERROR", "error", "entrada")
-                    console.log(response.data);
-                }
-            }).catch(error => {
-                ShowAssistanceAlert("ERROR INESPERADO", `UN ERROR CRÍTICO HA OCURRIDO, FAVOR DE REPORTAR ESTE ERROR <br><br><strong>DETALLES</strong><br>${error}`, "error", "entrada")
-                console.log(error);
-            })
-    }
-
     const sendSelectedValue = () => {
         console.log("nombre", nombre.length)
         console.log("apellido materno", apellidoMaterno.length)
@@ -107,9 +140,10 @@ function BodyPRSeccion1_1() {
             ShowAssistanceAlert("GÉNERO VACÍO", "DEBES ELEGIR UN <strong>GÉNERO</strong> ANTES DE ENVIAR LOS DATOS", "error", "entrada")
         }else{
             if (selectedCheckbox !== null) {
-                const selectedValue = selectedCheckbox; // Sumamos 1 al índice para obtener el valor deseado
+                const selectedValue = selectedCheckbox;
                 console.log("Selected value:", selectedValue);
                 handleClearClick()
+                sendNewVisitant()
             }else{
                 console.log("No value selected")
             }

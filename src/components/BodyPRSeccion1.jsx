@@ -22,8 +22,9 @@ function BodyPRSeccion1() {
         await axios.get("http://localhost:5000/allVisitors")
             .then(response => {
                 console.log(response.data.users);
-                setUsuarios(response.data.users);
-                setTablaUsuarios(response.data.users);
+                const activeUsers = response.data.users.filter(user => user.activo == 1)
+                setUsuarios(activeUsers);
+                setTablaUsuarios(activeUsers);
                 // console.log(response.data);
             }).catch(error => {
                 console.log(error);
@@ -203,7 +204,7 @@ function BodyPRSeccion1() {
                     <p className="prs1-subtitle-second">{status}</p>
                 </div>
             </div>
-                <div id="prs1-table-headboard">RESULTADOS</div>
+                <div id="prs1-table-headboard">RESULTADOS (VISITANTES ACTIVOS)</div>
                 {(totalUsuarios) ? <div id="prs1-tabla-all">
                     <table id='prs1-table'>
                         <thead id='prs1-th'>
